@@ -1,9 +1,9 @@
 {
   "environment": "dev",
   "project_name": "ORGCHART",
-  "report_name": "Prod Gemini View updated",
+  "report_name": "Test runs",
   "enter_point": "https://apis.gemecosystem.com/enter-point",
-  "tags": "@hihi",
+  "tags": "@RunDCVIEW",
   "feature": "src/test/resources/features",
   "glue_code": "com.qa.orgchart.stepDefinitions",
   "jewel_user": "himu_1808",
@@ -11,6 +11,7 @@
   "console_report": "n",
   "jewel_screen_shots": "y",
   "event_firing": "n",
+  "browser_options": "[--incognito]",
     "dev": {
     "browser_name": "chrome",
     "launch_url": "https://orgchartdev-np.geminisolutions.com/",

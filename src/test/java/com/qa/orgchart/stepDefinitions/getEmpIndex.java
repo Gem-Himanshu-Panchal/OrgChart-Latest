@@ -9,8 +9,8 @@ public class getEmpIndex {
 
             List<HashMap<String, String>> hashMapList = jsonToHash.getHashList2();
             int index = 0;
-        String name = "Akash Singh Gusain";
-        String code = "GSI G 1641";
+        String name = "Akash Agrawal";
+        String code = "GSI G 1178";
             for(int i = 0; i< Objects.requireNonNull(hashMapList).size(); i++){
                 if(hashMapList.get(i).get("EmployeeName").equalsIgnoreCase(name) && hashMapList.get(i).get("EmployeeCode").equalsIgnoreCase(code)){
                     index = i;break;

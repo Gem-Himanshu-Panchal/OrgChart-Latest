@@ -20,6 +20,12 @@ public class LoginStepDefinition {
             GenericUtils.waitUntilElementAppear(CommonLocators.dropdownBox);
             DriverAction.click(CommonLocators.dropdownBox);
             GenericUtils.waitUntilLoaderDisappear();
+            GenericUtils.waitUntilElementAppear(CommonLocators.viewValue(viewName));
+            if(!GenericUtils.isExist(CommonLocators.viewValue(viewName))){
+                DriverAction.click(CommonLocators.dropdownBox);
+                DriverAction.waitSec(1);
+                GenericUtils.waitUntilElementAppear(CommonLocators.viewValue(viewName));
+            }
             DriverAction.scrollIntoView(CommonLocators.viewValue(viewName));
             GenericUtils.waitUntilElementAppear(CommonLocators.viewValue(viewName));
             DriverAction.getElement(CommonLocators.viewValue(viewName)).click();
@@ -42,8 +48,17 @@ public class LoginStepDefinition {
                 GemTestReporter.addTestStep("Click on Login button"
                         , "Unable to click on login button", STATUS.FAIL, DriverAction.takeSnapShot());
             WebDriver driver = DriverManager.getWebDriver();
-            try {
 
+            if (GenericUtils.isExist(CommonLocators.invalidHTTPRequestToastMessage)) {
+                DriverAction.refresh();
+                DriverAction.waitSec(2);
+                DriverAction.refresh();
+                DriverAction.waitSec(2);
+                GenericUtils.waitUntilElementAppear(CommonLocators.loginButton);
+                DriverAction.click(CommonLocators.loginButton);
+                DriverAction.refresh();
+            }
+            try {
                 String mainWin = driver.getWindowHandle();
                 String popUpWin = null;
                 WebDriverWait wait = new WebDriverWait(driver, 10);
@@ -72,11 +87,32 @@ public class LoginStepDefinition {
             } catch (Exception e) {
                 e.printStackTrace();
             }finally {
-                if(driver.getWindowHandles().size()>0){
+                if(driver.getWindowHandles().size()>0) {
                     String mainWindow = driver.getWindowHandles().iterator().next();
                     DriverAction.switchToWindow(mainWindow);
+
+                    if (GenericUtils.isExist(CommonLocators.invalidHTTPRequestToastMessage)) {
+                        DriverAction.refresh();
+                        DriverAction.waitSec(2);
+                        DriverAction.refresh();
+                        DriverAction.waitSec(2);
+                        GenericUtils.waitUntilElementAppear(CommonLocators.loginButton);
+                        DriverAction.click(CommonLocators.loginButton);
+                        DriverAction.refresh();
+                    }
                 }
             }
+
+            if (GenericUtils.isExist(CommonLocators.invalidHTTPRequestToastMessage)) {
+                DriverAction.refresh();
+                DriverAction.waitSec(2);
+                DriverAction.refresh();
+                DriverAction.waitSec(2);
+                GenericUtils.waitUntilElementAppear(CommonLocators.loginButton);
+                DriverAction.click(CommonLocators.loginButton);
+                DriverAction.refresh();
+            }
+
         } catch (Exception e) {
             GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
             throw new RuntimeException(e);
@@ -92,8 +128,10 @@ public class LoginStepDefinition {
                     && GenericUtils.isExist(CommonLocators.searchField)) {
                 GemTestReporter.addTestStep("Verify if User is logged into OrgChart"
                         , "Successfully logged into OrgChart", STATUS.PASS, DriverAction.takeSnapShot());
-            } else GemTestReporter.addTestStep("Verify if User is logged into OrgChart"
-                    , "Unable to log into Orgchart", STATUS.FAIL, DriverAction.takeSnapShot());
+            } else{
+                GemTestReporter.addTestStep("Verify if User is logged into OrgChart"
+                        , "Unable to log into Orgchart", STATUS.FAIL, DriverAction.takeSnapShot());
+            }
         } catch (Exception e) {
             GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
             throw new RuntimeException(e);

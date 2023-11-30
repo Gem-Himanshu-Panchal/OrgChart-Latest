@@ -102,7 +102,7 @@ public class ECTechView {
                         }
                     }
                     flag++;
-                    scrollToElement.scrollToElement(empName, empCode);
+                    GenericUtils.scrollToElement(empName, empCode);
                     DriverAction.getElement(CommonLocators.employeeDiv(empName, empCode)).click();
                     GenericUtils.waitUntilElementAppear(CommonLocators.infoCard);
                     DriverAction.waitSec(2);
