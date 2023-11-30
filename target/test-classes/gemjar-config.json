@@ -16,8 +16,10 @@
     "browser_name": "chrome",
     "launch_url": "https://orgchartdev-np.geminisolutions.com/",
     "dashboardUrl": "https://orgchart.geminisolutions.com/heirarchy/gemini",
-    "browser_timeout": 20
-  },
+    "browser_timeout": 20,
+      "email": "himanshu.panchal@geminisolutions.com",
+      "password": "SGltdUF1Z0AxODA4"
+    },
   "prod": {
     "browser_name": "chrome",
     "launch_url": "https://orgchart.geminisolutions.com/",

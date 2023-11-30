@@ -4,10 +4,12 @@ import com.gemini.generic.reporting.GemTestReporter;
 import com.gemini.generic.reporting.STATUS;
 import com.gemini.generic.ui.utils.DriverAction;
 import com.gemini.generic.ui.utils.DriverManager;
+import com.gemini.generic.utils.ProjectConfigData;
 import com.qa.orgchart.locators.CommonLocators;
 import com.qa.orgchart.utils.GenericUtils;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
+import org.apache.commons.codec.binary.Base64;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -71,14 +73,17 @@ public class LoginStepDefinition {
                     }
                 }
                 DriverAction.switchToWindow(popUpWin);
+
+                byte[] decodingString = Base64.decodeBase64(ProjectConfigData.getProperty("password"));
+                String passwordDecoded = new String(decodingString);
                 GenericUtils.waitUntilElementAppear(CommonLocators.loginEmail);
                 if (GenericUtils.isExist(CommonLocators.loginEmail)) {
-                    DriverAction.typeText(CommonLocators.loginEmail, "himanshu.panchal@geminisolutions.com");
+                    DriverAction.typeText(CommonLocators.loginEmail, ProjectConfigData.getProperty("email"));
                     DriverAction.click(CommonLocators.submitButton);
                 }
                 GenericUtils.waitUntilElementAppear(CommonLocators.loginPswd);
                 if (GenericUtils.isExist(CommonLocators.loginPswd)) {
-                    DriverAction.typeText(CommonLocators.loginPswd, "HimuAug@1808");
+                    DriverAction.typeText(CommonLocators.loginPswd, passwordDecoded);
                     DriverAction.click(CommonLocators.submitButton);
                 }
                 GenericUtils.waitUntilElementAppear(CommonLocators.submitButton);
