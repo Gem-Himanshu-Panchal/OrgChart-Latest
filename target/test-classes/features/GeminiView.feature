@@ -8,8 +8,8 @@ Feature: Gemini view data validations
 #  Scenario: Gemini View new technique
 #    When Open hierarchy in Gemini view and verify details
 
-  Scenario: Verify any duplicate data in OrgChart employee view
-    When Search for any duplicate employee in OrgChart Gemini view
+#  Scenario: Verify any duplicate data in OrgChart employee view
+#    When Search for any duplicate employee in OrgChart Gemini view
 
   @run
   Scenario: Gemini View time reduce 1

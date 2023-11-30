@@ -3,7 +3,7 @@
   "project_name": "ORGCHART",
   "report_name": "Test runs",
   "enter_point": "https://apis.gemecosystem.com/enter-point",
-  "tags": "@RunDCVIEW",
+  "tags": "@geminiViewTesting",
   "feature": "src/test/resources/features",
   "glue_code": "com.qa.orgchart.stepDefinitions",
   "jewel_user": "himu_1808",
