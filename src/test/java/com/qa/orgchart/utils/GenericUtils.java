@@ -15,6 +15,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import com.qa.orgchart.stepDefinitions.*;
 
+import javax.xml.transform.Result;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -351,5 +352,52 @@ public class GenericUtils {
 
 
         ((JavascriptExecutor) driver).executeScript("window.scrollTo(" + scrollX + ", " + scrollY + ");");
+    }
+
+    public static List<Object> openTeamBox(String teamBox,String DCtype){
+        GenericUtils.waitUntilLoaderDisappear();
+        GenericUtils.waitUntilElementAppear(CommonLocators.ecTeamBox(teamBox));
+        DriverAction.scrollIntoView(CommonLocators.ecTeamBox(teamBox));
+        DriverAction.hoverOver(CommonLocators.ecTeamBox(teamBox));
+       String chair = null;
+        if (GenericUtils.isExist(CommonLocators.chairBox(teamBox))) {
+            chair = DriverAction.getElementText(CommonLocators.chairName(teamBox));
+        }
+        GenericUtils.waitUntilElementAppear(By.xpath("//i[@class='edge verticalEdge bottomEdge fa fa-chevron-circle-down']"));
+        DriverAction.getElement(By.xpath("//i[@class='edge verticalEdge bottomEdge fa fa-chevron-circle-down']")).click();
+        DriverAction.waitSec(3);
+        GenericUtils.waitUntilLoaderDisappear();
+        GenericUtils.waitUntilElementAppear(CommonLocators.firstRowEmployees(teamBox));
+        List<WebElement>firstRowEmployees = DriverAction.getElements(CommonLocators.firstRowEmployees(teamBox));
+        DriverAction.waitSec(1);
+        List<WebElement> members = null;
+        String path1 = null;
+        String endPath = null;
+        if (!DCtype.contains("Clients")) {
+            members = DriverAction.getElements(By.xpath("(//tr[@class='nodes'])[4]/td/table"));
+            path1 = "(//tr[@class='nodes'])[4]/td/table";
+        } else {
+            members = DriverAction.getElements(By.xpath("(//tr[@class='nodes'])[5]/td/table"));
+            path1 = "(//tr[@class='nodes'])[5]/td/table";
+        }
+        endPath = "/tr[@class='nodes']/td/table";
+        while (!members.isEmpty()) {
+            for (WebElement member : members) {
+                DriverAction.scrollIntoView(member);
+                DriverAction.hoverOver(member);
+                if (GenericUtils.isExist(CommonLocators.downArrow)) {
+                    DriverAction.getElement(CommonLocators.downArrow).click();
+                    DriverAction.waitSec(1);
+                }
+            }
+            members.clear();
+            path1 = path1 + endPath;
+            members.addAll(DriverAction.getElements(By.xpath(path1)));
+
+        }
+      List<Object> result = new ArrayList<>();
+        result.add(chair);
+        result.add(firstRowEmployees);
+        return result;
     }
 }

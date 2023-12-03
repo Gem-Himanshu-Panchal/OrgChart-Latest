@@ -13,7 +13,7 @@ Feature: Gemini view data validations
 
   @run
   Scenario: Gemini View time reduce 1
-    When Open hierarchy in Gemini view for "0" to "2" managers
+    When Open hierarchy in Gemini view for "0" to "20" managers
 
   @run
   Scenario: Gemini View time reduce 2
@@ -29,4 +29,4 @@ Feature: Gemini view data validations
 
   @run
   Scenario: Gemini View time reduce 5
-    When Open hierarchy in Gemini view for "150" to "204" managers
+    When Open hierarchy in Gemini view for "150" to "206" managers

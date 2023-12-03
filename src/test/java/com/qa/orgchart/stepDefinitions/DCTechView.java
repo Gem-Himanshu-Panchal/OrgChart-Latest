@@ -10,69 +10,70 @@ import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import java.util.Calendar;
+import javax.xml.transform.Result;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class DCTechView {
-    static String chair = null;
-    static List<WebElement> firstRowEmployees = null;
 
-    @When("^Open modals for \"(.*)\" in \"(.*)\"$")
-    public static void clickOnDownArrows(String DCtype, String teamBox) {
-        GenericUtils.waitUntilLoaderDisappear();
-//        DriverAction.waitSec(3);
-//        DriverAction.scrollIntoView(By.xpath("//tr[@class='nodes']//table//tr//td//div[@class='node cursorPointer']//img"));
-//        GenericUtils.waitUntilElementAppear(By.xpath("//tr[@class='nodes']//table//tr//td//div[@class='node cursorPointer']//img"));
-//        DriverAction.hoverOver(By.xpath("//tr[@class='nodes']//table//tr//td//div[@class='node cursorPointer']//img"));
+
+
+
+//    @When("^Open modals for \"(.*)\" in \"(.*)\"$")
+//    public static void clickOnDownArrows(String DCtype, String teamBox) {
+//        GenericUtils.waitUntilLoaderDisappear();
+//        GenericUtils.waitUntilElementAppear(CommonLocators.ecTeamBox(teamBox));
+//        DriverAction.scrollIntoView(CommonLocators.ecTeamBox(teamBox));
+//        DriverAction.hoverOver(CommonLocators.ecTeamBox(teamBox));
+//        chair = null;
+//        if (GenericUtils.isExist(CommonLocators.chairBox(teamBox))) {
+//            chair = DriverAction.getElementText(CommonLocators.chairName(teamBox));
+//        }
 //        GenericUtils.waitUntilElementAppear(By.xpath("//i[@class='edge verticalEdge bottomEdge fa fa-chevron-circle-down']"));
 //        DriverAction.getElement(By.xpath("//i[@class='edge verticalEdge bottomEdge fa fa-chevron-circle-down']")).click();
-        GenericUtils.waitUntilElementAppear(CommonLocators.ecTeamBox(teamBox));
-        DriverAction.scrollIntoView(CommonLocators.ecTeamBox(teamBox));
-//        GenericUtils.waitUntilElementAppear(CommonLocators.ecTeamBox(teamBox));
-        DriverAction.hoverOver(CommonLocators.ecTeamBox(teamBox));
-        chair = null;
-        if (GenericUtils.isExist(CommonLocators.chairBox(teamBox))) {
-            chair = DriverAction.getElementText(CommonLocators.chairName(teamBox));
-        }
-        GenericUtils.waitUntilElementAppear(By.xpath("//i[@class='edge verticalEdge bottomEdge fa fa-chevron-circle-down']"));
-        DriverAction.getElement(By.xpath("//i[@class='edge verticalEdge bottomEdge fa fa-chevron-circle-down']")).click();
-        DriverAction.waitSec(3);
-        GenericUtils.waitUntilLoaderDisappear();
+//        DriverAction.waitSec(3);
+//        GenericUtils.waitUntilLoaderDisappear();
+//        GenericUtils.waitUntilElementAppear(CommonLocators.firstRowEmployees(teamBox));
+//        firstRowEmployees = DriverAction.getElements(CommonLocators.firstRowEmployees(teamBox));
+//        DriverAction.waitSec(1);
+//        List<WebElement> members = null;
+//        String path1 = null;
+//        String endPath = null;
+//        if (!DCtype.contains("Clients")) {
+//            members = DriverAction.getElements(By.xpath("(//tr[@class='nodes'])[4]/td/table"));
+//            path1 = "(//tr[@class='nodes'])[4]/td/table";
+//        } else {
+//            members = DriverAction.getElements(By.xpath("(//tr[@class='nodes'])[5]/td/table"));
+//            path1 = "(//tr[@class='nodes'])[5]/td/table";
+//        }
+//        endPath = "/tr[@class='nodes']/td/table";
+//        while (!members.isEmpty()) {
+//            for (WebElement member : members) {
+//                DriverAction.scrollIntoView(member);
+//                DriverAction.hoverOver(member);
+//                if (GenericUtils.isExist(CommonLocators.downArrow)) {
+//                    DriverAction.getElement(CommonLocators.downArrow).click();
+//                    DriverAction.waitSec(1);
+//                }
+//            }
+//            members.clear();
+//            path1 = path1 + endPath;
+//            members.addAll(DriverAction.getElements(By.xpath(path1)));
+//
+//        }
+//    }
 
-        GenericUtils.waitUntilElementAppear(CommonLocators.firstRowEmployees(teamBox));
-        firstRowEmployees = DriverAction.getElements(CommonLocators.firstRowEmployees(teamBox));
-        DriverAction.waitSec(1);
-        List<WebElement> members = null;
-        String path1 = null;
-        String endPath = null;
-        if (!DCtype.contains("Clients")) {
-            members = DriverAction.getElements(By.xpath("(//tr[@class='nodes'])[4]/td/table"));
-            path1 = "(//tr[@class='nodes'])[4]/td/table";
-        } else {
-            members = DriverAction.getElements(By.xpath("(//tr[@class='nodes'])[5]/td/table"));
-            path1 = "(//tr[@class='nodes'])[5]/td/table";
-        }
-        endPath = "/tr[@class='nodes']/td/table";
-        while (!members.isEmpty()) {
-            for (WebElement member : members) {
-                DriverAction.scrollIntoView(member);
-                DriverAction.hoverOver(member);
-                if (GenericUtils.isExist(CommonLocators.downArrow)) {
-                    DriverAction.getElement(CommonLocators.downArrow).click();
-                    DriverAction.waitSec(1);
-                }
-            }
-            members.clear();
-            path1 = path1 + endPath;
-            members.addAll(DriverAction.getElements(By.xpath(path1)));
 
-        }
-    }
 
-    @Then("^Check employee in DC view for \"(.*)\" of OrgChart$")
-    public void checkForEmployeeInDcViewOfOrgChart(String dcTechName) {
+    @Then("^Check employee in DC view for \"(.*)\" in \"(.*)\" of OrgChart$")
+    public void checkForEmployeeInDcViewOfOrgChart(String dcTechName,String dcType) {
         try {
+            List<Object> response = GenericUtils.openTeamBox(dcTechName,dcType);
+
+            String chair = (String) response.get(0);
+            List<WebElement>firstRowEmployees = (List<WebElement>) response.get(1);
+            System.out.println(chair+"   "+firstRowEmployees.size());
             GenericUtils.waitUntilLoaderDisappear();
             GenericUtils.waitUntilElementAppear(CommonLocators.chartContainer);
             List<HashMap<String, String>> hashMapList = jsonToHash.getHashList2();
@@ -98,8 +99,7 @@ public class DCTechView {
                     String mentorDCTech = GenericUtils.getDcTech(mentorName, mentorCode);
                     String mentorSecondaryDCTech = GenericUtils.getSecondaryDcTech(mentorName, mentorCode);
                     assert mentorDCTech != null;
-                    System.out.println("firstRowEmployees found");
-                    assert firstRowEmployees !=null;
+
                     DriverAction.waitSec(1);
                     if (!mentorDCTech.contains(dcTechName) && !mentorSecondaryDCTech.contains(dcTechName) && !mentorName.equalsIgnoreCase(chair)) {
                         if (GenericUtils.isEmployeeInFirstRow(firstRowEmployees, empName, empCode)) {
@@ -141,60 +141,8 @@ public class DCTechView {
             GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
             throw new RuntimeException(e);
         }
-
-//                scrollToElement.scrollToElement(empName, empCode);
-//                DriverAction.getElement(CommonLocators.employeeDiv(empName, empCode)).click();
-//                GenericUtils.waitUntilElementAppear(CommonLocators.infoCard);
-//                DriverAction.waitSec(2);
-//
-//                List<String> resp = GenericUtils.verifyEmployeeDetails(hashMap);
-//
-//                if (resp.get(0).equalsIgnoreCase("True")) {
-//                    GemTestReporter.addTestStep("Verify if " + empName + " has right values",
-//                            empName + " has right values", STATUS.PASS, DriverAction.takeSnapShot());
-//                } else {
-//                    GemTestReporter.addTestStep("Verify if " + empName + " is at right hierarchy or not",
-//                            empName + " has wrong value: " + resp.get(1), STATUS.FAIL, DriverAction.takeSnapShot());
-//                }
-//                DriverAction.getElement(CommonLocators.crossIcon).click();
-
     }
 
-    @When("Open path for {string} Dc tech")
-    public void openPathForDcTech(String DcTechName) {
-        try {
-            GenericUtils.waitUntilLoaderDisappear();
-//            Hover over prashank
-            GenericUtils.waitUntilElementAppear(CommonLocators.dataSource("name", "Prashank Chaudhary", "EmployeeCode", "GSI N 015"));
-            DriverAction.hoverOver(CommonLocators.dataSource("name", "Prashank Chaudhary", "EmployeeCode", "GSI N 015"));
-
-            DriverAction.scrollIntoView(CommonLocators.downArrowDataSource("name", "Prashank Chaudhary", "EmployeeCode", "GSI N 015"));
-            DriverAction.scrollToBottom();
-
-            GenericUtils.waitUntilElementAppear(CommonLocators.downArrowDataSource("name", "Prashank Chaudhary", "EmployeeCode", "GSI N 015"));
-            if (!GenericUtils.isExist(CommonLocators.downArrowDataSource("name", "Prashank Chaudhary", "EmployeeCode", "GSI N 015"))) {
-                DriverAction.hoverOver(CommonLocators.dataSource("name", "Prashank Chaudhary", "EmployeeCode", "GSI N 015"));
-                DriverAction.waitSec(1);
-            }
-            DriverAction.getElement(CommonLocators.downArrowDataSource("name", "Prashank Chaudhary", "EmployeeCode", "GSI N 015")).click();
-// Hover over type of DC
-            GenericUtils.waitUntilElementAppear(CommonLocators.dcTechNameBox(DcTechName));
-            DriverAction.hoverOver(CommonLocators.dcTechNameBox(DcTechName));
-
-            GenericUtils.waitUntilElementAppear(CommonLocators.downArrowDCTechDataSource(DcTechName));
-            if (!GenericUtils.isExist(CommonLocators.downArrowDCTechDataSource(DcTechName))) {
-                DriverAction.hoverOver(CommonLocators.dcTechNameBox(DcTechName));
-                DriverAction.waitSec(1);
-            }
-            DriverAction.getElement(CommonLocators.downArrowDCTechDataSource(DcTechName)).click();
-
-            DriverAction.scrollToBottom();
-        } catch (Exception e) {
-            GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
-            throw new RuntimeException(e);
-        }
-
-    }
 
 
     @When("Open path for {string} Dc tech and {string} DC")
