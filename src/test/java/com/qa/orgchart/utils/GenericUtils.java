@@ -2,11 +2,14 @@ package com.qa.orgchart.utils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gemini.generic.reporting.GemTestReporter;
+import com.gemini.generic.reporting.STATUS;
 import com.gemini.generic.ui.utils.DriverAction;
 import com.gemini.generic.ui.utils.DriverManager;
 import com.qa.orgchart.locators.CommonLocators;
 
 import com.qa.orgchart.locators.sanityLocators;
+import org.apache.commons.collections.CollectionUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -24,7 +27,7 @@ import java.util.*;
 import static com.gemini.generic.ui.utils.DriverAction.getElements;
 
 
-public class GenericUtils {
+public class GenericUtils{
     public static void waitUntilElementDisappear(By locator) {
         WebDriverWait wait = new WebDriverWait(DriverManager.getWebDriver(), 60);
         wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
@@ -324,9 +327,18 @@ public class GenericUtils {
     }
 
     public static boolean isExist(By locator) {
+//        if(locator!=null) {
+//            List<WebElement> elementList = getElements(locator);
+//            int elementListSize = elementList.size();
+//            return elementListSize > 0;
+//        }
+//        return false;
         List<WebElement> elementList = getElements(locator);
-        int elementListSize = elementList.size();
-        return elementListSize > 0;
+        if (CollectionUtils.isEmpty(elementList)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public static void scrollToElement(String name, String code){
@@ -354,50 +366,35 @@ public class GenericUtils {
         ((JavascriptExecutor) driver).executeScript("window.scrollTo(" + scrollX + ", " + scrollY + ");");
     }
 
-    public static List<Object> openTeamBox(String teamBox,String DCtype){
-        GenericUtils.waitUntilLoaderDisappear();
-        GenericUtils.waitUntilElementAppear(CommonLocators.ecTeamBox(teamBox));
-        DriverAction.scrollIntoView(CommonLocators.ecTeamBox(teamBox));
-        DriverAction.hoverOver(CommonLocators.ecTeamBox(teamBox));
-       String chair = null;
-        if (GenericUtils.isExist(CommonLocators.chairBox(teamBox))) {
-            chair = DriverAction.getElementText(CommonLocators.chairName(teamBox));
-        }
-        GenericUtils.waitUntilElementAppear(By.xpath("//i[@class='edge verticalEdge bottomEdge fa fa-chevron-circle-down']"));
-        DriverAction.getElement(By.xpath("//i[@class='edge verticalEdge bottomEdge fa fa-chevron-circle-down']")).click();
-        DriverAction.waitSec(3);
-        GenericUtils.waitUntilLoaderDisappear();
-        GenericUtils.waitUntilElementAppear(CommonLocators.firstRowEmployees(teamBox));
-        List<WebElement>firstRowEmployees = DriverAction.getElements(CommonLocators.firstRowEmployees(teamBox));
-        DriverAction.waitSec(1);
-        List<WebElement> members = null;
-        String path1 = null;
-        String endPath = null;
-        if (!DCtype.contains("Clients")) {
-            members = DriverAction.getElements(By.xpath("(//tr[@class='nodes'])[4]/td/table"));
-            path1 = "(//tr[@class='nodes'])[4]/td/table";
-        } else {
-            members = DriverAction.getElements(By.xpath("(//tr[@class='nodes'])[5]/td/table"));
-            path1 = "(//tr[@class='nodes'])[5]/td/table";
-        }
-        endPath = "/tr[@class='nodes']/td/table";
-        while (!members.isEmpty()) {
-            for (WebElement member : members) {
-                DriverAction.scrollIntoView(member);
-                DriverAction.hoverOver(member);
-                if (GenericUtils.isExist(CommonLocators.downArrow)) {
-                    DriverAction.getElement(CommonLocators.downArrow).click();
-                    DriverAction.waitSec(1);
-                }
-            }
-            members.clear();
-            path1 = path1 + endPath;
-            members.addAll(DriverAction.getElements(By.xpath(path1)));
-
-        }
-      List<Object> result = new ArrayList<>();
-        result.add(chair);
-        result.add(firstRowEmployees);
-        return result;
+public static void openNodes(String DCtype){
+    DriverAction.waitSec(1);
+    List<WebElement> members = null;
+    String path1 = null;
+    String endPath = null;
+    if (!DCtype.contains("Clients")) {
+        members = DriverAction.getElements(By.xpath("(//tr[@class='nodes'])[4]/td/table"));
+        path1 = "(//tr[@class='nodes'])[4]/td/table";
+    } else {
+        members = DriverAction.getElements(By.xpath("(//tr[@class='nodes'])[5]/td/table"));
+        path1 = "(//tr[@class='nodes'])[5]/td/table";
     }
+    endPath = "/tr[@class='nodes']/td/table";
+    while (!members.isEmpty()) {
+        for (WebElement member : members) {
+            DriverAction.scrollIntoView(member);
+            DriverAction.hoverOver(member);
+            if (GenericUtils.isExist(CommonLocators.downArrow)) {
+                DriverAction.getElement(CommonLocators.downArrow).click();
+                DriverAction.waitSec(1);
+            }
+        }
+        members.clear();
+        path1 = path1 + endPath;
+        members.addAll(DriverAction.getElements(By.xpath(path1)));
+
+    }
+
+}
+
+
 }

@@ -11,6 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import javax.xml.transform.Result;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -69,7 +70,8 @@ public class DCTechView {
     @Then("^Check employee in DC view for \"(.*)\" in \"(.*)\" of OrgChart$")
     public void checkForEmployeeInDcViewOfOrgChart(String dcTechName,String dcType) {
         try {
-            List<Object> response = GenericUtils.openTeamBox(dcTechName,dcType);
+            List<Object> response = openTeamBox(dcTechName);
+            GenericUtils.openNodes(dcType);
 
             String chair = (String) response.get(0);
             List<WebElement>firstRowEmployees = (List<WebElement>) response.get(1);
@@ -199,6 +201,30 @@ public class DCTechView {
             GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
             throw new RuntimeException(e);
         }
+    }
+    public synchronized List<Object> openTeamBox(String teamBox){
+        GenericUtils.waitUntilLoaderDisappear();
+        GenericUtils.waitUntilElementAppear(CommonLocators.ecTeamBox(teamBox));
+        DriverAction.scrollIntoView(CommonLocators.ecTeamBox(teamBox));
+        DriverAction.hoverOver(CommonLocators.ecTeamBox(teamBox));
+        synchronized (this){
+            String chair = null;
+            if (GenericUtils.isExist(CommonLocators.chairBox(teamBox))) {
+                chair = DriverAction.getElementText(CommonLocators.chairName(teamBox));
+            }
+            GenericUtils.waitUntilElementAppear(By.xpath("//i[@class='edge verticalEdge bottomEdge fa fa-chevron-circle-down']"));
+            DriverAction.getElement(By.xpath("//i[@class='edge verticalEdge bottomEdge fa fa-chevron-circle-down']")).click();
+            DriverAction.waitSec(3);
+            GenericUtils.waitUntilLoaderDisappear();
+            GenericUtils.waitUntilElementAppear(CommonLocators.firstRowEmployees(teamBox));
+            List<WebElement>firstRowEmployees = DriverAction.getElements(CommonLocators.firstRowEmployees(teamBox));
+            List<Object> result = new ArrayList<>();
+            result.add(chair);
+            result.add(firstRowEmployees);
+            return result;
+        }
+
+
     }
 }
 

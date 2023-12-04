@@ -1,9 +1,9 @@
 {
-  "environment": "prod",
+  "environment": "dev",
   "project_name": "ORGCHART",
-  "report_name": "Pipeline runs",
+  "report_name": "Thread test for DC",
   "enter_point": "https://apis.gemecosystem.com/enter-point",
-  "tags": "@geminiViewTesting",
+  "tags": "@testhghg",
   "feature": "src/test/resources/features",
   "glue_code": "com.qa.orgchart.stepDefinitions",
   "jewel_user": "himu_1808",
@@ -11,7 +11,7 @@
   "console_report": "n",
   "jewel_screen_shots": "y",
   "event_firing": "n",
-  "email_report": "y",
+  "email_report": "n",
   "email_to": "himanshu.panchal@geminisolutions.com",
   "browser_options": "[--incognito]",
     "dev": {

@@ -9,6 +9,7 @@ import com.qa.orgchart.locators.CommonLocators;
 import com.qa.orgchart.utils.GenericUtils;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
+import net.thucydides.core.requirements.reports.ScenarioOutcome;
 import org.apache.commons.codec.binary.Base64;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -19,18 +20,29 @@ public class LoginStepDefinition {
     public static void switchToView(String viewName) {
         try {
             GenericUtils.waitUntilLoaderDisappear();
-            GenericUtils.waitUntilElementAppear(CommonLocators.dropdownBox);
+            DriverAction.waitUntilElementAppear(CommonLocators.dropdownBox, 30);
+            DriverAction.waitUntilElementClickable(CommonLocators.dropdownBox, 20);
             DriverAction.click(CommonLocators.dropdownBox);
             GenericUtils.waitUntilLoaderDisappear();
-            GenericUtils.waitUntilElementAppear(CommonLocators.viewValue(viewName));
-            if(!GenericUtils.isExist(CommonLocators.viewValue(viewName))){
+            DriverAction.waitUntilElementAppear(CommonLocators.viewValue(viewName), 30);
+            if (!GenericUtils.isExist(CommonLocators.viewValue(viewName))) {
+                DriverAction.refresh();
+                GenericUtils.waitUntilLoaderDisappear();
+                DriverAction.waitUntilElementClickable(CommonLocators.dropdownBox, 20);
                 DriverAction.click(CommonLocators.dropdownBox);
                 DriverAction.waitSec(1);
-                GenericUtils.waitUntilElementAppear(CommonLocators.viewValue(viewName));
+                DriverAction.waitUntilElementAppear(CommonLocators.viewValue(viewName), 10);
             }
             DriverAction.scrollIntoView(CommonLocators.viewValue(viewName));
-            GenericUtils.waitUntilElementAppear(CommonLocators.viewValue(viewName));
             DriverAction.getElement(CommonLocators.viewValue(viewName)).click();
+            GenericUtils.waitUntilLoaderDisappear();
+            if (DriverAction.isExist(CommonLocators.selectedView(viewName))) {
+                GemTestReporter.addTestStep("Select " + viewName + " from view dropdown"
+                        , "Successfully selected " + viewName + " view", STATUS.PASS, DriverAction.takeSnapShot());
+
+            } else GemTestReporter.addTestStep("Select " + viewName + " from view dropdown"
+                    , "Unable to select " + viewName + " view", STATUS.FAIL, DriverAction.takeSnapShot());
+
         } catch (Exception e) {
             GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
             throw new RuntimeException(e);
@@ -38,30 +50,32 @@ public class LoginStepDefinition {
     }
 
     @When("^Navigate to OrgChart and login$")
-    public void navigateToOrgChartAndLogin() {
+    public synchronized void navigateToOrgChartAndLogin() {
         try {
             GenericUtils.waitUntilLoaderDisappear();
-            GenericUtils.waitUntilElementAppear(CommonLocators.loginButton);
+            DriverAction.waitUntilElementAppear(CommonLocators.loginButton, 30);
             if (GenericUtils.isExist(CommonLocators.loginButton)) {
                 DriverAction.click(CommonLocators.loginButton);
                 GemTestReporter.addTestStep("Click on Login button"
                         , "Successfully clicked on login button", STATUS.PASS, DriverAction.takeSnapShot());
-            } else
-                GemTestReporter.addTestStep("Click on Login button"
-                        , "Unable to click on login button", STATUS.FAIL, DriverAction.takeSnapShot());
-            WebDriver driver = DriverManager.getWebDriver();
-
-            if (GenericUtils.isExist(CommonLocators.invalidHTTPRequestToastMessage)) {
+            } else {
                 DriverAction.refresh();
-                DriverAction.waitSec(2);
+                GenericUtils.waitUntilLoaderDisappear();
                 DriverAction.refresh();
-                DriverAction.waitSec(2);
-                GenericUtils.waitUntilElementAppear(CommonLocators.loginButton);
-                DriverAction.click(CommonLocators.loginButton);
-                DriverAction.refresh();
+                GenericUtils.waitUntilLoaderDisappear();
+                DriverAction.waitUntilElementAppear(CommonLocators.loginButton, 30);
+                if (GenericUtils.isExist(CommonLocators.loginButton)) {
+                    DriverAction.click(CommonLocators.loginButton);
+                    GemTestReporter.addTestStep("Click on Login button"
+                            , "Successfully clicked on login button", STATUS.PASS, DriverAction.takeSnapShot());
+                } else
+                    GemTestReporter.addTestStep("Click on Login button"
+                            , "Unable to click on login button", STATUS.FAIL, DriverAction.takeSnapShot());
             }
+
+            WebDriver driver = DriverManager.getWebDriver();
+            String mainWin = driver.getWindowHandle();
             try {
-                String mainWin = driver.getWindowHandle();
                 String popUpWin = null;
                 WebDriverWait wait = new WebDriverWait(driver, 10);
                 wait.until(ExpectedConditions.numberOfWindowsToBe(2));
@@ -76,48 +90,37 @@ public class LoginStepDefinition {
 
                 byte[] decodingString = Base64.decodeBase64(ProjectConfigData.getProperty("password"));
                 String passwordDecoded = new String(decodingString);
-                GenericUtils.waitUntilElementAppear(CommonLocators.loginEmail);
+                DriverAction.waitUntilElementAppear(CommonLocators.loginEmail, 30);
                 if (GenericUtils.isExist(CommonLocators.loginEmail)) {
                     DriverAction.typeText(CommonLocators.loginEmail, ProjectConfigData.getProperty("email"));
                     DriverAction.click(CommonLocators.submitButton);
                 }
-                GenericUtils.waitUntilElementAppear(CommonLocators.loginPswd);
+                DriverAction.waitUntilElementAppear(CommonLocators.loginPswd, 30);
                 if (GenericUtils.isExist(CommonLocators.loginPswd)) {
                     DriverAction.typeText(CommonLocators.loginPswd, passwordDecoded);
                     DriverAction.click(CommonLocators.submitButton);
                 }
-                GenericUtils.waitUntilElementAppear(CommonLocators.submitButton);
+                DriverAction.waitUntilElementAppear(CommonLocators.submitButton, 30);
                 DriverAction.click(CommonLocators.submitButton);
                 DriverAction.waitSec(2);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }finally {
-                if(driver.getWindowHandles().size()>0) {
+                DriverAction.switchToWindow(mainWin);
+                GenericUtils.waitUntilLoaderDisappear();
+                if (driver.getWindowHandles().size() > 0) {
                     String mainWindow = driver.getWindowHandles().iterator().next();
                     DriverAction.switchToWindow(mainWindow);
-
-                    if (GenericUtils.isExist(CommonLocators.invalidHTTPRequestToastMessage)) {
-                        DriverAction.refresh();
-                        DriverAction.waitSec(2);
-                        DriverAction.refresh();
-                        DriverAction.waitSec(2);
-                        GenericUtils.waitUntilElementAppear(CommonLocators.loginButton);
-                        DriverAction.click(CommonLocators.loginButton);
-                        DriverAction.refresh();
-                    }
                 }
+                DriverAction.switchToWindow(mainWin);
+                if (GenericUtils.isExist(CommonLocators.invalidHTTPRequestToastMessage)) {
+                    DriverAction.refresh();
+                    DriverAction.waitSec(3);
+                    GenericUtils.waitUntilLoaderDisappear();
+                    DriverAction.waitUntilElementAppear(CommonLocators.loginButton, 30);
+                    DriverAction.click(CommonLocators.loginButton);
+                }
+            } catch (Exception e) {
+                GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
+                throw new RuntimeException(e);
             }
-
-            if (GenericUtils.isExist(CommonLocators.invalidHTTPRequestToastMessage)) {
-                DriverAction.refresh();
-                DriverAction.waitSec(2);
-                DriverAction.refresh();
-                DriverAction.waitSec(2);
-                GenericUtils.waitUntilElementAppear(CommonLocators.loginButton);
-                DriverAction.click(CommonLocators.loginButton);
-                DriverAction.refresh();
-            }
-
         } catch (Exception e) {
             GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
             throw new RuntimeException(e);
@@ -128,12 +131,12 @@ public class LoginStepDefinition {
     public void verifyIfUserIsOnOrgChartDashboard() {
         try {
             GenericUtils.waitUntilLoaderDisappear();
-            GenericUtils.waitUntilElementAppear(CommonLocators.chartContainer);
+            DriverAction.waitUntilElementAppear(CommonLocators.chartContainer, 30);
             if (GenericUtils.isExist(CommonLocators.companyLogo) && GenericUtils.isExist(CommonLocators.chartContainer)
                     && GenericUtils.isExist(CommonLocators.searchField)) {
                 GemTestReporter.addTestStep("Verify if User is logged into OrgChart"
                         , "Successfully logged into OrgChart", STATUS.PASS, DriverAction.takeSnapShot());
-            } else{
+            } else {
                 GemTestReporter.addTestStep("Verify if User is logged into OrgChart"
                         , "Unable to log into Orgchart", STATUS.FAIL, DriverAction.takeSnapShot());
             }

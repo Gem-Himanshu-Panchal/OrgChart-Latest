@@ -18,6 +18,12 @@ public class CommonLocators {
     public static By checkInfoCard = By.xpath("//div[@class='col-md id-row']");
     public static By openHierarchy = By.xpath("(//tr[@class='nodes'])[1]/td/table");
     public static By invalidHTTPRequestToastMessage = By.xpath("//div[contains(text(),'Http failure')]");
+    public static By toastCloseIcon = By.xpath("//span[contains(text(),'×')]");
+
+    public static By selectedView(String viewName){
+       return By.xpath("//div[@class='ng-value ng-star-inserted']//span[contains(text(),'"+viewName+"')]");
+    }
+
     public static By firstRowEmployees(String techName){
         return By.xpath("//div[@class='teambox']//div[contains(text(),'"+techName+"')]/ancestor::table[1]/tr[@class='nodes']/td/table/tr[1]/td/div[@data-source]");
     }

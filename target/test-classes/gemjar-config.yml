@@ -1,9 +1,9 @@
 {
   "environment": "dev",
   "project_name": "ORGCHART",
-  "report_name": "Test runs",
+  "report_name": "Thread test for DC",
   "enter_point": "https://apis.gemecosystem.com/enter-point",
-  "tags": "@supTest",
+  "tags": "@testhghg",
   "feature": "src/test/resources/features",
   "glue_code": "com.qa.orgchart.stepDefinitions",
   "jewel_user": "himu_1808",
@@ -11,6 +11,8 @@
   "console_report": "n",
   "jewel_screen_shots": "y",
   "event_firing": "n",
+  "email_report": "n",
+  "email_to": "himanshu.panchal@geminisolutions.com",
   "browser_options": "[--incognito]",
     "dev": {
     "browser_name": "chrome",
@@ -24,6 +26,8 @@
     "browser_name": "chrome",
     "launch_url": "https://orgchart.geminisolutions.com/",
     "dashboardUrl": "https://orgchart.geminisolutions.com/heirarchy/gemini",
-    "browser_timeout": 20
+    "browser_timeout": 20,
+      "email": "himanshu.panchal@geminisolutions.com",
+    "password": "SGltdUF1Z0AxODA4"
   }
 }
