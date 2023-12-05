@@ -8,15 +8,14 @@ Feature: DC view data validations
 
 
 #    Support
-@testhghg
   Scenario: Verify DC view for Accounts
     When Open path for "Support" Dc tech and "Accounts" DC
     Then Check employee in DC view for "Accounts" in "Support" of OrgChart
-  @testhghg
+
   Scenario: Verify DC view for Human Resource
     When Open path for "Support" Dc tech and "Human Resource" DC
     Then Check employee in DC view for "Human Resource" in "Support" of OrgChart
-  @testhghg
+
   Scenario: Verify DC view for Admin
     When Open path for "Support" Dc tech and "Admin" DC
     Then Check employee in DC view for "Admin" in "Support" of OrgChart
@@ -25,19 +24,19 @@ Feature: DC view data validations
 
 
 # EJ
-  @testhghg
+
   Scenario: Verify DC view for Edward Jones Developer Platform
     When Open path for "Clients" Dc tech and "Edward Jones Developer Platform" DC
     Then Check employee in DC view for "Edward Jones Developer Platform" in "Clients" of OrgChart
-  @testhghg
+
   Scenario: Verify DC view for Edward Jones DevSecOps
     When Open path for "Clients" Dc tech and "Edward Jones DevSecOps" DC
     Then Check employee in DC view for "Edward Jones DevSecOps" in "Clients" of OrgChart
-  @testhghg
+
   Scenario: Verify DC view for Edward Jones Environments & ITSM
     When Open path for "Clients" Dc tech and "Edward Jones Environments & ITSM" DC
     Then Check employee in DC view for "Edward Jones Environments & ITSM" in "Clients" of OrgChart
-  @testhghg
+
   Scenario: Verify DC view for Edward Jones Language and Data Management
     When Open path for "Clients" Dc tech and "Edward Jones Language and Data Management" DC
     Then Check employee in DC view for "Edward Jones Language and Data Management" in "Clients" of OrgChart
@@ -45,11 +44,11 @@ Feature: DC view data validations
   Scenario: Verify DC view for Edward Jones Quality Engineering
     When Open path for "Clients" Dc tech and "Edward Jones Quality Engineering" DC
     Then Check employee in DC view for "Edward Jones Quality Engineering" in "Clients" of OrgChart
-  @testhghg
+
   Scenario: Verify DC view for Edward Jones SWAT & API Platform
     When Open path for "Clients" Dc tech and "Edward Jones SWAT & API Platform" DC
     Then Check employee in DC view for "Edward Jones SWAT & API Platform" in "Clients" of OrgChart
-  @testhghg
+
   Scenario: Verify DC view for Edward Jones EOG
     When Open path for "Clients" Dc tech and "Edward Jones EOG" DC
     Then Check employee in DC view for "Edward Jones EOG" in "Clients" of OrgChart
@@ -57,7 +56,7 @@ Feature: DC view data validations
 
 
 #Internal
-  @testhghg
+
   Scenario: Verify DC view for Internal Athena
     When Open path for "Internal" Dc tech and "Internal Athena" DC
     Then Check employee in DC view for "Internal Athena" in "Internal" of OrgChart

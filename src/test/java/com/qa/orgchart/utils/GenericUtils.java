@@ -366,35 +366,7 @@ public class GenericUtils{
         ((JavascriptExecutor) driver).executeScript("window.scrollTo(" + scrollX + ", " + scrollY + ");");
     }
 
-public static void openNodes(String DCtype){
-    DriverAction.waitSec(1);
-    List<WebElement> members = null;
-    String path1 = null;
-    String endPath = null;
-    if (!DCtype.contains("Clients")) {
-        members = DriverAction.getElements(By.xpath("(//tr[@class='nodes'])[4]/td/table"));
-        path1 = "(//tr[@class='nodes'])[4]/td/table";
-    } else {
-        members = DriverAction.getElements(By.xpath("(//tr[@class='nodes'])[5]/td/table"));
-        path1 = "(//tr[@class='nodes'])[5]/td/table";
-    }
-    endPath = "/tr[@class='nodes']/td/table";
-    while (!members.isEmpty()) {
-        for (WebElement member : members) {
-            DriverAction.scrollIntoView(member);
-            DriverAction.hoverOver(member);
-            if (GenericUtils.isExist(CommonLocators.downArrow)) {
-                DriverAction.getElement(CommonLocators.downArrow).click();
-                DriverAction.waitSec(1);
-            }
-        }
-        members.clear();
-        path1 = path1 + endPath;
-        members.addAll(DriverAction.getElements(By.xpath(path1)));
 
-    }
-
-}
 
 
 }

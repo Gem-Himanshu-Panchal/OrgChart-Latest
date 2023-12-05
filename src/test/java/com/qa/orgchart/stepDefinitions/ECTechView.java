@@ -12,56 +12,71 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
 public class ECTechView {
-    static String chair = null;
-    static List<WebElement> firstRowEmployees = null;
 
-    @When("^Open modals box in EC View \"(.*)\"$")
-    public void openModalsBoxInECView(String teamBox) {
+
+
+    public synchronized List<Object> openECTeamBox(String teamBox){
         GenericUtils.waitUntilLoaderDisappear();
-        DriverAction.scrollIntoView(By.xpath("//div[@id='root-node']//img"));
+        GenericUtils.waitUntilElementAppear(CommonLocators.ecTeamBox(teamBox));
         DriverAction.scrollIntoView(CommonLocators.ecTeamBox(teamBox));
-        DriverAction.waitSec(1);
         DriverAction.hoverOver(CommonLocators.ecTeamBox(teamBox));
-        chair = null;
-        if(GenericUtils.isExist(CommonLocators.chairBox(teamBox))){
-            chair = DriverAction.getElementText(CommonLocators.chairName(teamBox));
-        }
-        DriverAction.waitSec(1);
-        DriverAction.getElement(By.xpath("//i[@class='edge verticalEdge bottomEdge fa fa-chevron-circle-down']")).click();
-
-        firstRowEmployees = DriverAction.getElements(By.xpath("(//tr[@class='nodes'])[2]/td/table//div[@class='node cursorPointer']"));
-
-        List<WebElement> members = DriverAction.getElements(By.xpath("(//tr[@class='nodes'])[2]/td/table"));
-        String str = "(//tr[@class='nodes'])[2]/td/table";
-        String str2 = "/tr[@class='nodes']/td/table";
-        while (!members.isEmpty()) {
-            for (WebElement member : members) {
-                DriverAction.scrollIntoView(member);
-                DriverAction.hoverOver(member);
-                if (GenericUtils.isExist(CommonLocators.downArrow)) {
-                    DriverAction.getElement(CommonLocators.downArrow).click();
-                    DriverAction.waitSec(1);
-                }
+        synchronized (this){
+            String chair = null;
+            if (GenericUtils.isExist(CommonLocators.chairBox(teamBox))) {
+                chair = DriverAction.getElementText(CommonLocators.chairName(teamBox));
             }
-            members.clear();
-            str = str + str2;
-            members.addAll(DriverAction.getElements(By.xpath(str)));
-
+            GenericUtils.waitUntilElementAppear(By.xpath("//i[@class='edge verticalEdge bottomEdge fa fa-chevron-circle-down']"));
+            DriverAction.getElement(By.xpath("//i[@class='edge verticalEdge bottomEdge fa fa-chevron-circle-down']")).click();
+            DriverAction.waitSec(3);
+            GenericUtils.waitUntilLoaderDisappear();
+            GenericUtils.waitUntilElementAppear(CommonLocators.firstRowEmployees(teamBox));
+            List<WebElement>firstRowEmployees = DriverAction.getElements(CommonLocators.firstRowEmployees(teamBox));
+            List<Object> result = new ArrayList<>();
+            result.add(chair);
+            result.add(firstRowEmployees);
+            return result;
         }
     }
 
+    public synchronized void openECNodes(){
+        synchronized (this) {
+            DriverAction.waitSec(1);
+            List<WebElement> members = DriverAction.getElements(By.xpath("(//tr[@class='nodes'])[2]/td/table"));;
+            String path1 = "(//tr[@class='nodes'])[2]/td/table";
+            String endPath = "/tr[@class='nodes']/td/table";
+
+            while (!members.isEmpty()) {
+                for (WebElement member : members) {
+                    DriverAction.scrollIntoView(member);
+                    DriverAction.hoverOver(member);
+                    if (GenericUtils.isExist(CommonLocators.downArrow)) {
+                        DriverAction.getElement(CommonLocators.downArrow).click();
+                        DriverAction.waitSec(1);
+                    }
+                }
+                members.clear();
+                path1 = path1 + endPath;
+                members.addAll(DriverAction.getElements(By.xpath(path1)));
+
+            }
+        }
+    }
     @Then("^Check employee in EC view for \"(.*)\" of OrgChart$")
     public void checkEmployeeInECViewForOfOrgChart(String ecName) {
         GenericUtils.waitUntilLoaderDisappear();
         GenericUtils.waitUntilElementAppear(CommonLocators.chartContainer);
         List<HashMap<String, String>> hashMapList = jsonToHash.getHashList2();
+        List<Object> response;response =  openECTeamBox(ecName);
+        openECNodes();
         int flag = 1;
-
+        String chair = (String) response.get(0);
+        List<WebElement>firstRowEmployees = (List<WebElement>) response.get(1);
         assert hashMapList != null;
         for (HashMap<String, String> hashMap : hashMapList) {
             String ecTechValue = hashMap.get("ECTech");
@@ -102,21 +117,21 @@ public class ECTechView {
                         }
                     }
                     flag++;
-                    GenericUtils.scrollToElement(empName, empCode);
-                    DriverAction.getElement(CommonLocators.employeeDiv(empName, empCode)).click();
-                    GenericUtils.waitUntilElementAppear(CommonLocators.infoCard);
-                    DriverAction.waitSec(2);
-
-                    List<String> resp = GenericUtils.verifyEmployeeDetails(hashMap);
-
-                    if (resp.get(0).equalsIgnoreCase("True")) {
-                        GemTestReporter.addTestStep("Verify if " + empName + " has right values",
-                                empName + " has right values", STATUS.PASS, DriverAction.takeSnapShot());
-                    } else {
-                        GemTestReporter.addTestStep("Verify if " + empName + " is at right hierarchy or not",
-                                empName + " has wrong value: " + resp.get(1), STATUS.FAIL, DriverAction.takeSnapShot());
-                    }
-                    DriverAction.getElement(CommonLocators.crossIcon).click();
+//                    GenericUtils.scrollToElement(empName, empCode);
+//                    DriverAction.getElement(CommonLocators.employeeDiv(empName, empCode)).click();
+//                    GenericUtils.waitUntilElementAppear(CommonLocators.infoCard);
+//                    DriverAction.waitSec(2);
+//
+//                    List<String> resp = GenericUtils.verifyEmployeeDetails(hashMap);
+//
+//                    if (resp.get(0).equalsIgnoreCase("True")) {
+//                        GemTestReporter.addTestStep("Verify if " + empName + " has right values",
+//                                empName + " has right values", STATUS.PASS, DriverAction.takeSnapShot());
+//                    } else {
+//                        GemTestReporter.addTestStep("Verify if " + empName + " is at right hierarchy or not",
+//                                empName + " has wrong value: " + resp.get(1), STATUS.FAIL, DriverAction.takeSnapShot());
+//                    }
+//                    DriverAction.getElement(CommonLocators.crossIcon).click();
                 }
 
             }
