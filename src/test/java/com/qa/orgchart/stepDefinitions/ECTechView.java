@@ -6,7 +6,6 @@ import com.gemini.generic.ui.utils.DriverAction;
 import com.qa.orgchart.locators.CommonLocators;
 import com.qa.orgchart.utils.GenericUtils;
 
-import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -47,7 +46,7 @@ public class ECTechView {
     public synchronized void openECNodes(){
         synchronized (this) {
             DriverAction.waitSec(1);
-            List<WebElement> members = DriverAction.getElements(By.xpath("(//tr[@class='nodes'])[2]/td/table"));;
+            List<WebElement> members = DriverAction.getElements(By.xpath("(//tr[@class='nodes'])[2]/td/table"));
             String path1 = "(//tr[@class='nodes'])[2]/td/table";
             String endPath = "/tr[@class='nodes']/td/table";
 
@@ -117,21 +116,6 @@ public class ECTechView {
                         }
                     }
                     flag++;
-//                    GenericUtils.scrollToElement(empName, empCode);
-//                    DriverAction.getElement(CommonLocators.employeeDiv(empName, empCode)).click();
-//                    GenericUtils.waitUntilElementAppear(CommonLocators.infoCard);
-//                    DriverAction.waitSec(2);
-//
-//                    List<String> resp = GenericUtils.verifyEmployeeDetails(hashMap);
-//
-//                    if (resp.get(0).equalsIgnoreCase("True")) {
-//                        GemTestReporter.addTestStep("Verify if " + empName + " has right values",
-//                                empName + " has right values", STATUS.PASS, DriverAction.takeSnapShot());
-//                    } else {
-//                        GemTestReporter.addTestStep("Verify if " + empName + " is at right hierarchy or not",
-//                                empName + " has wrong value: " + resp.get(1), STATUS.FAIL, DriverAction.takeSnapShot());
-//                    }
-//                    DriverAction.getElement(CommonLocators.crossIcon).click();
                 }
 
             }
