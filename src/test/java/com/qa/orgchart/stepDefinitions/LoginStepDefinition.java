@@ -110,6 +110,7 @@ public class LoginStepDefinition {
                     DriverAction.switchToWindow(mainWindow);
                 }
                 DriverAction.switchToWindow(mainWin);
+                DriverAction.waitUntilElementAppear(CommonLocators.invalidHTTPRequestToastMessage,15);
                 if (GenericUtils.isExist(CommonLocators.invalidHTTPRequestToastMessage)) {
                     DriverAction.refresh();
                     DriverAction.waitSec(3);
@@ -136,7 +137,19 @@ public class LoginStepDefinition {
                     && GenericUtils.isExist(CommonLocators.searchField)) {
                 GemTestReporter.addTestStep("Verify if User is logged into OrgChart"
                         , "Successfully logged into OrgChart", STATUS.PASS, DriverAction.takeSnapShot());
-            } else {
+            }else {
+                if(DriverAction.isExist(CommonLocators.loginButton))
+                    DriverAction.click(CommonLocators.loginButton);
+            }
+
+            GenericUtils.waitUntilLoaderDisappear();
+            DriverAction.waitUntilElementAppear(CommonLocators.chartContainer, 30);
+            if (GenericUtils.isExist(CommonLocators.companyLogo) && GenericUtils.isExist(CommonLocators.chartContainer)
+                    && GenericUtils.isExist(CommonLocators.searchField)) {
+                GemTestReporter.addTestStep("Verify if User is logged into OrgChart"
+                        , "Successfully logged into OrgChart", STATUS.PASS, DriverAction.takeSnapShot());
+            }
+            else {
                 GemTestReporter.addTestStep("Verify if User is logged into OrgChart"
                         , "Unable to log into Orgchart", STATUS.FAIL, DriverAction.takeSnapShot());
             }

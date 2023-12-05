@@ -18,8 +18,8 @@ public class DCTechView {
     @Then("^Check employee in DC view for \"(.*)\" in \"(.*)\" of OrgChart$")
     public void checkForEmployeeInDcViewOfOrgChart(String dcTechName,String dcType) {
         try {
-            List<Object> response = openTeamBox(dcTechName);
-            openNodes(dcType);
+            List<Object> response = openDCTeamBox(dcTechName);
+            openDCNodes(dcType);
 
             String chair = (String) response.get(0);
             List<WebElement>firstRowEmployees = (List<WebElement>) response.get(1);
@@ -150,7 +150,7 @@ public class DCTechView {
             throw new RuntimeException(e);
         }
     }
-    public synchronized List<Object> openTeamBox(String teamBox){
+    public synchronized List<Object> openDCTeamBox(String teamBox){
         GenericUtils.waitUntilLoaderDisappear();
         GenericUtils.waitUntilElementAppear(CommonLocators.ecTeamBox(teamBox));
         DriverAction.scrollIntoView(CommonLocators.ecTeamBox(teamBox));
@@ -172,7 +172,7 @@ public class DCTechView {
             return result;
         }
     }
-    public synchronized void openNodes(String DCtype){
+    public synchronized void openDCNodes(String DCtype){
         synchronized (this) {
             DriverAction.waitSec(1);
             List<WebElement> members;
