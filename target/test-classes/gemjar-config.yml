@@ -1,9 +1,9 @@
 {
   "environment": "dev",
   "project_name": "ORGCHART",
-  "report_name": "EC runs",
+  "report_name": "EC check runs",
   "enter_point": "https://apis.gemecosystem.com/enter-point",
-  "tags": "@reerr",
+  "tags": "@RunDCVIEWw",
   "feature": "src/test/resources/features",
   "glue_code": "com.qa.orgchart.stepDefinitions",
   "jewel_user": "himu_1808",

@@ -18,8 +18,9 @@ public class DCTechView {
     @Then("^Check employee in DC view for \"(.*)\" in \"(.*)\" of OrgChart$")
     public void checkForEmployeeInDcViewOfOrgChart(String dcTechName,String dcType) {
         try {
-            List<Object> response = openDCTeamBox(dcTechName);
-            openDCNodes(dcType);
+            List<Object> response = openDCTeamBox(dcTechName, dcType);
+            GemTestReporter.addTestStep("Check chair","Chair: "+(String)response.get(0),STATUS.PASS);
+//            openDCNodes(dcType);
 
             String chair = (String) response.get(0);
             List<WebElement>firstRowEmployees = (List<WebElement>) response.get(1);
@@ -99,6 +100,9 @@ public class DCTechView {
     public void openPathForDcTechAndDC(String DcTechName, String actualDC) {
         try {
             GenericUtils.waitUntilLoaderDisappear();
+            DriverAction.refresh();
+            GenericUtils.waitUntilLoaderDisappear();
+            GenericUtils.waitUntilElementAppear(CommonLocators.chartContainer);
 //            Hover over prashank
             GenericUtils.waitUntilElementAppear(CommonLocators.dataSource("name", "Prashank Chaudhary", "EmployeeCode", "GSI N 015"));
             DriverAction.hoverOver(CommonLocators.dataSource("name", "Prashank Chaudhary", "EmployeeCode", "GSI N 015"));
@@ -150,8 +154,7 @@ public class DCTechView {
             throw new RuntimeException(e);
         }
     }
-    public synchronized List<Object> openDCTeamBox(String teamBox){
-        synchronized (this){
+    public synchronized List<Object> openDCTeamBox(String teamBox,String DCtype){
         GenericUtils.waitUntilLoaderDisappear();
         GenericUtils.waitUntilElementAppear(CommonLocators.ecTeamBox(teamBox));
         DriverAction.scrollIntoView(CommonLocators.ecTeamBox(teamBox));
@@ -169,39 +172,65 @@ public class DCTechView {
             List<Object> result = new ArrayList<>();
             result.add(chair);
             result.add(firstRowEmployees);
-            return result;
-        }
-    }
-    public synchronized void openDCNodes(String DCtype){
-        synchronized (this) {
-            DriverAction.waitSec(1);
-            List<WebElement> members;
-            String path1;
-            String endPath;
-            if (!DCtype.contains("Clients")) {
-                members = DriverAction.getElements(By.xpath("(//tr[@class='nodes'])[4]/td/table"));
-                path1 = "(//tr[@class='nodes'])[4]/td/table";
-            } else {
-                members = DriverAction.getElements(By.xpath("(//tr[@class='nodes'])[5]/td/table"));
-                path1 = "(//tr[@class='nodes'])[5]/td/table";
-            }
-            endPath = "/tr[@class='nodes']/td/table";
-            while (!members.isEmpty()) {
-                for (WebElement member : members) {
-                    DriverAction.scrollIntoView(member);
-                    DriverAction.hoverOver(member);
-                    if (GenericUtils.isExist(CommonLocators.downArrow)) {
-                        DriverAction.getElement(CommonLocators.downArrow).click();
-                        DriverAction.waitSec(1);
-                    }
-                }
-                members.clear();
-                path1 = path1 + endPath;
-                members.addAll(DriverAction.getElements(By.xpath(path1)));
 
-            }
+
+        DriverAction.waitSec(1);
+        List<WebElement> members;
+        String path1;
+        String endPath;
+        if (!DCtype.contains("Clients")) {
+            members = DriverAction.getElements(By.xpath("(//tr[@class='nodes'])[4]/td/table"));
+            path1 = "(//tr[@class='nodes'])[4]/td/table";
+        } else {
+            members = DriverAction.getElements(By.xpath("(//tr[@class='nodes'])[5]/td/table"));
+            path1 = "(//tr[@class='nodes'])[5]/td/table";
         }
+        endPath = "/tr[@class='nodes']/td/table";
+        while (!members.isEmpty()) {
+            for (WebElement member : members) {
+                DriverAction.scrollIntoView(member);
+                DriverAction.hoverOver(member);
+                if (GenericUtils.isExist(CommonLocators.downArrow)) {
+                    DriverAction.getElement(CommonLocators.downArrow).click();
+                    DriverAction.waitSec(1);
+                }
+            }
+            members.clear();
+            path1 = path1 + endPath;
+            members.addAll(DriverAction.getElements(By.xpath(path1)));
+
+        }
+
+            return result;
     }
+//    public synchronized void openDCNodes(String DCtype){
+//            DriverAction.waitSec(1);
+//            List<WebElement> members;
+//            String path1;
+//            String endPath;
+//            if (!DCtype.contains("Clients")) {
+//                members = DriverAction.getElements(By.xpath("(//tr[@class='nodes'])[4]/td/table"));
+//                path1 = "(//tr[@class='nodes'])[4]/td/table";
+//            } else {
+//                members = DriverAction.getElements(By.xpath("(//tr[@class='nodes'])[5]/td/table"));
+//                path1 = "(//tr[@class='nodes'])[5]/td/table";
+//            }
+//            endPath = "/tr[@class='nodes']/td/table";
+//            while (!members.isEmpty()) {
+//                for (WebElement member : members) {
+//                    DriverAction.scrollIntoView(member);
+//                    DriverAction.hoverOver(member);
+//                    if (GenericUtils.isExist(CommonLocators.downArrow)) {
+//                        DriverAction.getElement(CommonLocators.downArrow).click();
+//                        DriverAction.waitSec(1);
+//                    }
+//                }
+//                members.clear();
+//                path1 = path1 + endPath;
+//                members.addAll(DriverAction.getElements(By.xpath(path1)));
+//
+//            }
+//    }
 }
 
 

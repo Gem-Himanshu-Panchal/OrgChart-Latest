@@ -63,7 +63,7 @@ public class LoginStepDefinition {
                 GenericUtils.waitUntilLoaderDisappear();
                 DriverAction.refresh();
                 GenericUtils.waitUntilLoaderDisappear();
-                DriverAction.waitUntilElementAppear(CommonLocators.loginButton, 30);
+                GenericUtils.waitUntilElementAppear(CommonLocators.loginButton);
                 if (GenericUtils.isExist(CommonLocators.loginButton)) {
                     DriverAction.click(CommonLocators.loginButton);
                     GemTestReporter.addTestStep("Click on Login button"
@@ -90,12 +90,12 @@ public class LoginStepDefinition {
 
                 byte[] decodingString = Base64.decodeBase64(ProjectConfigData.getProperty("password"));
                 String passwordDecoded = new String(decodingString);
-                DriverAction.waitUntilElementAppear(CommonLocators.loginEmail, 30);
+                GenericUtils.waitUntilElementAppear(CommonLocators.loginEmail);
                 if (GenericUtils.isExist(CommonLocators.loginEmail)) {
                     DriverAction.typeText(CommonLocators.loginEmail, ProjectConfigData.getProperty("email"));
                     DriverAction.click(CommonLocators.submitButton);
                 }
-                DriverAction.waitUntilElementAppear(CommonLocators.loginPswd, 30);
+                GenericUtils.waitUntilElementAppear(CommonLocators.loginPswd);
                 if (GenericUtils.isExist(CommonLocators.loginPswd)) {
                     DriverAction.typeText(CommonLocators.loginPswd, passwordDecoded);
                     DriverAction.click(CommonLocators.submitButton);
@@ -105,10 +105,10 @@ public class LoginStepDefinition {
                 DriverAction.waitSec(2);
                 DriverAction.switchToWindow(mainWin);
                 GenericUtils.waitUntilLoaderDisappear();
-                if (driver.getWindowHandles().size() > 0) {
-                    String mainWindow = driver.getWindowHandles().iterator().next();
-                    DriverAction.switchToWindow(mainWindow);
-                }
+//                    if (driver.getWindowHandles().size() > 0) {
+//                        String mainWindow = driver.getWindowHandles().iterator().next();
+//                        DriverAction.switchToWindow(mainWindow);
+//                    }
                 DriverAction.switchToWindow(mainWin);
                 DriverAction.waitUntilElementAppear(CommonLocators.invalidHTTPRequestToastMessage,15);
                 if (GenericUtils.isExist(CommonLocators.invalidHTTPRequestToastMessage)) {
@@ -132,27 +132,43 @@ public class LoginStepDefinition {
     public void verifyIfUserIsOnOrgChartDashboard() {
         try {
             GenericUtils.waitUntilLoaderDisappear();
-            DriverAction.waitUntilElementAppear(CommonLocators.chartContainer, 30);
+            String mainWin = DriverAction.getWindowHandle();
+            DriverAction.switchToWindow(mainWin);
+            DriverAction.waitUntilElementAppear(CommonLocators.companyLogo, 30);
+            DriverAction.refresh();
+            GenericUtils.waitUntilLoaderDisappear();
+            DriverAction.waitUntilElementAppear(CommonLocators.companyLogo, 30);
             if (GenericUtils.isExist(CommonLocators.companyLogo) && GenericUtils.isExist(CommonLocators.chartContainer)
                     && GenericUtils.isExist(CommonLocators.searchField)) {
                 GemTestReporter.addTestStep("Verify if User is logged into OrgChart"
                         , "Successfully logged into OrgChart", STATUS.PASS, DriverAction.takeSnapShot());
             }else {
-                if(DriverAction.isExist(CommonLocators.loginButton))
+                DriverAction.refresh();
+                GenericUtils.waitUntilLoaderDisappear();
+                mainWin = DriverAction.getWindowHandle();
+                DriverAction.switchToWindow(mainWin);
+                if(GenericUtils.isExist(CommonLocators.loginButton)) {
                     DriverAction.click(CommonLocators.loginButton);
+                }
+                else{
+                    DriverAction.waitUntilElementAppear(CommonLocators.companyLogo, 30);
+                    if (GenericUtils.isExist(CommonLocators.companyLogo) && GenericUtils.isExist(CommonLocators.chartContainer)
+                            && GenericUtils.isExist(CommonLocators.searchField)) {
+                        GemTestReporter.addTestStep("Verify if User is logged into OrgChart"
+                                , "Successfully logged into OrgChart", STATUS.PASS, DriverAction.takeSnapShot());
+                    }
+                    else {
+                        GemTestReporter.addTestStep("Verify if User is logged into OrgChart"
+                                , "Unable to log into Orgchart", STATUS.FAIL, DriverAction.takeSnapShot());
+                    }
+                }
             }
 
-            GenericUtils.waitUntilLoaderDisappear();
-            DriverAction.waitUntilElementAppear(CommonLocators.chartContainer, 30);
-            if (GenericUtils.isExist(CommonLocators.companyLogo) && GenericUtils.isExist(CommonLocators.chartContainer)
-                    && GenericUtils.isExist(CommonLocators.searchField)) {
-                GemTestReporter.addTestStep("Verify if User is logged into OrgChart"
-                        , "Successfully logged into OrgChart", STATUS.PASS, DriverAction.takeSnapShot());
-            }
-            else {
-                GemTestReporter.addTestStep("Verify if User is logged into OrgChart"
-                        , "Unable to log into Orgchart", STATUS.FAIL, DriverAction.takeSnapShot());
-            }
+//            GenericUtils.waitUntilLoaderDisappear();
+//
+//            mainWin = DriverAction.getWindowHandle();
+//            DriverAction.switchToWindow(mainWin);
+
         } catch (Exception e) {
             GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
             throw new RuntimeException(e);
