@@ -39,7 +39,6 @@ Feature: EC view data validations
   Scenario: Verify EC view for DesignBranding
     Given Check employee in EC view for "DesignBranding" of OrgChart
 
-  @fghhh
   Scenario: Verify EC view for Devops
     Given Check employee in EC view for "Devops" of OrgChart
 
@@ -48,7 +47,7 @@ Feature: EC view data validations
   Scenario: Verify EC view for Executive Office
     Given Check employee in EC view for "Executive Office" of OrgChart
 
-@fghhh
+
   Scenario: Verify EC view for Full stack (Angular/ Node/ React)
     Given Check employee in EC view for "Full stack (Angular/ Node/ React)" of OrgChart
 
@@ -56,7 +55,7 @@ Feature: EC view data validations
   Scenario: Verify EC view for Human Resource
     Given Check employee in EC view for "Human Resource" of OrgChart
 
-  @fghhh
+
   Scenario: Verify EC view for Infrastructure/IT
     Given Check employee in EC view for "Infrastructure/IT" of OrgChart
 
@@ -64,11 +63,11 @@ Feature: EC view data validations
   Scenario: Verify EC view for Insurance
     Given Check employee in EC view for "Insurance" of OrgChart
 
-  @fghhh
+
   Scenario: Verify EC view for Java
     Given Check employee in EC view for "Java" of OrgChart
 
-  @fghhh
+
   Scenario: Verify EC view for Python/C++
     Given Check employee in EC view for "Python/C++" of OrgChart
 
@@ -76,7 +75,7 @@ Feature: EC view data validations
   Scenario: Verify EC view for QA
     Given Check employee in EC view for "QA" of OrgChart
 
-  @fghhh
+
   Scenario: Verify EC view for Training
     Given Check employee in EC view for "Training" of OrgChart
 

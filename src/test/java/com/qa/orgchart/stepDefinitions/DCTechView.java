@@ -151,11 +151,11 @@ public class DCTechView {
         }
     }
     public synchronized List<Object> openDCTeamBox(String teamBox){
+        synchronized (this){
         GenericUtils.waitUntilLoaderDisappear();
         GenericUtils.waitUntilElementAppear(CommonLocators.ecTeamBox(teamBox));
         DriverAction.scrollIntoView(CommonLocators.ecTeamBox(teamBox));
         DriverAction.hoverOver(CommonLocators.ecTeamBox(teamBox));
-        synchronized (this){
             String chair = null;
             if (GenericUtils.isExist(CommonLocators.chairBox(teamBox))) {
                 chair = DriverAction.getElementText(CommonLocators.chairName(teamBox));
