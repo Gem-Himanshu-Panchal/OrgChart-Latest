@@ -1,4 +1,4 @@
-@RunDCVIEW @regression
+@RunDCVIEWw @regression
 Feature: DC view data validations
 
   Background: Verify if user successfully log into Orgchart
@@ -37,10 +37,6 @@ Feature: DC view data validations
     When Open path for "Clients" Dc tech and "Edward Jones Environments & ITSM" DC
     Then Check employee in DC view for "Edward Jones Environments & ITSM" in "Clients" of OrgChart
   @reerr
-  Scenario: Verify DC view for Edward Jones Language and Data Management
-    When Open path for "Clients" Dc tech and "Edward Jones Language and Data Management" DC
-    Then Check employee in DC view for "Edward Jones Language and Data Management" in "Clients" of OrgChart
-  @reerr
   Scenario: Verify DC view for Edward Jones Quality Engineering
     When Open path for "Clients" Dc tech and "Edward Jones Quality Engineering" DC
     Then Check employee in DC view for "Edward Jones Quality Engineering" in "Clients" of OrgChart
@@ -52,6 +48,10 @@ Feature: DC view data validations
   Scenario: Verify DC view for Edward Jones EOG
     When Open path for "Clients" Dc tech and "Edward Jones EOG" DC
     Then Check employee in DC view for "Edward Jones EOG" in "Clients" of OrgChart
+  Scenario: Verify DC view for Edward Jones Language and Data Management
+
+    When Open path for "Clients" Dc tech and "Edward Jones Language and Data Management" DC
+    Then Check employee in DC view for "Edward Jones Language and Data Management" in "Clients" of OrgChart
 
 
 
