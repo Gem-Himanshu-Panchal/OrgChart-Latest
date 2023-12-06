@@ -1,9 +1,9 @@
 {
   "environment": "dev",
   "project_name": "ORGCHART",
-  "report_name": "EC check runs",
+  "report_name": "Pipeline run",
   "enter_point": "https://apis.gemecosystem.com/enter-point",
-  "tags": "@RunDCVIEWw",
+  "tags": "@regression",
   "feature": "src/test/resources/features",
   "glue_code": "com.qa.orgchart.stepDefinitions",
   "jewel_user": "himu_1808",
