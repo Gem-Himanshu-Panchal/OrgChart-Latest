@@ -74,7 +74,7 @@ public class CommonLocators {
 
 
     public static By ecTeamBox(String teamName) {
-        return By.xpath("//div[@class='teambox']//div[contains(text(),'" + teamName + "')]");
+        return By.xpath("//div[contains(text(),'"+teamName+"')]//ancestor::div[@class='teambox']");
 
     }
 
