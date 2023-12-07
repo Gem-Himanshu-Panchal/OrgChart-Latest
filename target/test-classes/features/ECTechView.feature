@@ -9,7 +9,7 @@ Feature: EC view data validations
 
   Scenario: Verify EC view for .Net
     Given Check employee in EC view for ".Net" of OrgChart
-  @fdr
+
   Scenario: Verify EC view for Accounts
    Given Check employee in EC view for "Accounts" of OrgChart
 

@@ -1,9 +1,9 @@
 {
   "environment": "dev",
   "project_name": "ORGCHART",
-  "report_name": "ne run",
+  "report_name": "Sanity testing",
   "enter_point": "https://apis.gemecosystem.com/enter-point",
-  "tags": "@fdr",
+  "tags": "@bvbv",
   "feature": "src/test/resources/features",
   "glue_code": "com.qa.orgchart.stepDefinitions",
   "jewel_user": "himu_1808",
@@ -16,15 +16,16 @@
   "browser_options": "[--incognito]",
     "dev": {
     "browser_name": "chrome",
-    "launch_url": "https://orgchartdev-np.geminisolutions.com/",
-    "dashboardUrl": "https://orgchart.geminisolutions.com/heirarchy/gemini",
+    "launch_url": "https://orgchartdev-np.geminisolutions.com/auth/login",
+    "dashboardUrl": "https://orgchartdev-np.geminisolutions.com/hierarchy/gemini",
     "browser_timeout": 20,
-      "email": "himanshu.panchal@geminisolutions.com",
+      "email": "himanshu.panchal@geminisolutions.com
+      ",
       "password": "SGltdUF1Z0AxODA4"
     },
   "prod": {
     "browser_name": "chrome",
-    "launch_url": "https://orgchart.geminisolutions.com/",
+    "launch_url": "https://orgchart.geminisolutions.com/auth/login",
     "dashboardUrl": "https://orgchart.geminisolutions.com/heirarchy/gemini",
     "browser_timeout": 20,
       "email": "himanshu.panchal@geminisolutions.com",

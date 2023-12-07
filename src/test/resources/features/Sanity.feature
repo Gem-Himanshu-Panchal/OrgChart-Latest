@@ -165,8 +165,6 @@ Feature: Sanity suite for OrgChart
     And Click on "close" button
     Then Verify if "Clone View" modal box disappears from screen
 
-
-
   Scenario: Verify if user is able to delete a existing view
     When Click on "Admin" button
     And Click on "Manage View" button
@@ -174,3 +172,18 @@ Feature: Sanity suite for OrgChart
     And Click on "Delete View" button
     And Click on "Yes, delete it!" button
     Then Verify if view is deleted
+
+
+#    Manage Team
+  @bvbv
+  Scenario: Verify if user is able to search for a valid team name
+    When Click on "Admin" button
+    And Click on "Manage Team" button
+    Then Search "QA" in "Manage Team" view
+    Then Verify if correct view "QA" is searched
+  @bvbv
+  Scenario: Verify if user is able to search for a invalid team name
+    When Click on "Admin" button
+    And Click on "Manage Team" button
+    Then Search "Test xyz abc" in "Manage Team" view
+    Then Verify if incorrect view is searched

@@ -232,6 +232,8 @@ public class sanitySuite {
                 DriverAction.typeText(sanityLocators.searchBoxField("Search Node"), searchValue);
             } else if (tabName.equalsIgnoreCase("Manage View")) {
                 DriverAction.typeText(sanityLocators.searchBoxField("Search View"), searchValue);
+            }else if (tabName.equalsIgnoreCase("Manage Team")) {
+                DriverAction.typeText(sanityLocators.searchBoxField("Search Team"), searchValue);
             }
         } catch (Exception e) {
             GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
