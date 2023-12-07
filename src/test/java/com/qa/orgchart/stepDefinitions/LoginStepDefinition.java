@@ -151,7 +151,10 @@ public class LoginStepDefinition {
                     DriverAction.click(CommonLocators.loginButton);
                 }
                 else{
-                    DriverAction.waitUntilElementAppear(CommonLocators.companyLogo, 30);
+                    DriverAction.refresh();
+                    GenericUtils.waitUntilLoaderDisappear();
+                    DriverAction.waitUntilElementAppear(CommonLocators.companyLogo, 60);
+                    DriverAction.waitUntilElementAppear(CommonLocators.chartContainer, 60);
                     if (GenericUtils.isExist(CommonLocators.companyLogo) && GenericUtils.isExist(CommonLocators.chartContainer)
                             && GenericUtils.isExist(CommonLocators.searchField)) {
                         GemTestReporter.addTestStep("Verify if User is logged into OrgChart"
@@ -163,12 +166,6 @@ public class LoginStepDefinition {
                     }
                 }
             }
-
-//            GenericUtils.waitUntilLoaderDisappear();
-//
-//            mainWin = DriverAction.getWindowHandle();
-//            DriverAction.switchToWindow(mainWin);
-
         } catch (Exception e) {
             GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
             throw new RuntimeException(e);

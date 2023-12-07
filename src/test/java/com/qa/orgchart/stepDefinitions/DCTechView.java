@@ -200,7 +200,6 @@ public class DCTechView {
             members.addAll(DriverAction.getElements(By.xpath(path1)));
 
         }
-
             return result;
     }
 }
