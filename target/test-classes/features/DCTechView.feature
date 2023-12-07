@@ -24,7 +24,7 @@ Feature: DC view data validations
 
 
 # EJ
-@reerr
+@reerr @fdr
   Scenario: Verify DC view for Edward Jones Developer Platform
     When Open path for "Clients" Dc tech and "Edward Jones Developer Platform" DC
     Then Check employee in DC view for "Edward Jones Developer Platform" in "Clients" of OrgChart
