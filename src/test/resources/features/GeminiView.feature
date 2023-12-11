@@ -22,6 +22,6 @@ Feature: Gemini view data validations
 
 
   Scenario: OrgChart, Verify set 5 of Gemini employees
-    When Open hierarchy in Gemini view for "150" to "206" managers
+    When Open hierarchy in Gemini view for "150" to "210" managers
 
 

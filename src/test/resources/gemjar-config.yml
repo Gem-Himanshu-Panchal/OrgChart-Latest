@@ -1,7 +1,7 @@
 {
   "environment": "dev",
   "project_name": "ORGCHART",
-  "report_name": "Pipeline run thursday",
+  "report_name": "Pipeline Run Monday",
   "enter_point": "https://apis.gemecosystem.com/enter-point",
   "tags": "@regression",
   "feature": "src/test/resources/features",
@@ -19,8 +19,7 @@
     "launch_url": "https://orgchartdev-np.geminisolutions.com/auth/login",
     "dashboardUrl": "https://orgchartdev-np.geminisolutions.com/hierarchy/gemini",
     "browser_timeout": 20,
-      "email": "himanshu.panchal@geminisolutions.com
-      ",
+      "email": "himanshu.panchal@geminisolutions.com",
       "password": "SGltdUF1Z0AxODA4"
     },
   "prod": {
