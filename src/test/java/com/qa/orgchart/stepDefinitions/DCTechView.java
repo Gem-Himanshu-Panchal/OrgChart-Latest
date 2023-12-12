@@ -19,7 +19,7 @@ public class DCTechView {
     public void checkForEmployeeInDcViewOfOrgChart(String dcTechName,String dcType) {
         try {
             List<Object> response = openDCTeamBox(dcTechName, dcType);
-            GemTestReporter.addTestStep("Check chair","Chair: "+(String)response.get(0),STATUS.PASS);
+            GemTestReporter.addTestStep("Check chair","Chair: "+response.get(0),STATUS.PASS);
 //            openDCNodes(dcType);
 
             String chair = (String) response.get(0);
@@ -163,8 +163,13 @@ public class DCTechView {
             if (GenericUtils.isExist(CommonLocators.chairBox(teamBox))) {
                 chair = DriverAction.getElementText(CommonLocators.chairName(teamBox));
             }
-            GenericUtils.waitUntilElementAppear(By.xpath("//div[contains(text(),'"+teamBox+"')]//ancestor::div[@class='teambox']//preceding-sibling::i[@class='edge verticalEdge bottomEdge fa fa-chevron-circle-down']"));
-            DriverAction.getElement(By.xpath("//div[contains(text(),'"+teamBox+"')]//ancestor::div[@class='teambox']//preceding-sibling::i[@class='edge verticalEdge bottomEdge fa fa-chevron-circle-down']")).click();
+            GenericUtils.waitUntilElementAppear(CommonLocators.downArrowDcView(teamBox));
+            if(!DriverAction.isExist(CommonLocators.downArrowDcView(teamBox))){
+                DriverAction.scrollIntoView(CommonLocators.ecTeamBox(teamBox));
+                DriverAction.hoverOver(CommonLocators.ecTeamBox(teamBox));
+                GenericUtils.waitUntilElementAppear(CommonLocators.downArrowDcView(teamBox));
+            }
+            DriverAction.getElement(CommonLocators.downArrowDcView(teamBox)).click();
             DriverAction.waitSec(3);
             GenericUtils.waitUntilLoaderDisappear();
             GenericUtils.waitUntilElementAppear(CommonLocators.firstRowEmployees(teamBox));

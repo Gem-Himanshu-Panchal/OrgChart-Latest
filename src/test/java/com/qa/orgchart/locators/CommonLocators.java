@@ -16,9 +16,7 @@ public class CommonLocators {
     public static By downArrow = By.xpath("//i[@class='edge verticalEdge bottomEdge fa fa-chevron-circle-down']");
     public static By userName = By.xpath("//div[contains(text(),'Himanshu Panchal')]");
     public static By checkInfoCard = By.xpath("//div[@class='col-md id-row']");
-    public static By openHierarchy = By.xpath("(//tr[@class='nodes'])[1]/td/table");
     public static By invalidHTTPRequestToastMessage = By.xpath("//div[contains(text(),'Http failure')]");
-    public static By toastCloseIcon = By.xpath("//span[contains(text(),'×')]");
 
     public static By selectedView(String viewName){
        return By.xpath("//div[@class='ng-value ng-star-inserted']//span[contains(text(),'"+viewName+"')]");
@@ -78,6 +76,9 @@ public class CommonLocators {
 
     }
 
+    public static By downArrowDcView(String team) {
+        return By.xpath("//div[contains(text(),'"+team+"')]//ancestor::div[@class='teambox']//preceding-sibling::i[@class='edge verticalEdge bottomEdge fa fa-chevron-circle-down']");
+    }
 
     public static By hierarchyCheck(String mentorName, String mentorCode, String name, String code) {
 //        return By.xpath("//div[contains(@data-source, 'name\":\"" + mentorName + "') and contains(@data-source, 'EmployeeCode\":\"" + mentorCode + "')]//ancestor::table[1]//tr[@class='nodes']//div[contains(@data-source, 'name\":\"" + name + "') and contains(@data-source, 'EmployeeCode\":\"" + code + "')]");

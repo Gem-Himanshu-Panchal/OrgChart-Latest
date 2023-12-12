@@ -15,7 +15,7 @@ Feature: DC view data validations
   Scenario: Verify DC view for Human Resource
     When Open path for "Support" Dc tech and "Human Resource" DC
     Then Check employee in DC view for "Human Resource" in "Support" of OrgChart
-
+@jhdh
   Scenario: Verify DC view for Admin
     When Open path for "Support" Dc tech and "Admin" DC
     Then Check employee in DC view for "Admin" in "Support" of OrgChart
@@ -112,6 +112,7 @@ Feature: DC view data validations
 
 
 #Pimco
+  @jhdh
   Scenario: Verify DC view for Pimco Analytics Support
     When Open path for "Clients" Dc tech and "Pimco Analytics Support" DC
     Then Check employee in DC view for "Pimco Analytics Support" in "Clients" of OrgChart
@@ -131,7 +132,7 @@ Feature: DC view data validations
   Scenario: Verify DC view for Pimco Data Engineering
     When Open path for "Clients" Dc tech and "Pimco Data Engineering" DC
     Then Check employee in DC view for "Pimco Data Engineering" in "Clients" of OrgChart
-
+  @jhdh
   Scenario: Verify DC view for Pimco Data Science
     When Open path for "Clients" Dc tech and "Pimco Data Science" DC
     Then Check employee in DC view for "Pimco Data Science" in "Clients" of OrgChart

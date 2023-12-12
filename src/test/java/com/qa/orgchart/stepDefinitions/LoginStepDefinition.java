@@ -144,17 +144,19 @@ public class LoginStepDefinition {
                         , "Successfully logged into OrgChart", STATUS.PASS, DriverAction.takeSnapShot());
             }else {
                 DriverAction.refresh();
-                GenericUtils.waitUntilLoaderDisappear();
                 mainWin = DriverAction.getWindowHandle();
                 DriverAction.switchToWindow(mainWin);
+                GenericUtils.waitUntilLoaderDisappear();
                 if(GenericUtils.isExist(CommonLocators.loginButton)) {
                     DriverAction.click(CommonLocators.loginButton);
                 }
                 else{
                     DriverAction.refresh();
+                    mainWin = DriverAction.getWindowHandle();
+                    DriverAction.switchToWindow(mainWin);
                     GenericUtils.waitUntilLoaderDisappear();
-                    DriverAction.waitUntilElementAppear(CommonLocators.companyLogo, 60);
-                    DriverAction.waitUntilElementAppear(CommonLocators.chartContainer, 60);
+                    DriverAction.waitUntilElementAppear(CommonLocators.companyLogo, 30);
+                    DriverAction.waitUntilElementAppear(CommonLocators.chartContainer, 30);
                     if (GenericUtils.isExist(CommonLocators.companyLogo) && GenericUtils.isExist(CommonLocators.chartContainer)
                             && GenericUtils.isExist(CommonLocators.searchField)) {
                         GemTestReporter.addTestStep("Verify if User is logged into OrgChart"
