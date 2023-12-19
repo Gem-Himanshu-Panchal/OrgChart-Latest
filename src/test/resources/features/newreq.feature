@@ -8,4 +8,3 @@ Feature: Gemini view data validations
 
     Scenario: Verify new location reqirement
       When Open all nodes
-      And Check if
