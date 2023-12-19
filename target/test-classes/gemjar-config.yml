@@ -1,9 +1,9 @@
 {
-  "environment": "dev",
+  "environment": "prod",
   "project_name": "ORGCHART",
-  "report_name": "DC test",
+  "report_name": "Pipeline test",
   "enter_point": "https://apis.gemecosystem.com/enter-point",
-  "tags": "@jhdh",
+  "tags": "@regression",
   "feature": "src/test/resources/features",
   "glue_code": "com.qa.orgchart.stepDefinitions",
   "jewel_user": "himu_1808",

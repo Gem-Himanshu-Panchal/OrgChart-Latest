@@ -1,5 +1,5 @@
 {
-  "environment": "dev",
+  "environment": "prod",
   "project_name": "ORGCHART",
   "report_name": "Pipeline test",
   "enter_point": "https://apis.gemecosystem.com/enter-point",

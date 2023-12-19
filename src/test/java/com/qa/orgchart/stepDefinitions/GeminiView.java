@@ -3,6 +3,7 @@ package com.qa.orgchart.stepDefinitions;
 import com.gemini.generic.reporting.GemTestReporter;
 import com.gemini.generic.reporting.STATUS;
 import com.gemini.generic.ui.utils.DriverAction;
+import com.gemini.generic.ui.utils.DriverManager;
 import com.qa.orgchart.locators.CommonLocators;
 import com.qa.orgchart.utils.GenericUtils;
 import io.cucumber.java.en.When;
@@ -44,6 +45,7 @@ public class GeminiView {
 
     @When("^Open hierarchy in Gemini view for \"(.*)\" to \"(.*)\" managers$")
     public void testNewGemini(int start, int end) {
+
         List<String> mentorNames = null;
         List<String> mentorCodes = null;
 
@@ -148,8 +150,8 @@ public class GeminiView {
                     for (int j = 0; j < menteeCount; j = j + 2) {
                         DriverAction.waitSec(1);
                         HashMap<String, String> hashMap = GenericUtils.getEmployeeData(mentees.get(0), manager);
-                        DriverAction.scrollIntoView(CommonLocators.employeeName(mentees.get(0), mentees.get(1)));
-                        if (GenericUtils.isExist(CommonLocators.employeeName(mentees.get(0), mentees.get(1)))) {
+                        DriverAction.scrollIntoView(CommonLocators.hierarchyCheck(manager,managerCode,mentees.get(0), mentees.get(1)));
+                        if (GenericUtils.isExist(CommonLocators.hierarchyCheck(manager,managerCode,mentees.get(0), mentees.get(1)))) {
                             GemTestReporter.addTestStep("Verify if mentee: " + mentees.get(0) + " is present or not",
                                     mentees.get(0) + " is present", STATUS.PASS, DriverAction.takeSnapShot());
                         } else {
