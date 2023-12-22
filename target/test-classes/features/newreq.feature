@@ -6,5 +6,5 @@ Feature: Gemini view data validations
     And Switch to "Customized View For Pc" view
 
 
-    Scenario: Verify new location reqirement
+    Scenario: Verify new location requirement
       When Open all nodes

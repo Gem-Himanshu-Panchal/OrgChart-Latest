@@ -77,14 +77,24 @@ public class newreq {
                 members.addAll(DriverAction.getElements(By.xpath(path1)));
             }
 
-            while(DriverAction.isExist(By.xpath()))
-            dataContainer = DriverAction.getElement(By.xpath(path1 + "/tr/td/div[contains(@data-source, 'name')]"));
-            List<String>resp = checkIfDataIsRight(dataContainer);
-            if (resp.get(0).equalsIgnoreCase("True")) {
-                GemTestReporter.addTestStep("Verify if "+resp.get(1)+" is having correct location",
-                        "Correct location is mentioned", STATUS.PASS, DriverAction.takeSnapShot());
-            } else GemTestReporter.addTestStep("Verify if "+resp.get(1)+" is having correct location",
-                    "Incorrect location is mentioned", STATUS.FAIL, DriverAction.takeSnapShot());
+            String xpath = "(//tr[@class='nodes'])[3]/td/table/tr/td/div[contains(@data-source, 'name')]";
+            String start = "(//tr[@class='nodes'])[";
+            String end = "]/td/table/tr/td/div[contains(@data-source, 'name')]";
+
+            int flag = 4;
+            while (DriverAction.isExist(By.xpath(xpath))) {
+                dataContainer = DriverAction.getElement(By.xpath(xpath));
+                WebElement locationDiv = DriverAction.getElement(By.xpath(xpath+"//div[@class='plocation']"));
+                List<String> resp = checkIfDataIsRight(dataContainer,locationDiv);
+                if (resp.get(0).equalsIgnoreCase("True"))
+                    GemTestReporter.addTestStep("Verify if " + resp.get(1) + " is having correct location",
+                            "Correct location is mentioned", STATUS.PASS, DriverAction.takeSnapShot());
+                else GemTestReporter.addTestStep("Verify if " + resp.get(1) + " is having correct location",
+                        "Incorrect location is mentioned", STATUS.FAIL, DriverAction.takeSnapShot());
+
+                xpath = start + flag + end;
+            }
+
         } catch (Exception e) {
             GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
             throw new RuntimeException(e);
@@ -92,24 +102,15 @@ public class newreq {
     }
 
 
-//    public synchronized void openDCTeamBox(String teamBox) {
-//
-//
-//    }
-
-
-    public static List<String> checkIfDataIsRight(WebElement container) {
+    public static List<String> checkIfDataIsRight(WebElement container, WebElement locationDiv) {
 
         String dataSource = container.getAttribute("data-source");
 //Location
-        int startIndex = dataSource.indexOf("\"Location\":\"") + "\"Location\":\"".length();
-        int endIndex = dataSource.indexOf("\"", startIndex);
-        System.out.println("Location: " + dataSource.substring(startIndex, endIndex));
-        String location = dataSource.substring(startIndex, endIndex);
+        String location = DriverAction.getElementText(locationDiv);
 
 // EmployeeName
-        startIndex = dataSource.indexOf("\"name\":\"") + "\"name\":\"".length();
-        endIndex = dataSource.indexOf("\"", startIndex);
+        int startIndex = dataSource.indexOf("\"name\":\"") + "\"name\":\"".length();
+        int endIndex = dataSource.indexOf("\"", startIndex);
         System.out.println("Name: " + dataSource.substring(startIndex, endIndex));
         String name = dataSource.substring(startIndex, endIndex);
 
@@ -122,7 +123,6 @@ public class newreq {
 
         String extractedLocation = null;
         List<HashMap<String, String>> hashMapList = jsonToHash.getHashList2();
-        List<String> mentees = new ArrayList<>();
         assert hashMapList != null;
         for (HashMap<String, String> hashMap : hashMapList) {
             if (hashMap.containsKey("EmployeeName") && hashMap.get("EmployeeName").equalsIgnoreCase(name)

@@ -81,8 +81,8 @@ public class GeminiView {
                     List<String> userHierarchy = GenericUtils.getManagerHierarchy(manager, managerCode);
                     mentees = GenericUtils.getMenteesList(manager);
                     System.out.println("Mentor: "+manager);
-                    System.out.println();
                     System.out.println("Mentees: " + mentees);
+                    System.out.println();
                     int lastIndex = userHierarchy.size() - 1;
 
                     while (userHierarchy.size() != 2) {
