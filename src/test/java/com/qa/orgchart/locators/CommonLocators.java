@@ -40,7 +40,7 @@ public class CommonLocators {
     }
 
     public static By viewValue(String viewValue) {
-        return By.xpath("//span[contains(text(), '" + viewValue + "') and contains(@class, 'ng-option-label ng-star-inserted')]");
+        return By.xpath("//span[contains(text(), '" + viewValue + "') and contains(@class, 'ng-option-label')]");
     }
 
     public static By dataSource(String key1, String empName, String key2, String code) {
