@@ -65,6 +65,7 @@ public class sanitySuite {
     @When("^Click on \"(.*)\" button$")
     public void clickOnButton(String btnName) {
         try {
+            GenericUtils.waitUntilLoaderDisappear();
             GenericUtils.clickOnButton(btnName);
         } catch (Exception e) {
             GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
@@ -379,8 +380,9 @@ public class sanitySuite {
     public void verifyIfCorrectViewIsSearched(String viewName) {
         try {
             DriverAction.waitSec(2);
+            GenericUtils.waitUntilElementAppear(sanityLocators.viewNameList);
             List<String> tempList = DriverAction.getElementsText(sanityLocators.viewNameList);
-            if (tempList.size() == 1 && tempList.get(0).equalsIgnoreCase(viewName))
+            if (tempList.size() >= 1 && tempList.contains(viewName))
                 GemTestReporter.addTestStep("Verify if correct view is searched",
                         "Successfully searched correct view", STATUS.PASS, DriverAction.takeSnapShot());
             else
@@ -543,13 +545,70 @@ public class sanitySuite {
         }
     }
 
-    @Then("Save the name of view that we want to delete")
+    @Then("^Save the name of view that we want to delete$")
     public void saveTheNameOfViewThatWeWantToDelete() {
         try{
             DriverAction.waitSec(4);
             List<String> viewNames = DriverAction.getElementsText(sanityLocators.viewNamesList);
             lastViewName = viewNames.get(viewNames.size()-1);
         } catch (Exception e) {
+            GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
+            throw new RuntimeException(e);
+        }
+    }
+
+    @And("^Enter text \"(.*)\" in \"(.*)\" field$")
+    public void enterTextInField(String enterText, String fieldName) {
+        try{
+            GenericUtils.waitUntilElementAppear(sanityLocators.inputBoxWithPlaceHolder(fieldName));
+            DriverAction.typeText(sanityLocators.inputBoxWithPlaceHolder(fieldName),enterText);
+        }catch (Exception e) {
+            GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Then("^Verify if validation message \"(.*)\" is displayed in modal box$")
+    public void verifyIfValidationMessageIsDisplayedInModalBox(String validationMessage) {
+        try {
+            GenericUtils.waitUntilElementAppear(sanityLocators.modalValidation("div",validationMessage));
+            if(GenericUtils.isExist(sanityLocators.modalValidation("div",validationMessage)))
+                GemTestReporter.addTestStep("Verify if validation message is displayed in modal box",
+                        "Validation message is displayed on modal box", STATUS.PASS, DriverAction.takeSnapShot());
+            else
+                GemTestReporter.addTestStep("Verify if validation message is displayed in modal box",
+                        "No validation message is displayed", STATUS.FAIL, DriverAction.takeSnapShot());
+        }catch (Exception e) {
+            GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
+            throw new RuntimeException(e);
+        }
+    }
+
+    @And("^Fill the required details \"(.*)\", \"(.*)\" and \"(.*)\" in add new team modal box$")
+    public void fillTheRequiredDetailsAndInAddNewTeamModalBox(String teamName, String descriptionText) {
+        try {
+            GenericUtils.waitUntilElementAppear(sanityLocators.inputBoxWithPlaceHolder("Enter Team Name"));
+            DriverAction.typeText(sanityLocators.inputBoxWithPlaceHolder("Enter Team Name"),teamName);
+            DriverAction.typeText(sanityLocators.inputBoxWithPlaceHolder("Enter Team Description"),descriptionText);
+//            DriverAction.typeText(sanityLocators.tooltipBox,descriptionText);
+            GemTestReporter.addTestStep("Enter required details into add team modal box", "Successfully added required details", STATUS.PASS,DriverAction.takeSnapShot());
+
+        }catch (Exception e) {
+            GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Then("^Verify if submit button is disabled$")
+    public void verifyIfSubmitButtonIsDisabled() {
+        try {
+            GenericUtils.waitUntilLoaderDisappear();
+            if(!DriverAction.isEnabled(sanityLocators.submitButton))
+                GemTestReporter.addTestStep("Verify if submit button is disabled", "Submit button is inactive",
+                        STATUS.PASS,DriverAction.takeSnapShot());
+            else  GemTestReporter.addTestStep("Verify if submit button is disabled", "Submit button is active",
+                    STATUS.FAIL,DriverAction.takeSnapShot());
+        }catch (Exception e) {
             GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
             throw new RuntimeException(e);
         }

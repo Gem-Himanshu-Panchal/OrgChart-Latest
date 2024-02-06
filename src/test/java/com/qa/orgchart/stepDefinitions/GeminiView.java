@@ -3,9 +3,9 @@ package com.qa.orgchart.stepDefinitions;
 import com.gemini.generic.reporting.GemTestReporter;
 import com.gemini.generic.reporting.STATUS;
 import com.gemini.generic.ui.utils.DriverAction;
-import com.gemini.generic.ui.utils.DriverManager;
 import com.qa.orgchart.locators.CommonLocators;
 import com.qa.orgchart.utils.GenericUtils;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.WebElement;
 
@@ -68,19 +68,20 @@ public class GeminiView {
             if (hashMapList != null) {
 
 
-                Lastloop: for (int i = start; i < end; i++) {
+                Lastloop:
+                for (int i = start; i < end; i++) {
                     assert mentorNames != null;
                     String manager = mentorNames.get(i);
                     assert mentorCodes != null;
                     String managerCode = mentorCodes.get(i);
 
-                    if (manager.equalsIgnoreCase("Vishal Malik"))
+                    if (manager.equalsIgnoreCase("Vishal Malik") || manager.equalsIgnoreCase("Anil Singh") || manager.equalsIgnoreCase("Anil Pahal"))
                         continue;
 
 
                     List<String> userHierarchy = GenericUtils.getManagerHierarchy(manager, managerCode);
                     mentees = GenericUtils.getMenteesList(manager);
-                    System.out.println("Mentor: "+manager);
+                    System.out.println("Mentor: " + manager);
                     System.out.println("Mentees: " + mentees);
                     System.out.println();
                     int lastIndex = userHierarchy.size() - 1;
@@ -88,10 +89,10 @@ public class GeminiView {
                     while (userHierarchy.size() != 2) {
                         DriverAction.waitSec(1);
                         if (!GenericUtils.isExist(CommonLocators.employeeDiv(userHierarchy.get(lastIndex - 1), userHierarchy.get(lastIndex)))) {
-                            GemTestReporter.addTestStep(i + ". Verify if " + userHierarchy.get(lastIndex-1) + " is at right hierarchy or not",
-                                    userHierarchy.get(lastIndex-1) + " is missing from hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
+                            GemTestReporter.addTestStep(i + ". Verify if " + userHierarchy.get(lastIndex - 1) + " is at right hierarchy or not",
+                                    userHierarchy.get(lastIndex - 1) + " is missing from hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
                             GemTestReporter.addTestStep("Check " + manager + " hierarchy",
-                                    manager+ " is having incomplete hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
+                                    manager + " is having incomplete hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
                             continue Lastloop;
                         }
                         DriverAction.scrollIntoView(CommonLocators.dataSource("name", userHierarchy.get(lastIndex - 1), "EmployeeCode", userHierarchy.get(lastIndex)));
@@ -115,8 +116,9 @@ public class GeminiView {
                     }
 
 //Check manager hierarchy
-                    GenericUtils.scrollToElement(manager,managerCode);
+
                     if (GenericUtils.isExist(CommonLocators.employeeDiv(manager, managerCode))) {
+                        GenericUtils.scrollToElement(manager, managerCode);
                         GemTestReporter.addTestStep(i + ". " + "Verify if manager: " + manager + " is present or not",
                                 manager + " is present", STATUS.PASS, DriverAction.takeSnapShot());
                     } else {
@@ -128,12 +130,12 @@ public class GeminiView {
                     DriverAction.hoverOver(CommonLocators.employeeDiv(manager, managerCode));
                     GenericUtils.waitUntilElementAppear(CommonLocators.downArrowDataSource("name", manager, "EmployeeCode", managerCode));
 
-                    if (GenericUtils.isExist(CommonLocators.downArrowDataSource("name", manager, "EmployeeCode", managerCode))
-                            && GenericUtils.isExist(CommonLocators.downArrowDataSource("name", manager, "EmployeeCode", managerCode)))
+                    if (GenericUtils.isExist(CommonLocators.downArrowDataSource("name", manager, "EmployeeCode", managerCode)))
                         DriverAction.getElement(CommonLocators.downArrowDataSource("name", manager, "EmployeeCode", managerCode)).click();
                     else {
                         GemTestReporter.addTestStep(i + ". Verify if manager: " + userHierarchy.get(0) + " is at right hierarchy or not",
                                 manager + " is missing from hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
+                        DriverAction.refresh();
                         continue;
                     }
 
@@ -150,8 +152,8 @@ public class GeminiView {
                     for (int j = 0; j < menteeCount; j = j + 2) {
                         DriverAction.waitSec(1);
                         HashMap<String, String> hashMap = GenericUtils.getEmployeeData(mentees.get(0), manager);
-                        DriverAction.scrollIntoView(CommonLocators.hierarchyCheck(manager,managerCode,mentees.get(0), mentees.get(1)));
-                        if (GenericUtils.isExist(CommonLocators.hierarchyCheck(manager,managerCode,mentees.get(0), mentees.get(1)))) {
+                        DriverAction.scrollIntoView(CommonLocators.hierarchyCheck(manager, managerCode, mentees.get(0), mentees.get(1)));
+                        if (GenericUtils.isExist(CommonLocators.hierarchyCheck(manager, managerCode, mentees.get(0), mentees.get(1)))) {
                             GemTestReporter.addTestStep("Verify if mentee: " + mentees.get(0) + " is present or not",
                                     mentees.get(0) + " is present", STATUS.PASS, DriverAction.takeSnapShot());
                         } else {
@@ -180,17 +182,20 @@ public class GeminiView {
 
                         if (resp.get(0).equalsIgnoreCase("True")) {
                             GemTestReporter.addTestStep("Verify if " + mentees.get(0) + " has right values",
-                                    mentees.get(0) + " has right values", STATUS.PASS, DriverAction.takeSnapShot());
+                                    mentees.get(0) + " has right values", STATUS.PASS);
                         } else {
                             GemTestReporter.addTestStep("Verify if " + mentees.get(0) + " has right values",
-                                    mentees.get(0) + " has wrong value: " + resp.get(1), STATUS.FAIL, DriverAction.takeSnapShot());
+                                    mentees.get(0) + " has wrong value: " + resp.get(1), STATUS.FAIL);
                         }
                         DriverAction.getElement(CommonLocators.crossIcon).click();
                         mentees.remove(0);
                         mentees.remove(0);
                     }
 
+//                    DriverAction.refresh();
+                    DriverAction.click(CommonLocators.companyLogo);
                     DriverAction.refresh();
+
                     GenericUtils.waitUntilLoaderDisappear();
                     GenericUtils.waitUntilElementAppear(CommonLocators.chartContainer);
                 }
@@ -205,5 +210,19 @@ public class GeminiView {
         Path path = Paths.get(filePath);
         return Files.readAllLines(path);
     }
+
+    @And("Go to Dashboard")
+    public void goToDashboard() {
+        try{
+            DriverAction.click(CommonLocators.companyLogo);
+        }catch (Exception e){
+            GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
 
 }

@@ -130,7 +130,7 @@ public class DCTechView {
             DriverAction.scrollToBottom();
             if (DcTechName.contains("Clients")) {
                 String secondLevelDC;
-                if (actualDC.contains("Pimco"))
+                if (actualDC.contains("Pimco") || actualDC.contains("PIMCO"))
                     secondLevelDC = "Pimco";
                 else if (actualDC.contains("Edward Jones"))
                     secondLevelDC = "Edward Jones";

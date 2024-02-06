@@ -18,7 +18,7 @@ public class sanityLocators {
     public static By uploadedFileName = By.xpath("//span[contains(text(),' validCSV.xlsx ')]");
     public static By dropdownViews =By.xpath("//div[@class='ng-value-container']");
     public static By viewPlaceholder = By.xpath("//span[@class='ng-value-label ng-star-inserted']");
-    public static By viewNameList = By.xpath("//div[@class='ag-center-cols-container']//div[1]//div[1]");
+    public static By viewNameList = By.xpath("//div[@class='ag-center-cols-container']//div//div[1]");
     public static By addViewBtn = By.xpath("//button[contains(text(),'Add View')]");
     public static By submitBtn = By.xpath("//button[contains(text(),' Submit ')]");
     public static By viewNameInput = By.xpath("//input[@formcontrolName='viewName']");
@@ -32,6 +32,11 @@ public class sanityLocators {
     public static By cautionMessage = By.xpath("//span[contains(text(),' View name should always start with letters and can contain digits ')]");
     public static By inactiveSubmitButton = By.xpath("//button[@class='m-btn add-btn btn-disabled ng-star-inserted']");
     public static By deleteButton = By.xpath("//button[contains(text(),'Yes, delete it!')]");
+    public static By submitButton = By.xpath("//button[contains(text(),'Submit')]");
+
+    public static By inputBoxWithPlaceHolder(String fieldName){
+        return By.xpath("//input[@placeholder='"+fieldName+"']");
+    }
 
     public static By searchBoxField(String value) {
         return By.xpath("//input[@placeholder='" + value + "']");

@@ -19,15 +19,11 @@ public class CommonLocators {
     public static By invalidHTTPRequestToastMessage = By.xpath("//div[contains(text(),'Http failure')]");
 
     public static By selectedView(String viewName){
-       return By.xpath("//div[@class='ng-value ng-star-inserted']//span[contains(text(),'"+viewName+"')]");
+       return By.xpath("//div[contains(@class, 'ng-value')]//span[contains(text(),'"+viewName+"')]");
     }
 
     public static By firstRowEmployees(String techName){
         return By.xpath("//div[@class='teambox']//div[contains(text(),'"+techName+"')]/ancestor::table[1]/tr[@class='nodes']/td/table/tr[1]/td/div[@data-source]");
-    }
-
-    public static By employeeName(String name, String code) {
-        return By.xpath("//div[contains(@data-source, 'name\":\"" + name + "') and contains(@data-source,'EmployeeCode\":\"" + code + "') and not(contains(@class, 'slide-up'))]");
     }
 
 
@@ -40,7 +36,7 @@ public class CommonLocators {
     }
 
     public static By viewValue(String viewValue) {
-        return By.xpath("//span[contains(text(), '" + viewValue + "') and contains(@class, 'ng-option-label ng-star-inserted')]");
+        return By.xpath("//span[contains(text(), '" + viewValue + "') and contains(@class, 'ng-option-label')]");
     }
 
     public static By dataSource(String key1, String empName, String key2, String code) {

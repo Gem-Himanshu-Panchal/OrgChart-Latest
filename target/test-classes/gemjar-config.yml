@@ -1,9 +1,9 @@
 {
-  "environment": "prod",
+  "environment": "dev",
   "project_name": "ORGCHART",
-  "report_name": "Gemini test",
-  "enter_point": "https://apis.gemecosystem.com/enter-point",
-  "tags": "@geminiViewTesting",
+  "report_name": "sanity test",
+  "enter_point": "https://apis.gemecosystem.com/gemEcosystemDashboard/v1/enter-point",
+  "tags": "@bvbv",
   "feature": "src/test/resources/features",
   "glue_code": "com.qa.orgchart.stepDefinitions",
   "jewel_user": "himu_1808",
@@ -29,3 +29,4 @@
     "password": "SGltdURlY0AxODA4"
   }
 }
+

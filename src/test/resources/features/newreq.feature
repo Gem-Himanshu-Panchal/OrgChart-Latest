@@ -7,4 +7,4 @@ Feature: Gemini view data validations
 
 
     Scenario: Verify new location requirement
-      When Open all nodes
+      When Open all nodes and verify if correct location tooltip is displayed
