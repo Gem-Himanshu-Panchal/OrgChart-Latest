@@ -7,18 +7,14 @@ import com.gemini.generic.reporting.STATUS;
 import com.gemini.generic.ui.utils.DriverAction;
 import com.gemini.generic.ui.utils.DriverManager;
 import com.qa.orgchart.locators.CommonLocators;
-
 import com.qa.orgchart.locators.sanityLocators;
 import org.apache.commons.collections.CollectionUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import com.qa.orgchart.stepDefinitions.*;
-
-import javax.xml.transform.Result;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -28,10 +24,6 @@ import static com.gemini.generic.ui.utils.DriverAction.getElements;
 
 
 public class GenericUtils{
-    public static void waitUntilElementDisappear(By locator) {
-        WebDriverWait wait = new WebDriverWait(DriverManager.getWebDriver(), 60);
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
-    }
 
     public static void waitUntilLoaderDisappear() {
         if (GenericUtils.isExist(CommonLocators.loader)) {
@@ -58,33 +50,6 @@ public class GenericUtils{
             }
         }
         return mentees;
-    }
-
-    public static List<String> getHierarchy(int index) {
-        List<HashMap<String, String>> hashMapList = jsonToHash.getHashList2();
-
-        assert hashMapList != null;
-        HashMap<String, String> employee = hashMapList.get(index);
-        String name;
-        String code;
-        List<String> hierarchy = new ArrayList<>();
-        hierarchy.add(employee.get("EmployeeName"));
-        hierarchy.add(employee.get("EmployeeCode"));
-        name = employee.get("ReportingManager");
-        code = employee.get("ManagerCode");
-        while (!name.equalsIgnoreCase("Vishal Malik")) {
-            for (HashMap<String, String> hashMap : hashMapList) {
-                if (hashMap.containsKey("EmployeeName") && hashMap.containsKey("EmployeeCode")
-                        && hashMap.get("EmployeeName").equals(name) && hashMap.get("EmployeeCode").equals(code)) {
-                    hierarchy.add(hashMap.get("EmployeeName"));
-                    hierarchy.add(hashMap.get("EmployeeCode"));
-                    name = hashMap.get("ReportingManager");
-                    code = hashMap.get("ManagerCode");
-                    break;
-                }
-            }
-        }
-        return hierarchy;
     }
 
 
@@ -191,7 +156,7 @@ public class GenericUtils{
         extractData.put("ECTech", DriverAction.getElementText(CommonLocators.employeeDataSet3("Engineering Council")));
         extractData.put("DCTech", DriverAction.getElementText(CommonLocators.employeeDataSet3("Delivery Council")));
         if (hashMap.containsKey("PrimarySkills") && hashMap.containsKey("SecondarySkills"))
-            extractData.put("BothSkills", DriverAction.getElementText(CommonLocators.employeeDataSet3("Skills")));
+            extractData.put("BothSkills", DriverAction.getElementText(CommonLocators.employeeDataSet3("Skills")).trim());
         else if (hashMap.containsKey("PrimarySkills"))
             extractData.put("PrimarySkills", DriverAction.getElementText(CommonLocators.employeeDataSet3("Skills")));
         else if (hashMap.containsKey("SecondarySkills"))
@@ -210,10 +175,14 @@ public class GenericUtils{
             } else if (key.equalsIgnoreCase("SecondarySkills")) {
                 value2 = hashMap.get(key);
             } else if (key.equalsIgnoreCase("BothSkills")) {
-                value2 = hashMap.get("PrimarySkills") + ", " + hashMap.get("SecondarySkills");
-                value2 = value2.trim();
-                value2 = value2.startsWith(",") ? value2.substring(1) : value2;
-                value2 = value2.trim();
+                String secondarySkillsValue = hashMap.get("SecondarySkills");
+                if(secondarySkillsValue != null && !secondarySkillsValue.trim().isEmpty()) {
+                    value2 = hashMap.get("PrimarySkills") + ", " + hashMap.get("SecondarySkills");
+                    value2 = value2.trim();
+                    value2 = value2.startsWith(",") ? value2.substring(1) : value2;
+                    value2 = value2.trim();
+                }
+                else value2 = hashMap.get("PrimarySkills");
             } else {
                 value2 = hashMap.get(key);
             }
@@ -259,15 +228,14 @@ public class GenericUtils{
             GenericUtils.waitUntilElementAppear(sanityLocators.btnLocator("div", btnName, "title"));
             DriverAction.click(sanityLocators.btnLocator("div", btnName, "title"));
         } else if (btnName.equalsIgnoreCase("Submit")) {
-            GenericUtils.waitUntilElementAppear(sanityLocators.btnLocator("button", btnName, "type"));
-            DriverAction.click(sanityLocators.btnLocator("button", btnName, "type"));
+            GenericUtils.waitUntilElementAppear(sanityLocators.submitButton);
+            DriverAction.click(sanityLocators.submitButton);
         } else if (btnName.equalsIgnoreCase("cancel")) {
             GenericUtils.waitUntilElementAppear(sanityLocators.btnLocator("button", "cancel-btn m-btn", "class"));
             DriverAction.click(sanityLocators.btnLocator("button", "cancel-btn m-btn", "class"));
         } else if (btnName.equalsIgnoreCase("Reset") || btnName.equalsIgnoreCase("Logout") || btnName.equalsIgnoreCase("Admin")) {
-//            GenericUtils.waitUntilElementAppear(sanityLocators.btnLocator("div", btnName, "title"));
-//            DriverAction.waitUntilElementClickable(sanityLocators.btnLocator("div", btnName, "title"),10);
-            DriverAction.waitSec(6);
+            DriverAction.waitSec(8);
+            DriverAction.waitUntilElementClickable(sanityLocators.btnLocator("div", btnName, "title"),10);
             DriverAction.click(sanityLocators.btnLocator("div", btnName, "title"));
         } else if (btnName.equalsIgnoreCase("view")) {
             GenericUtils.waitUntilElementAppear(sanityLocators.btnLocator("div", "ng-select-container ng-has-value", "class"));
@@ -313,22 +281,16 @@ public class GenericUtils{
         }else if(btnName.equalsIgnoreCase("Yes, delete it!")){
             GenericUtils.waitUntilElementAppear(sanityLocators.deleteButton);
             DriverAction.click(sanityLocators.deleteButton);
+        } else if(btnName.equalsIgnoreCase("Add Team")){
+            GenericUtils.waitUntilElementAppear(sanityLocators.elementWithText("button"," Add Team "));
+            DriverAction.waitUntilElementClickable(sanityLocators.elementWithText("button"," Add Team "),5);
+            DriverAction.click(sanityLocators.elementWithText("button"," Add Team "));
         }
     }
 
     public static boolean isExist(By locator) {
-//        if(locator!=null) {
-//            List<WebElement> elementList = getElements(locator);
-//            int elementListSize = elementList.size();
-//            return elementListSize > 0;
-//        }
-//        return false;
         List<WebElement> elementList = getElements(locator);
-        if (CollectionUtils.isEmpty(elementList)) {
-            return false;
-        } else {
-            return true;
-        }
+        return !CollectionUtils.isEmpty(elementList);
     }
 
     public static void scrollToElement(String name, String code){
@@ -357,6 +319,79 @@ public class GenericUtils{
     }
 
 
+    public static String extractMentorListFromJSON(String jsonData) {
+        return extractReportingManagers(jsonData);
+    }
 
 
+    private static String extractReportingManagers(String jsonData) {
+        Set<String> uniqueManagers = new HashSet<>();
+        StringBuilder result = new StringBuilder();
+
+        // Parse the JSON array
+        JSONArray jsonArray = new JSONArray(jsonData);
+
+        // Iterate through each JSON object in the array
+        for (int i = 0; i < jsonArray.length(); i++) {
+            // Get the JSON object
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+            // Extract the 'ReportingManager' value
+            String reportingManager = jsonObject.optString("ReportingManager");
+
+            // Check for duplicates
+            if (uniqueManagers.add(reportingManager)) {
+                // If it's a new reporting manager, append to the result string
+                result.append(reportingManager);
+
+                // Add a newline character if it's not the last entry
+                if (i < jsonArray.length() - 1) {
+                    result.append("\n");
+                }
+            }
+        }
+        return result.toString();
+    }
+
+    public static String extractMentorCodeFromJSON(String json) {
+        return extractReportingManagersCode(json);
+    }
+    private static String extractReportingManagersCode(String jsonData) {
+        Set<String> uniqueManagers = new HashSet<>();
+        StringBuilder result = new StringBuilder();
+
+        // Parse the JSON array
+        JSONArray jsonArray = new JSONArray(jsonData);
+
+        // Iterate through each JSON object in the array
+        for (int i = 0; i < jsonArray.length(); i++) {
+            // Get the JSON object
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+            // Extract the 'ReportingManager' value
+            String reportingManager = jsonObject.optString("ManagerCode");
+
+            // Check for duplicates
+            if (uniqueManagers.add(reportingManager)) {
+                // If it's a new reporting manager, append to the result string
+                result.append(reportingManager);
+
+                // Add a newline character if it's not the last entry
+                if (i < jsonArray.length() - 1) {
+                    result.append("\n");
+                }
+            }
+        }
+
+        return result.toString();
+    }
+
+    public static void switchToNewWindow(String nameOfHandle) {
+        try {
+            DriverManager.getWebDriver().switchTo().window(nameOfHandle);
+        } catch (Exception e) {
+            GemTestReporter.addTestStep("Error switching to window with handle '{}': Window not found.", "Exception: " + e, STATUS.FAIL);
+            throw new RuntimeException(e);
+        }
+    }
 }

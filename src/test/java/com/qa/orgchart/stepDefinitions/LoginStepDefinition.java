@@ -9,7 +9,6 @@ import com.qa.orgchart.locators.CommonLocators;
 import com.qa.orgchart.utils.GenericUtils;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
-import net.thucydides.core.requirements.reports.ScenarioOutcome;
 import org.apache.commons.codec.binary.Base64;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -36,7 +35,8 @@ public class LoginStepDefinition {
             DriverAction.scrollIntoView(CommonLocators.viewValue(viewName));
             DriverAction.getElement(CommonLocators.viewValue(viewName)).click();
             GenericUtils.waitUntilLoaderDisappear();
-            if (DriverAction.isExist(CommonLocators.selectedView(viewName))) {
+            System.out.println(CommonLocators.selectedView(viewName));
+            if (GenericUtils.isExist(CommonLocators.selectedView(viewName))) {
                 GemTestReporter.addTestStep("Select " + viewName + " from view dropdown"
                         , "Successfully selected " + viewName + " view", STATUS.PASS, DriverAction.takeSnapShot());
 
@@ -79,14 +79,14 @@ public class LoginStepDefinition {
                 String popUpWin = null;
                 WebDriverWait wait = new WebDriverWait(driver, 10);
                 wait.until(ExpectedConditions.numberOfWindowsToBe(2));
-
                 for (String handle : driver.getWindowHandles()) {
                     if (!handle.equalsIgnoreCase(mainWin)) {
                         popUpWin = handle;
                         break;
                     }
                 }
-                DriverAction.switchToWindow(popUpWin);
+//                DriverAction.switchToWindow(popUpWin);
+                GenericUtils.switchToNewWindow(popUpWin);
 
                 byte[] decodingString = Base64.decodeBase64(ProjectConfigData.getProperty("password"));
                 String passwordDecoded = new String(decodingString);
@@ -103,13 +103,10 @@ public class LoginStepDefinition {
                 DriverAction.waitUntilElementAppear(CommonLocators.submitButton, 30);
                 DriverAction.click(CommonLocators.submitButton);
                 DriverAction.waitSec(2);
-                DriverAction.switchToWindow(mainWin);
+                GenericUtils.switchToNewWindow(mainWin);
                 GenericUtils.waitUntilLoaderDisappear();
-//                    if (driver.getWindowHandles().size() > 0) {
-//                        String mainWindow = driver.getWindowHandles().iterator().next();
-//                        DriverAction.switchToWindow(mainWindow);
-//                    }
-                DriverAction.switchToWindow(mainWin);
+
+                GenericUtils.switchToNewWindow(mainWin);
                 DriverAction.waitUntilElementAppear(CommonLocators.invalidHTTPRequestToastMessage,15);
                 if (GenericUtils.isExist(CommonLocators.invalidHTTPRequestToastMessage)) {
                     DriverAction.refresh();
@@ -133,7 +130,8 @@ public class LoginStepDefinition {
         try {
             GenericUtils.waitUntilLoaderDisappear();
             String mainWin = DriverAction.getWindowHandle();
-            DriverAction.switchToWindow(mainWin);
+//            DriverAction.switchToWindow(mainWin);
+            GenericUtils.switchToNewWindow(mainWin);
             DriverAction.waitUntilElementAppear(CommonLocators.companyLogo, 30);
             DriverAction.refresh();
             GenericUtils.waitUntilLoaderDisappear();
@@ -145,7 +143,8 @@ public class LoginStepDefinition {
             }else {
                 DriverAction.refresh();
                 mainWin = DriverAction.getWindowHandle();
-                DriverAction.switchToWindow(mainWin);
+//                DriverAction.switchToWindow(mainWin);
+                GenericUtils.switchToNewWindow(mainWin);
                 GenericUtils.waitUntilLoaderDisappear();
                 if(GenericUtils.isExist(CommonLocators.loginButton)) {
                     DriverAction.click(CommonLocators.loginButton);
@@ -153,7 +152,8 @@ public class LoginStepDefinition {
                 else{
                     DriverAction.refresh();
                     mainWin = DriverAction.getWindowHandle();
-                    DriverAction.switchToWindow(mainWin);
+//                    DriverAction.switchToWindow(mainWin);
+                    GenericUtils.switchToNewWindow(mainWin);
                     GenericUtils.waitUntilLoaderDisappear();
                     DriverAction.waitUntilElementAppear(CommonLocators.companyLogo, 30);
                     DriverAction.waitUntilElementAppear(CommonLocators.chartContainer, 30);

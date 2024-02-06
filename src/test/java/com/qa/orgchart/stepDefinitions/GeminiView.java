@@ -3,9 +3,9 @@ package com.qa.orgchart.stepDefinitions;
 import com.gemini.generic.reporting.GemTestReporter;
 import com.gemini.generic.reporting.STATUS;
 import com.gemini.generic.ui.utils.DriverAction;
-import com.gemini.generic.ui.utils.DriverManager;
 import com.qa.orgchart.locators.CommonLocators;
 import com.qa.orgchart.utils.GenericUtils;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.WebElement;
 
@@ -210,5 +210,19 @@ public class GeminiView {
         Path path = Paths.get(filePath);
         return Files.readAllLines(path);
     }
+
+    @And("Go to Dashboard")
+    public void goToDashboard() {
+        try{
+            DriverAction.click(CommonLocators.companyLogo);
+        }catch (Exception e){
+            GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
 
 }

@@ -7,7 +7,6 @@ import com.qa.orgchart.locators.CommonLocators;
 import com.qa.orgchart.utils.GenericUtils;
 
 import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 

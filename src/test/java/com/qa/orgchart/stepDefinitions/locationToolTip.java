@@ -5,7 +5,6 @@ import com.gemini.generic.reporting.STATUS;
 import com.gemini.generic.ui.utils.DriverAction;
 import com.qa.orgchart.locators.CommonLocators;
 import com.qa.orgchart.utils.GenericUtils;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -14,10 +13,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class newreq {
+public class locationToolTip {
 
 
-    @When("Open all nodes")
+    @When("^Open all nodes and verify if correct location tooltip is displayed$")
     public void openAllNodes() {
         try {
             GenericUtils.waitUntilLoaderDisappear();

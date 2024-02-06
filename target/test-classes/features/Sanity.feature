@@ -118,12 +118,12 @@ Feature: Sanity suite for OrgChart
     And Click on "Submit view" button
     Then Verify if "Create new view" is created
 
-    Scenario: Verify if user is unable to create a view with special characters in its name
-      When Click on "Admin" button
-      And Click on "Manage View" button
-      And Click on "Add View" button
-      And Fill required details "Check!@#$%^", "Employee", " Himanshu Panchal ", "dev"
-      Then Verify if submit button remains disabled
+  Scenario: Verify if user is unable to create a view with special characters in its name
+    When Click on "Admin" button
+    And Click on "Manage View" button
+    And Click on "Add View" button
+    And Fill required details "Check!@#$%^", "Employee", " Himanshu Panchal ", "dev"
+    Then Verify if submit button remains disabled
 
 # Delete all CSV/XLS files before thi
   Scenario: Verify if user is able to download employees list
@@ -150,12 +150,12 @@ Feature: Sanity suite for OrgChart
     Then Verify if "Update View" modal box disappears from screen
 
 
-    Scenario: Verify if user is able to clone an existing view
-      When Click on "Admin" button
-      And Click on "Manage View" button
-      And Click on "Clone View" button
-      And Enter new clone view name "Check Cloning" into required input field
-      Then Verify if "Check Cloning" name is changed
+  Scenario: Verify if user is able to clone an existing view
+    When Click on "Admin" button
+    And Click on "Manage View" button
+    And Click on "Clone View" button
+    And Enter new clone view name "Check Cloning" into required input field
+    Then Verify if "Check Cloning" name is changed
 
 
   Scenario: Verify if user is able to close clone view modal box
@@ -177,13 +177,54 @@ Feature: Sanity suite for OrgChart
 #    Manage Team
   @bvbv
   Scenario: Verify if user is able to search for a valid team name
-    When Click on "Admin" button
+    Given Click on "Admin" button
     And Click on "Manage Team" button
     Then Search "QA" in "Manage Team" view
     Then Verify if correct view "QA" is searched
+
   @bvbv
   Scenario: Verify if user is able to search for a invalid team name
     When Click on "Admin" button
     And Click on "Manage Team" button
     Then Search "Test xyz abc" in "Manage Team" view
     Then Verify if incorrect view is searched
+
+  Scenario: OrgChart, Verify if user is able to open Add team modal box
+    When Click on "Admin" button
+    And Click on "Manage Team" button
+    Then Click on "Add Team" button
+    Then Verify if "Add New Team" modal box appears on screen
+
+  Scenario: OrgChart, Verify if user is able to close the Add new team modal box
+    When Click on "Admin" button
+    And Click on "Manage Team" button
+    Then Click on "Add Team" button
+    Then Verify if "Add New Team" modal box appears on screen
+    And Click on "close" button
+    Then Verify if "Add New Team" modal box disappears from screen
+
+  Scenario: OrgChart, Verify if only characters are allowed in team name field
+    When Click on "Admin" button
+    And Click on "Manage Team" button
+    Then Click on "Add Team" button
+    Then Verify if "Add New Team" modal box appears on screen
+    And Enter text "!@#$%^&*()_+" in "Enter Team Name" field
+    Then Verify if validation message "Team name should always start with letters and can contain digits (maximum 40 characters)" is displayed in modal box
+
+    Scenario: OrgChart, Verify if user is able to create new team
+      When Click on "Admin" button
+      And Click on "Manage Team" button
+      Then Click on "Add Team" button
+      Then Verify if "Add New Team" modal box appears on screen
+      And Fill the required details "Test New Team", "Lorem Ipsum Description" and "Lorem ipsum tooltip" in add new team modal box
+      Then Click on "Submit" button
+      Then Search "Test New Team" in "Manage Team" view
+      Then Verify if correct view "Test New Team" is searched
+
+
+Scenario: OrgChart, Verify if Submit button remains inactive
+  When Click on "Admin" button
+  And Click on "Manage Team" button
+  Then Click on "Add Team" button
+  Then Verify if "Add New Team" modal box appears on screen
+  Then Verify if submit button is disabled

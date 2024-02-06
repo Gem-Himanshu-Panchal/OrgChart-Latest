@@ -1,9 +1,10 @@
-@runGeminiView @regression
+@runGeminiLiveView @regression
 Feature: Gemini view data validations
 
   Background: Verify if user successfully log into Orgchart
     When Navigate to OrgChart and login
     Then Verify if user is on OrgChart dashboard
+    And Switch to "Gemini (Live🔴)" view
 #    And Click on "Admin" button
 #    And Click on "Manage View" button
 #    Then Click on " Export Employees " button
