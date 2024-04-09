@@ -1,4 +1,4 @@
-@runDCView @regression @runDCGEM
+@runDCLiveView @regressionLive
 Feature: DC view data validations
 
   Background: Verify if user successfully log into Orgchart
@@ -13,7 +13,7 @@ Feature: DC view data validations
 #    And Update the mentor code list
 #    And Go to Dashboard
 #    Then Verify if user is on OrgChart dashboard
-    And Switch to "DC" view
+    And Switch to "DC (Live🔴)" view
 
 
 #    Support
@@ -31,13 +31,13 @@ Feature: DC view data validations
 
 
 # EJ
-  Scenario: Verify DC view for Edward Jones Core Digital Support
-    When Open path for "Clients" Dc tech and "Edward Jones Core Digital Support" DC
-    Then Check employee in DC view for "Edward Jones Core Digital Support" in "Clients" of OrgChart
-
   Scenario: Verify DC view for Edward Jones Developer Platform
     When Open path for "Clients" Dc tech and "Edward Jones Developer Platform" DC
     Then Check employee in DC view for "Edward Jones Developer Platform" in "Clients" of OrgChart
+
+  Scenario: Verify DC view for Edward Jones DevSecOps
+    When Open path for "Clients" Dc tech and "Edward Jones DevSecOps" DC
+    Then Check employee in DC view for "Edward Jones DevSecOps" in "Clients" of OrgChart
 
   Scenario: Verify DC view for Edward Jones Environments & ITSM
     When Open path for "Clients" Dc tech and "Edward Jones Environments & ITSM" DC
@@ -66,10 +66,6 @@ Feature: DC view data validations
     When Open path for "Internal" Dc tech and "Internal Athena" DC
     Then Check employee in DC view for "Internal Athena" in "Internal" of OrgChart
 
-  Scenario: Verify DC view for Internal ProfitPulse
-    When Open path for "Internal" Dc tech and "Internal ProfitPulse" DC
-    Then Check employee in DC view for "Internal ProfitPulse" in "Internal" of OrgChart
-
   Scenario: Verify DC view for Internal ATS
     When Open path for "Internal" Dc tech and "Internal ATS" DC
     Then Check employee in DC view for "Internal ATS" in "Internal" of OrgChart
@@ -78,13 +74,9 @@ Feature: DC view data validations
     When Open path for "Internal" Dc tech and "Internal Catalyst" DC
     Then Check employee in DC view for "Internal Catalyst" in "Internal" of OrgChart
 
-  Scenario: Verify DC view for Internal Contripoint
-    When Open path for "Internal" Dc tech and "Internal Contripoint" DC
-    Then Check employee in DC view for "Internal Contripoint" in "Internal" of OrgChart
-
-  Scenario: Verify DC view for Internal Neo-Retina
-    When Open path for "Internal" Dc tech and "Internal Neo-Retina" DC
-    Then Check employee in DC view for "Internal Neo-Retina" in "Internal" of OrgChart
+  Scenario: Verify DC view for Internal Contri-Neo-Retina
+    When Open path for "Internal" Dc tech and "Internal Contri-Neo-Retina" DC
+    Then Check employee in DC view for "Internal Contri-Neo-Retina" in "Internal" of OrgChart
 
   Scenario: Verify DC view for Internal Gembook
     When Open path for "Internal" Dc tech and "Internal Gembook" DC
@@ -126,65 +118,13 @@ Feature: DC view data validations
 
 
 #Pimco
-  Scenario: Verify DC view for Pimco Client Facing Tech
-    When Open path for "Clients" Dc tech and "Pimco Client Facing Tech" DC
-    Then Check employee in DC view for "Pimco Client Facing Tech" in "Clients" of OrgChart
-
   Scenario: Verify DC view for Pimco Analytics Support
     When Open path for "Clients" Dc tech and "Pimco Analytics Support" DC
     Then Check employee in DC view for "Pimco Analytics Support" in "Clients" of OrgChart
 
-  Scenario: Verify DC view for Pimco Infrastructure
-    When Open path for "Clients" Dc tech and "Pimco Infrastructure" DC
-    Then Check employee in DC view for "Pimco Infrastructure" in "Clients" of OrgChart
-
-  Scenario: Verify DC view for Pimco RiskOps
-    When Open path for "Clients" Dc tech and "Pimco RiskOps" DC
-    Then Check employee in DC view for "Pimco RiskOps" in "Clients" of OrgChart
-
-  Scenario: Verify DC view for Pimco Investment Data
-    When Open path for "Clients" Dc tech and "Pimco Investment Data" DC
-    Then Check employee in DC view for "Pimco Investment Data" in "Clients" of OrgChart
-
-  Scenario: Verify DC view for Pimco Quality Engineering
-    When Open path for "Clients" Dc tech and "Pimco Quality Engineering" DC
-    Then Check employee in DC view for "Pimco Quality Engineering" in "Clients" of OrgChart
-
-  Scenario: Verify DC view for Pimco ServiceOps
-    When Open path for "Clients" Dc tech and "Pimco ServiceOps" DC
-    Then Check employee in DC view for "Pimco ServiceOps" in "Clients" of OrgChart
-
-  Scenario: Verify DC view for Pimco FE Infrastructure
-    When Open path for "Clients" Dc tech and "Pimco FE Infrastructure" DC
-    Then Check employee in DC view for "Pimco FE Infrastructure" in "Clients" of OrgChart
-
-  Scenario: Verify DC view for Pimco Reference Data
-    When Open path for "Clients" Dc tech and "Pimco Reference Data" DC
-    Then Check employee in DC view for "Pimco Reference Data" in "Clients" of OrgChart
-
-  Scenario: Verify DC view for PIMCO Client Data Intelligence
-    When Open path for "Clients" Dc tech and "PIMCO Client Data Intelligence" DC
-    Then Check employee in DC view for "PIMCO Client Data Intelligence" in "Clients" of OrgChart
-
-  Scenario: Verify DC view for Pimco EMEA Tech
-    When Open path for "Clients" Dc tech and "Pimco EMEA" DC
-    Then Check employee in DC view for "Pimco EMEA Tech" in "Clients" of OrgChart
-
-  Scenario: Verify DC view for Pimco Operations Tech
-    When Open path for "Clients" Dc tech and "Pimco Operations Tech" DC
-    Then Check employee in DC view for "Pimco Operations Tech" in "Clients" of OrgChart
-
-  Scenario: Verify DC view for Pimco Data Engineering
-    When Open path for "Clients" Dc tech and "Pimco Data Engineering" DC
-    Then Check employee in DC view for "Pimco Data Engineering" in "Clients" of OrgChart
-
-  Scenario: Verify DC view for Pimco Portfolio Analytics Support
-    When Open path for "Clients" Dc tech and "Pimco Portfolio Analytics Support" DC
-    Then Check employee in DC view for "Pimco Portfolio Analytics Support" in "Clients" of OrgChart
-
-  Scenario: Verify DC view for Pimco Data Science
-    When Open path for "Clients" Dc tech and "Pimco Data Science" DC
-    Then Check employee in DC view for "Pimco Data Science" in "Clients" of OrgChart
+  Scenario: Verify DC view for Pimco Client Facing Tech
+    When Open path for "Clients" Dc tech and "Pimco Client Facing Tech" DC
+    Then Check employee in DC view for "Pimco Client Facing Tech" in "Clients" of OrgChart
 
   Scenario: Verify DC view for Pimco Credit Research / PARR
     When Open path for "Clients" Dc tech and "Pimco Credit Research / PARR" DC
@@ -194,21 +134,77 @@ Feature: DC view data validations
     When Open path for "Clients" Dc tech and "Pimco CSA frontend & ABS Tech" DC
     Then Check employee in DC view for "Pimco CSA frontend & ABS Tech" in "Clients" of OrgChart
 
-  Scenario: Verify DC view for Pimco Sales & Marketing Tech
-    When Open path for "Clients" Dc tech and "Pimco Sales & Marketing Tech" DC
-    Then Check employee in DC view for "Pimco Sales & Marketing Tech" in "Clients" of OrgChart
+  Scenario: Verify DC view for Pimco Data Engineering
+    When Open path for "Clients" Dc tech and "Pimco Data Engineering" DC
+    Then Check employee in DC view for "Pimco Data Engineering" in "Clients" of OrgChart
+
+  Scenario: Verify DC view for Pimco Data Science
+    When Open path for "Clients" Dc tech and "Pimco Data Science" DC
+    Then Check employee in DC view for "Pimco Data Science" in "Clients" of OrgChart
 
   Scenario: Verify DC view for Pimco DevOps / Platform Engineering
     When Open path for "Clients" Dc tech and "Pimco DevOps / Platform Engineering" DC
     Then Check employee in DC view for "Pimco DevOps / Platform Engineering" in "Clients" of OrgChart
 
-  Scenario: Verify DC view for Pimco Security
-    When Open path for "Clients" Dc tech and "Pimco Security" DC
-    Then Check employee in DC view for "Pimco Security" in "Clients" of OrgChart
+  Scenario: Verify DC view for Pimco EMEA Tech
+    When Open path for "Clients" Dc tech and "Pimco EMEA" DC
+    Then Check employee in DC view for "Pimco EMEA Tech" in "Clients" of OrgChart
+
+  Scenario: Verify DC view for Pimco FE Infrastructure
+    When Open path for "Clients" Dc tech and "Pimco FE Infrastructure" DC
+    Then Check employee in DC view for "Pimco FE Infrastructure" in "Clients" of OrgChart
+
+  Scenario: Verify DC view for Pimco Infrastructure
+    When Open path for "Clients" Dc tech and "Pimco Infrastructure" DC
+    Then Check employee in DC view for "Pimco Infrastructure" in "Clients" of OrgChart
+
+  Scenario: Verify DC view for Pimco Investment Data
+    When Open path for "Clients" Dc tech and "Pimco Investment Data" DC
+    Then Check employee in DC view for "Pimco Investment Data" in "Clients" of OrgChart
+
+  Scenario: Verify DC view for Pimco Operations Tech
+    When Open path for "Clients" Dc tech and "Pimco Operations Tech" DC
+    Then Check employee in DC view for "Pimco Operations Tech" in "Clients" of OrgChart
+
+  Scenario: Verify DC view for Pimco Portfolio Analytics Support
+    When Open path for "Clients" Dc tech and "Pimco Portfolio Analytics Support" DC
+    Then Check employee in DC view for "Pimco Portfolio Analytics Support" in "Clients" of OrgChart
 
   Scenario: Verify DC view for Pimco Puma
     When Open path for "Clients" Dc tech and "Pimco Puma" DC
     Then Check employee in DC view for "Pimco Puma" in "Clients" of OrgChart
+
+  Scenario: Verify DC view for Pimco Quality Engineering
+    When Open path for "Clients" Dc tech and "Pimco Quality Engineering" DC
+    Then Check employee in DC view for "Pimco Quality Engineering" in "Clients" of OrgChart
+
+  Scenario: Verify DC view for Pimco Reference Data
+    When Open path for "Clients" Dc tech and "Pimco Reference Data" DC
+    Then Check employee in DC view for "Pimco Reference Data" in "Clients" of OrgChart
+
+  Scenario: Verify DC view for Pimco RiskOps
+    When Open path for "Clients" Dc tech and "Pimco RiskOps" DC
+    Then Check employee in DC view for "Pimco RiskOps" in "Clients" of OrgChart
+
+  Scenario: Verify DC view for Pimco Sales & Marketing Tech
+    When Open path for "Clients" Dc tech and "Pimco Sales & Marketing Tech" DC
+    Then Check employee in DC view for "Pimco Sales & Marketing Tech" in "Clients" of OrgChart
+
+  Scenario: Verify DC view for Pimco Security
+    When Open path for "Clients" Dc tech and "Pimco Security" DC
+    Then Check employee in DC view for "Pimco Security" in "Clients" of OrgChart
+
+  Scenario: Verify DC view for Pimco ServiceOps
+    When Open path for "Clients" Dc tech and "Pimco ServiceOps" DC
+    Then Check employee in DC view for "Pimco ServiceOps" in "Clients" of OrgChart
+
+  Scenario: Verify DC view for PIMCO Client Data Intelligence
+    When Open path for "Clients" Dc tech and "PIMCO Client Data Intelligence" DC
+    Then Check employee in DC view for "PIMCO Client Data Intelligence" in "Clients" of OrgChart
+
+  Scenario: Verify DC view for Pimco Discern
+    When Open path for "Clients" Dc tech and "Pimco Discern" DC
+    Then Check employee in DC view for "Pimco Discern" in "Clients" of OrgChart
 
 
 
@@ -253,18 +249,5 @@ Feature: DC view data validations
     When Open path for "Clients" Dc tech and "Tata Aig" DC
     Then Check employee in DC view for "Tata Aig" in "Clients" of OrgChart
 
-  Scenario: Verify DC view for Discern
-    When Open path for "Clients" Dc tech and "Discern" DC
-    Then Check employee in DC view for "Discern" in "Clients" of OrgChart
-
-  Scenario: Verify DC view for IBKS
-    When Open path for "Clients" Dc tech and "IBKS" DC
-    Then Check employee in DC view for "IBKS" in "Clients" of OrgChart
-
-  Scenario: Verify DC view for IT
-    When Open path for "Clients" Dc tech and "IT" DC
-    Then Check employee in DC view for "IT" in "Clients" of OrgChart
-
-  Scenario: Verify DC view for Emaar
-    When Open path for "Clients" Dc tech and "Emaar" DC
-    Then Check employee in DC view for "Emaar" in "Clients" of OrgChart
+  Scenario: Verify any duplicate data in OrgChart employee view
+    When Search for any duplicate employee in OrgChart Gemini view

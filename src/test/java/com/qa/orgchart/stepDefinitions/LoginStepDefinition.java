@@ -48,7 +48,7 @@ public class LoginStepDefinition {
             throw new RuntimeException(e);
         }
     }
-
+    private final Object lock = new Object();
     @When("^Navigate to OrgChart and login$")
     public synchronized void navigateToOrgChartAndLogin() {
         try {
@@ -91,14 +91,16 @@ public class LoginStepDefinition {
                 byte[] decodingString = Base64.decodeBase64(ProjectConfigData.getProperty("password"));
                 String passwordDecoded = new String(decodingString);
                 GenericUtils.waitUntilElementAppear(CommonLocators.loginEmail);
-                if (GenericUtils.isExist(CommonLocators.loginEmail)) {
-                    DriverAction.typeText(CommonLocators.loginEmail, ProjectConfigData.getProperty("email"));
-                    DriverAction.click(CommonLocators.submitButton);
-                }
-                GenericUtils.waitUntilElementAppear(CommonLocators.loginPswd);
-                if (GenericUtils.isExist(CommonLocators.loginPswd)) {
-                    DriverAction.typeText(CommonLocators.loginPswd, passwordDecoded);
-                    DriverAction.click(CommonLocators.submitButton);
+                synchronized ((lock)) {
+                    if (GenericUtils.isExist(CommonLocators.loginEmail)) {
+                        DriverAction.typeText(CommonLocators.loginEmail, ProjectConfigData.getProperty("email"));
+                        DriverAction.click(CommonLocators.submitButton);
+                        GenericUtils.waitUntilElementAppear(CommonLocators.loginPswd);
+                        if (GenericUtils.isExist(CommonLocators.loginPswd)) {
+                            DriverAction.typeText(CommonLocators.loginPswd, passwordDecoded);
+                            DriverAction.click(CommonLocators.submitButton);
+                        }
+                    }
                 }
                 DriverAction.waitUntilElementAppear(CommonLocators.submitButton, 30);
                 DriverAction.click(CommonLocators.submitButton);

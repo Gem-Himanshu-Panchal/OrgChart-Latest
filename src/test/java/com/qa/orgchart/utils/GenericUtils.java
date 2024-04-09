@@ -317,7 +317,20 @@ public class GenericUtils{
 
         ((JavascriptExecutor) driver).executeScript("window.scrollTo(" + scrollX + ", " + scrollY + ");");
     }
-
+public static void scrollIntoElement(WebElement element){
+    WebDriver driver= DriverManager.getWebDriver();
+    long windowWidth = (long) ((JavascriptExecutor) driver).executeScript("return window.innerWidth;");
+    long windowHeight = (long) ((JavascriptExecutor) driver).executeScript("return window.innerHeight;");
+    long elementX = element.getLocation().getX();
+    long elementY = element.getLocation().getY();
+    long elementWidth = element.getSize().getWidth();
+    long elementHeight = element.getSize().getHeight();
+    long centerX = elementX + elementWidth / 2;
+    long centerY = elementY + elementHeight / 2;
+    long scrollX = centerX - windowWidth / 2;
+    long scrollY = centerY - windowHeight / 2;
+    ((JavascriptExecutor) driver).executeScript("window.scrollTo(" + scrollX + ", " + scrollY + ");");
+}
 
     public static String extractMentorListFromJSON(String jsonData) {
         return extractReportingManagers(jsonData);

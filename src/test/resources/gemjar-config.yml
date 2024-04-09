@@ -1,9 +1,9 @@
 {
   "environment": "dev",
   "project_name": "ORGCHART",
-  "report_name": "sanity test",
+  "report_name": "Dev Gemini testing",
   "enter_point": "https://apis.gemecosystem.com/gemEcosystemDashboard/v1/enter-point",
-  "tags": "@bvbv",
+  "tags": "@runDCView",
   "feature": "src/test/resources/features",
   "glue_code": "com.qa.orgchart.stepDefinitions",
   "jewel_user": "himu_1808",
@@ -19,14 +19,14 @@
     "launch_url": "https://orgchartdev-np.geminisolutions.com/auth/login",
     "browser_timeout": 20,
       "email": "himanshu.panchal@geminisolutions.com",
-      "password": "SGltdURlY0AxODA4"
+      "password": "SGltdU1hckAxODA4"
     },
   "prod": {
     "browser_name": "chrome",
     "launch_url": "https://orgchart.geminisolutions.com/auth/login",
     "browser_timeout": 20,
       "email": "himanshu.panchal@geminisolutions.com",
-    "password": "SGltdURlY0AxODA4"
+    "password": "SGltdU1hckAxODA4"
   }
 }
 

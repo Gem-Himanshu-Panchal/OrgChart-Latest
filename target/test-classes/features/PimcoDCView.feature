@@ -12,41 +12,42 @@ Feature: Pimco DC view data validations
     Then Check employee in PIMCODC view for "Pimco Analytics Support" of OrgChart
 
 
-  Scenario: Verify Pimco DC view for Pimco Client Facing Tech
-    When Open modals box in "Pimco Client Facing Tech"
-    Then Check employee in PIMCODC view for "Pimco Client Facing Tech" of OrgChart
+  Scenario: Verify Pimco DC view for PIMCO Client Data Intelligence
+    When Open modals box in "PIMCO Client Data Intelligence"
+    Then Check employee in PIMCODC view for "PIMCO Client Data Intelligence" of OrgChart
 
-#    pass
+#  Scenario: Verify Pimco DC view for Pimco Client Facing Tech
+#    When Open modals box in "Pimco Client Facing Tech"
+#    Then Check employee in PIMCODC view for "Pimco Client Facing Tech" of OrgChart
+
+
   Scenario: Verify Pimco DC view for Pimco Credit Research / PARR
     When Open modals box in "Pimco Credit Research / PARR"
     Then Check employee in PIMCODC view for "Pimco Credit Research / PARR" of OrgChart
 
-#    pass
+
   Scenario: Verify Pimco DC view for Pimco CSA frontend & ABS Tech
     When Open modals box in "Pimco CSA frontend & ABS Tech"
     Then Check employee in PIMCODC view for "Pimco CSA frontend & ABS Tech" of OrgChart
 
-#pass
+
   Scenario: Verify Pimco DC view for Pimco Data Engineering
     When Open modals box in "Pimco Data Engineering"
     Then Check employee in PIMCODC view for "Pimco Data Engineering" of OrgChart
 
-# pass
+
   Scenario: Verify Pimco DC view for Pimco Data Science
     When Open modals box in "Pimco Data Science"
     Then Check employee in PIMCODC view for "Pimco Data Science" of OrgChart
 
-#    pass
   Scenario: Verify Pimco DC view for Pimco DevOps / Platform Engineering
     When Open modals box in "Pimco DevOps / Platform Engineering"
     Then Check employee in PIMCODC view for "Pimco DevOps / Platform Engineering" of OrgChart
 
-#    pass
   Scenario: Verify Pimco DC view for Pimco EMEA Tech
     When Open modals box in "Pimco EMEA Tech"
     Then Check employee in PIMCODC view for "Pimco EMEA Tech" of OrgChart
 
-#pass
   Scenario: Verify Pimco DC view for Pimco FE Infrastructure
     When Open modals box in "Pimco FE Infrastructure"
     Then Check employee in PIMCODC view for "Pimco FE Infrastructure" of OrgChart

@@ -85,7 +85,7 @@ public class ECTechView {
                 if (empName.contains("Vishal Malik") || empName.contains("Aman Bansal") || empName.contains("Anil Pahal")
                         || empName.contains("Anil Singh") || empName.contains("Neeraj Yadav") || empName.contains("Prashank Chaudhary") || empName.contains("Lovish Sanghvi")) {
                     GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
-                            empName + " is at right hierarchy", STATUS.PASS, DriverAction.takeSnapShot());
+                            empName + " is at right hierarchy", STATUS.PASS);
                     continue;
                 }
 
@@ -107,7 +107,7 @@ public class ECTechView {
                     if (GenericUtils.isEmployeeInFirstRow(firstRowEmployees, empName, empCode)) {
 
                         GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
-                                empName + " is at right hierarchy", STATUS.PASS, DriverAction.takeSnapShot());
+                                empName + " is at right hierarchy", STATUS.PASS);
                     } else {
                         GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
                                 empName + " is at wrong hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
@@ -115,7 +115,7 @@ public class ECTechView {
                 } else {
                     if (GenericUtils.isExist(CommonLocators.hierarchyCheck(mentorName, mentorCode, empName, empCode))) {
                         GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
-                                empName + " is at right hierarchy", STATUS.PASS, DriverAction.takeSnapShot());
+                                empName + " is at right hierarchy", STATUS.PASS);
                     } else {
                         GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
                                 empName + " is at wrong hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());

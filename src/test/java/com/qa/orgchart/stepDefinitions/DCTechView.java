@@ -9,6 +9,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,11 +21,11 @@ public class DCTechView {
     public void checkForEmployeeInDcViewOfOrgChart(String dcTechName,String dcType) {
         try {
             List<Object> response = openDCTeamBox(dcTechName, dcType);
+            System.out.println(response);
+            List<String> coChairs = (List<String>) response.get(1);
             GemTestReporter.addTestStep("Check chair","Chair: "+response.get(0),STATUS.PASS);
-//            openDCNodes(dcType);
-
             String chair = (String) response.get(0);
-            List<WebElement>firstRowEmployees = (List<WebElement>) response.get(1);
+            List<WebElement>firstRowEmployees = (List<WebElement>) response.get(2);
             System.out.println(chair+"   "+firstRowEmployees.size());
             GenericUtils.waitUntilLoaderDisappear();
             GenericUtils.waitUntilElementAppear(CommonLocators.chartContainer);
@@ -52,18 +54,18 @@ public class DCTechView {
                     assert mentorDCTech != null;
 
                     DriverAction.waitSec(1);
-                    if (!mentorDCTech.contains(dcTechName) && !mentorSecondaryDCTech.contains(dcTechName) && !mentorName.equalsIgnoreCase(chair)) {
-                        if (GenericUtils.isEmployeeInFirstRow(firstRowEmployees, empName, empCode)) {
-                            GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
-                                    empName + " is at right hierarchy", STATUS.PASS, DriverAction.takeSnapShot());
-                        } else {
-                            GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
-                                    empName + " is at wrong hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
-                        }
-                    } else if (!mentorDCTech.contains(dcTechName) && !mentorSecondaryDCTech.contains(dcTechName) && mentorName.equalsIgnoreCase(chair)) {
+                    if (!mentorDCTech.contains(dcTechName) && !mentorSecondaryDCTech.contains(dcTechName) && !mentorName.equalsIgnoreCase(chair) && !coChairs.contains(mentorName)) {
+                            if (GenericUtils.isEmployeeInFirstRow(firstRowEmployees, empName, empCode)) {
+                                GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
+                                        empName + " is at right hierarchy", STATUS.PASS);
+                            } else {
+                                GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
+                                        empName + " is at wrong hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
+                            }
+                    } else if (!mentorDCTech.contains(dcTechName) && !mentorSecondaryDCTech.contains(dcTechName) && (mentorName.equalsIgnoreCase(chair) || coChairs.contains(mentorName))) {
                         if (GenericUtils.isExist(CommonLocators.hierarchyCheck(mentorName, mentorCode, empName, empCode))) {
                             GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
-                                    empName + " is at right hierarchy", STATUS.PASS, DriverAction.takeSnapShot());
+                                    empName + " is at right hierarchy", STATUS.PASS);
                         } else {
                             GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
                                     empName + " is at wrong hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
@@ -71,7 +73,7 @@ public class DCTechView {
                     } else if (!mentorDCTech.contains(dcTechName) && !mentorSecondaryDCTech.contains(dcTechName)) {
                         if (GenericUtils.isEmployeeInFirstRow(firstRowEmployees, empName, empCode)) {
                             GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
-                                    empName + " is at right hierarchy", STATUS.PASS, DriverAction.takeSnapShot());
+                                    empName + " is at right hierarchy", STATUS.PASS);
                         } else {
                             GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
                                     empName + " is at wrong hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
@@ -79,7 +81,7 @@ public class DCTechView {
                     } else {
                         if (GenericUtils.isExist(CommonLocators.hierarchyCheck(mentorName, mentorCode, empName, empCode))) {
                             GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
-                                    empName + " is at right hierarchy", STATUS.PASS, DriverAction.takeSnapShot());
+                                    empName + " is at right hierarchy", STATUS.PASS);
                         } else {
                             GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
                                     empName + " is at wrong hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
@@ -157,26 +159,37 @@ public class DCTechView {
     public synchronized List<Object> openDCTeamBox(String teamBox,String DCtype){
         GenericUtils.waitUntilLoaderDisappear();
         GenericUtils.waitUntilElementAppear(CommonLocators.ecTeamBox(teamBox));
-        DriverAction.scrollIntoView(CommonLocators.ecTeamBox(teamBox));
+        GenericUtils.scrollIntoElement(DriverAction.getElement(CommonLocators.ecTeamBox(teamBox)));
+        DriverAction.waitSec(1);
+        DriverAction.hoverOver(CommonLocators.companyLogo);
+        DriverAction.waitSec(1);
         DriverAction.hoverOver(CommonLocators.ecTeamBox(teamBox));
-            String chair = null;
-            if (GenericUtils.isExist(CommonLocators.chairBox(teamBox))) {
-                chair = DriverAction.getElementText(CommonLocators.chairName(teamBox));
-            }
+
+        GenericUtils.waitUntilElementAppear(CommonLocators.downArrowDcView(teamBox));
+        if(!DriverAction.isExist(CommonLocators.downArrowDcView(teamBox))){
+            GenericUtils.scrollIntoElement(DriverAction.getElement(CommonLocators.ecTeamBox(teamBox)));
+            DriverAction.waitSec(1);
+            DriverAction.hoverOver(CommonLocators.companyLogo);
+            DriverAction.waitSec(1);
+            DriverAction.hoverOver(CommonLocators.ecTeamBox(teamBox));
             GenericUtils.waitUntilElementAppear(CommonLocators.downArrowDcView(teamBox));
-            if(!DriverAction.isExist(CommonLocators.downArrowDcView(teamBox))){
-                DriverAction.scrollIntoView(CommonLocators.ecTeamBox(teamBox));
-                DriverAction.hoverOver(CommonLocators.ecTeamBox(teamBox));
-                GenericUtils.waitUntilElementAppear(CommonLocators.downArrowDcView(teamBox));
-            }
-            DriverAction.getElement(CommonLocators.downArrowDcView(teamBox)).click();
-            DriverAction.waitSec(3);
-            GenericUtils.waitUntilLoaderDisappear();
-            GenericUtils.waitUntilElementAppear(CommonLocators.firstRowEmployees(teamBox));
-            List<WebElement>firstRowEmployees = DriverAction.getElements(CommonLocators.firstRowEmployees(teamBox));
-            List<Object> result = new ArrayList<>();
-            result.add(chair);
-            result.add(firstRowEmployees);
+        }
+
+        String chair = null;
+        if (GenericUtils.isExist(CommonLocators.chairBox(teamBox))) {
+            chair = DriverAction.getElementText(CommonLocators.chairName(teamBox));
+        }
+        List<String> coChairsNames = DriverAction.getElementsText(CommonLocators.coChairsNames(teamBox));
+
+        DriverAction.getElement(CommonLocators.downArrowDcView(teamBox)).click();
+        DriverAction.waitSec(3);
+        GenericUtils.waitUntilLoaderDisappear();
+        GenericUtils.waitUntilElementAppear(CommonLocators.firstRowEmployees(teamBox));
+        List<WebElement>firstRowEmployees = DriverAction.getElements(CommonLocators.firstRowEmployees(teamBox));
+        List<Object> result = new ArrayList<>();
+        result.add(chair);
+        result.add(coChairsNames);
+        result.add(firstRowEmployees);
 
 
         DriverAction.waitSec(1);
@@ -205,8 +218,6 @@ public class DCTechView {
             members.addAll(DriverAction.getElements(By.xpath(path1)));
 
         }
-            return result;
+        return result;
     }
 }
-
-

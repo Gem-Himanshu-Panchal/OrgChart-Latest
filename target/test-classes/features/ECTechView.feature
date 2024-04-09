@@ -45,19 +45,19 @@ Feature: EC view data validations
 
   Scenario: Verify EC view for Executive Office
     Given Check employee in EC view for "Executive Office" of OrgChart
-
+  @gdy
   Scenario: Verify EC view for Full stack (Angular/ Node/ React)
     Given Check employee in EC view for "Full stack (Angular/ Node/ React)" of OrgChart
 
   Scenario: Verify EC view for Human Resource
     Given Check employee in EC view for "Human Resource" of OrgChart
-
+  @gdy
   Scenario: Verify EC view for Infrastructure/IT
     Given Check employee in EC view for "Infrastructure/IT" of OrgChart
 
   Scenario: Verify EC view for Insurance
     Given Check employee in EC view for "Insurance" of OrgChart
-
+  @gdy
   Scenario: Verify EC view for Java
     Given Check employee in EC view for "Java" of OrgChart
 
