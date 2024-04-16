@@ -1,9 +1,9 @@
 {
-  "environment": "dev",
+  "environment": "Prod",
   "project_name": "ORGCHART",
-  "report_name": "Dev Gemini testing",
+  "report_name": "EC API regression",
   "enter_point": "https://apis.gemecosystem.com/gemEcosystemDashboard/v1/enter-point",
-  "tags": "@runDCView",
+  "tags": "@api",
   "feature": "src/test/resources/features",
   "glue_code": "com.qa.orgchart.stepDefinitions",
   "jewel_user": "himu_1808",
@@ -13,7 +13,7 @@
   "event_firing": "n",
   "email_report": "n",
   "email_to": "himanshu.panchal@geminisolutions.com",
-  "browser_options": "[--incognito]",
+  "browser_options": "[--headless]",
     "dev": {
     "browser_name": "chrome",
     "launch_url": "https://orgchartdev-np.geminisolutions.com/auth/login",

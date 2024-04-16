@@ -5,6 +5,7 @@ import com.gemini.generic.reporting.STATUS;
 import com.gemini.generic.ui.utils.DriverAction;
 import com.qa.orgchart.locators.CommonLocators;
 import com.qa.orgchart.utils.GenericUtils;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
@@ -16,17 +17,17 @@ import java.util.HashMap;
 import java.util.List;
 
 public class DCTechView {
-
+    public int actualEmps = 0;
     @Then("^Check employee in DC view for \"(.*)\" in \"(.*)\" of OrgChart$")
     public void checkForEmployeeInDcViewOfOrgChart(String dcTechName,String dcType) {
         try {
+            int jsonEmp = 0;
+            int missingEmployees = 0;
             List<Object> response = openDCTeamBox(dcTechName, dcType);
-            System.out.println(response);
             List<String> coChairs = (List<String>) response.get(1);
             GemTestReporter.addTestStep("Check chair","Chair: "+response.get(0),STATUS.PASS);
             String chair = (String) response.get(0);
             List<WebElement>firstRowEmployees = (List<WebElement>) response.get(2);
-            System.out.println(chair+"   "+firstRowEmployees.size());
             GenericUtils.waitUntilLoaderDisappear();
             GenericUtils.waitUntilElementAppear(CommonLocators.chartContainer);
             List<HashMap<String, String>> hashMapList = jsonToHash.getHashList2();
@@ -41,19 +42,19 @@ public class DCTechView {
                     String empCode = hashMap.get("EmployeeCode");
                     String mentorName = hashMap.get("ReportingManager");
                     String mentorCode = hashMap.get("ManagerCode");
-
                     if (!GenericUtils.isExist(CommonLocators.employeeDiv(empName, empCode))) {
                         GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
                                 empName + " is missing from hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
                         flag++;
+                        missingEmployees++;
                         continue;
                     }
                     GenericUtils.scrollToElement(empName, empCode);
                     String mentorDCTech = GenericUtils.getDcTech(mentorName, mentorCode);
                     String mentorSecondaryDCTech = GenericUtils.getSecondaryDcTech(mentorName, mentorCode);
                     assert mentorDCTech != null;
-
                     DriverAction.waitSec(1);
+                    jsonEmp++;
                     if (!mentorDCTech.contains(dcTechName) && !mentorSecondaryDCTech.contains(dcTechName) && !mentorName.equalsIgnoreCase(chair) && !coChairs.contains(mentorName)) {
                             if (GenericUtils.isEmployeeInFirstRow(firstRowEmployees, empName, empCode)) {
                                 GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
@@ -89,6 +90,14 @@ public class DCTechView {
                     }
                     flag++;
                 }
+            }
+            System.out.println("Json head count: "+jsonEmp);
+            System.out.println("Missing head count: "+missingEmployees);
+            System.out.println("Actual head count: "+actualEmps);
+
+            if((actualEmps)> (jsonEmp + missingEmployees + coChairs.size())){
+                GemTestReporter.addTestStep("Check if there are any extra nodes under "+dcTechName +" tech",
+                        "There are extra nodes under "+dcTechName+" tech", STATUS.FAIL, DriverAction.takeSnapShot());
             }
         } catch (Exception e) {
             GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
@@ -204,9 +213,11 @@ public class DCTechView {
             path1 = "(//tr[@class='nodes'])[5]/td/table";
         }
         endPath = "/tr[@class='nodes']/td/table";
+
         while (!members.isEmpty()) {
             for (WebElement member : members) {
                 DriverAction.scrollIntoView(member);
+                actualEmps++;
                 DriverAction.hoverOver(member);
                 if (GenericUtils.isExist(CommonLocators.downArrow)) {
                     DriverAction.getElement(CommonLocators.downArrow).click();
@@ -220,4 +231,5 @@ public class DCTechView {
         }
         return result;
     }
+
 }

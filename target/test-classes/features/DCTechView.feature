@@ -1,18 +1,9 @@
-@runDCView @regression @runDCGEM
+@runDCView @regression @DCEC
 Feature: DC view data validations
 
   Background: Verify if user successfully log into Orgchart
     When Navigate to OrgChart and login
     Then Verify if user is on OrgChart dashboard
-#    And Click on "Admin" button
-#    And Click on "Manage View" button
-#    Then Click on " Export Employees " button
-#    And Open downloaded excel file
-#    Then Update the JSON data file
-#    And Update the mentor name list
-#    And Update the mentor code list
-#    And Go to Dashboard
-#    Then Verify if user is on OrgChart dashboard
     And Switch to "DC" view
 
 
@@ -39,14 +30,9 @@ Feature: DC view data validations
     When Open path for "Clients" Dc tech and "Edward Jones Developer Platform" DC
     Then Check employee in DC view for "Edward Jones Developer Platform" in "Clients" of OrgChart
 
-#  Scenario: Verify DC view for Edward Jones DevSecOps
-#    When Open path for "Clients" Dc tech and "Edward Jones DevSecOps" DC
-#    Then Check employee in DC view for "Edward Jones DevSecOps" in "Clients" of OrgChart
-
   Scenario: Verify DC view for Edward Jones Environments & ITSM
     When Open path for "Clients" Dc tech and "Edward Jones Environments & ITSM" DC
     Then Check employee in DC view for "Edward Jones Environments & ITSM" in "Clients" of OrgChart
-
 
   Scenario: Verify DC view for Edward Jones Quality Engineering
     When Open path for "Clients" Dc tech and "Edward Jones Quality Engineering" DC
@@ -167,7 +153,6 @@ Feature: DC view data validations
     When Open path for "Clients" Dc tech and "Pimco Reference Data" DC
     Then Check employee in DC view for "Pimco Reference Data" in "Clients" of OrgChart
 
-
   Scenario: Verify DC view for PIMCO Client Data Intelligence
     When Open path for "Clients" Dc tech and "PIMCO Client Data Intelligence" DC
     Then Check employee in DC view for "PIMCO Client Data Intelligence" in "Clients" of OrgChart
@@ -215,7 +200,6 @@ Feature: DC view data validations
   Scenario: Verify DC view for Pimco Puma
     When Open path for "Clients" Dc tech and "Pimco Puma" DC
     Then Check employee in DC view for "Pimco Puma" in "Clients" of OrgChart
-
 
 
 
@@ -272,5 +256,6 @@ Feature: DC view data validations
     When Open path for "Clients" Dc tech and "IT" DC
     Then Check employee in DC view for "IT" in "Clients" of OrgChart
 
-#  Scenario: Verify any duplicate data in OrgChart employee view
-#    When Search for any duplicate employee in OrgChart Gemini view
+  Scenario: Verify DC view for Emaar
+    When Open path for "Clients" Dc tech and "Emaar" DC
+    Then Check employee in DC view for "Emaar" in "Clients" of OrgChart
