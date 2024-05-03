@@ -45,7 +45,7 @@ Feature: DC view data validations
   Scenario: Verify DC view for Edward Jones EOG
     When Open path for "Clients" Dc tech and "Edward Jones EOG" DC
     Then Check employee in DC view for "Edward Jones EOG" in "Clients" of OrgChart
-
+  @temp
   Scenario: Verify DC view for Edward Jones Language and Data Management
     When Open path for "Clients" Dc tech and "Edward Jones Language and Data Management" DC
     Then Check employee in DC view for "Edward Jones Language and Data Management" in "Clients" of OrgChart
@@ -81,9 +81,13 @@ Feature: DC view data validations
     When Open path for "Internal" Dc tech and "Internal Gembook" DC
     Then Check employee in DC view for "Internal Gembook" in "Internal" of OrgChart
 
-  Scenario: Verify DC view for Internal Gemini Hpipe_Simul
-    When Open path for "Internal" Dc tech and "Internal Gemini Hpipe_Simul" DC
-    Then Check employee in DC view for "Internal Gemini Hpipe_Simul" in "Internal" of OrgChart
+  Scenario: Verify DC view for Internal Hpipe
+    When Open path for "Internal" Dc tech and "Internal Hpipe" DC
+    Then Check employee in DC view for "Internal Hpipe" in "Internal" of OrgChart
+@temp
+  Scenario: Verify DC view for Internal Simulation
+    When Open path for "Internal" Dc tech and "Internal Simulation" DC
+    Then Check employee in DC view for "Internal Simulation" in "Internal" of OrgChart
 
   Scenario: Verify DC view for Internal HRIS
     When Open path for "Internal" Dc tech and "Internal HRIS" DC
@@ -208,10 +212,6 @@ Feature: DC view data validations
     When Open path for "Clients" Dc tech and "FinAdvisor" DC
     Then Check employee in DC view for "FinAdvisor" in "Clients" of OrgChart
 
-  Scenario: Verify DC view for Hdfc Ergo
-    When Open path for "Clients" Dc tech and "HDFC Ergo" DC
-    Then Check employee in DC view for "Hdfc Ergo" in "Clients" of OrgChart
-
   Scenario: Verify DC view for Sports Performance Analytics
     When Open path for "Clients" Dc tech and "Sports Performance Analytics" DC
     Then Check employee in DC view for "Sports Performance Analytics" in "Clients" of OrgChart
@@ -251,10 +251,6 @@ Feature: DC view data validations
   Scenario: Verify DC view for IBKS
     When Open path for "Clients" Dc tech and "IBKS" DC
     Then Check employee in DC view for "IBKS" in "Clients" of OrgChart
-
-  Scenario: Verify DC view for IT
-    When Open path for "Clients" Dc tech and "IT" DC
-    Then Check employee in DC view for "IT" in "Clients" of OrgChart
 
   Scenario: Verify DC view for Emaar
     When Open path for "Clients" Dc tech and "Emaar" DC

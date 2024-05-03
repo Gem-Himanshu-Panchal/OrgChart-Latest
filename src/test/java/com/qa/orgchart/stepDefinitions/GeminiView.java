@@ -8,12 +8,10 @@ import com.gemini.generic.ui.utils.DriverAction;
 import com.gemini.generic.ui.utils.DriverManager;
 import com.qa.orgchart.locators.CommonLocators;
 import com.qa.orgchart.utils.GenericUtils;
-import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,47 +20,34 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-
 public class GeminiView {
-
     @When("^Search for any duplicate employee in OrgChart Gemini view$")
     public void searchForAnyDuplicateEmployeeInOrgChartGeminiView() {
         try {
             List<HashMap<String, String>> hashMapList = jsonToHash.getHashList2();
-
             assert hashMapList != null;
             for (HashMap<String, String> stringStringHashMap : hashMapList) {
                 String name = stringStringHashMap.get("EmployeeName");
                 String code = stringStringHashMap.get("EmployeeCode");
-
                 List<WebElement> li = DriverAction.getElements(CommonLocators.dataSource("name", name, "EmployeeCode", code));
-
                 if (li.size() > 1) {
                     System.out.println(name + " " + code);
                     GemTestReporter.addTestStep("Duplicate"
                             , name + "   " + code, STATUS.FAIL);
                 }
-
             }
         } catch (Exception e) {
             GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL, DriverAction.takeSnapShot());
             throw new RuntimeException(e);
         }
     }
-
-
     @When("^Open hierarchy in Gemini view for \"(.*)\" to \"(.*)\" managers$")
     public void testNewGemini(int start, int end) {
-
         List<String> mentorNames = null;
         List<String> mentorCodes = null;
-
         GenericUtils.waitUntilLoaderDisappear();
         List<HashMap<String, String>> hashMapList = jsonToHash.getHashList2();
-
         List<String> mentees;
-
         try {
             String filePath = "src/test/java/com/qa/orgchart/jsonData/MentorsNameList";
             String filePathCode = "src/test/java/com/qa/orgchart/jsonData/MentorsCodeList";
@@ -72,30 +57,24 @@ public class GeminiView {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         try {
             if (hashMapList != null) {
                 if (start == 180)
                     end = mentorNames.size();
-
                 Lastloop:
                 for (int i = start; i < end; i++) {
                     assert mentorNames != null;
                     String manager = mentorNames.get(i);
                     assert mentorCodes != null;
                     String managerCode = mentorCodes.get(i);
-
                     if (manager.equalsIgnoreCase("Vishal Malik") || manager.equalsIgnoreCase("Anil Singh") || manager.equalsIgnoreCase("Anil Pahal"))
                         continue;
-
-
                     List<String> userHierarchy = GenericUtils.getManagerHierarchy(manager, managerCode);
                     mentees = GenericUtils.getMenteesList(manager);
                     System.out.println("Mentor: " + manager);
                     System.out.println("Mentees: " + mentees);
                     System.out.println();
                     int lastIndex = userHierarchy.size() - 1;
-
                     while (userHierarchy.size() != 2) {
                         DriverAction.waitSec(1);
                         if (!GenericUtils.isExist(CommonLocators.employeeDiv(userHierarchy.get(lastIndex - 1), userHierarchy.get(lastIndex)))) {
@@ -109,13 +88,10 @@ public class GeminiView {
                         }
                         DriverAction.scrollIntoView(CommonLocators.dataSource("name", userHierarchy.get(lastIndex - 1), "EmployeeCode", userHierarchy.get(lastIndex)));
                         DriverAction.scrollToBottom();
-
                         GenericUtils.waitUntilElementAppear(CommonLocators.dataSource("name", userHierarchy.get(lastIndex - 1), "EmployeeCode", userHierarchy.get(lastIndex)));
                         DriverAction.hoverOver(CommonLocators.dataSource("name", userHierarchy.get(lastIndex - 1), "EmployeeCode", userHierarchy.get(lastIndex)));
-
                         DriverAction.scrollIntoView(CommonLocators.downArrowDataSource("name", userHierarchy.get(lastIndex - 1), "EmployeeCode", userHierarchy.get(lastIndex)));
                         DriverAction.scrollToBottom();
-
                         GenericUtils.waitUntilElementAppear(CommonLocators.downArrowDataSource("name", userHierarchy.get(lastIndex - 1), "EmployeeCode", userHierarchy.get(lastIndex)));
                         if (!GenericUtils.isExist(CommonLocators.downArrowDataSource("name", userHierarchy.get(lastIndex - 1), "EmployeeCode", userHierarchy.get(lastIndex)))) {
                             DriverAction.hoverOver(CommonLocators.dataSource("name", userHierarchy.get(lastIndex - 1), "EmployeeCode", userHierarchy.get(lastIndex)));
@@ -126,9 +102,6 @@ public class GeminiView {
                         userHierarchy.remove(lastIndex - 1);
                         lastIndex = userHierarchy.size() - 1;
                     }
-
-//Check manager hierarchy
-
                     if (GenericUtils.isExist(CommonLocators.employeeDiv(manager, managerCode))) {
                         GenericUtils.scrollToElement(manager, managerCode);
                         GemTestReporter.addTestStep(i + ". " + "Verify if manager: " + manager + " is present or not",
@@ -141,7 +114,6 @@ public class GeminiView {
                     }
                     DriverAction.hoverOver(CommonLocators.employeeDiv(manager, managerCode));
                     GenericUtils.waitUntilElementAppear(CommonLocators.downArrowDataSource("name", manager, "EmployeeCode", managerCode));
-
                     if (GenericUtils.isExist(CommonLocators.downArrowDataSource("name", manager, "EmployeeCode", managerCode)))
                         DriverAction.getElement(CommonLocators.downArrowDataSource("name", manager, "EmployeeCode", managerCode)).click();
                     else {
@@ -150,17 +122,13 @@ public class GeminiView {
                         DriverAction.refresh();
                         continue;
                     }
-
                     List<WebElement> menteeCountOnApplication = DriverAction.getElements(CommonLocators.menteeCount(manager, managerCode));
-
-
                     int menteeCount = mentees.size();
 
                     if (menteeCountOnApplication.size() > menteeCount) {
                         GemTestReporter.addTestStep("Verify number of mentee",
                                 "Application have more mentees under: " + manager, STATUS.FAIL, DriverAction.takeSnapShot());
                     }
-
                     for (int j = 0; j < menteeCount; j = j + 2) {
                         DriverAction.waitSec(1);
                         HashMap<String, String> hashMap = GenericUtils.getEmployeeData(mentees.get(0), manager);
@@ -175,28 +143,24 @@ public class GeminiView {
                             mentees.remove(0);
                             continue;
                         }
-
-
                         DriverAction.getElement(CommonLocators.employeeDiv(mentees.get(0), mentees.get(1))).click();
                         GenericUtils.waitUntilElementAppear(CommonLocators.infoCard);
-
                         GenericUtils.waitUntilLoaderDisappear();
                         if (!GenericUtils.isExist(CommonLocators.checkInfoCard)) {
                             DriverAction.getElement(CommonLocators.employeeDiv(mentees.get(0), mentees.get(1))).click();
                             GenericUtils.waitUntilElementAppear(CommonLocators.infoCard);
-
                             if (!GenericUtils.isExist(CommonLocators.checkInfoCard)) {
                                 GemTestReporter.addTestStep("Verify if users info card is opened or not",
                                         "Unable to open info card of " + mentees.get(0), STATUS.FAIL, DriverAction.takeSnapShot());
                                 mentees.remove(0);
                                 mentees.remove(0);
+                                DriverAction.refresh();
+                                GenericUtils.waitUntilLoaderDisappear();
                                 continue;
                             }
                         }
-
                         assert hashMap != null;
                         List<String> resp = GenericUtils.verifyEmployeeDetails(hashMap);
-
                         if (resp.get(0).equalsIgnoreCase("True")) {
                             GemTestReporter.addTestStep("Verify if " + mentees.get(0) + " has right values",
                                     mentees.get(0) + " has right values", STATUS.PASS);
@@ -208,9 +172,7 @@ public class GeminiView {
                         mentees.remove(0);
                         mentees.remove(0);
                     }
-
                     DriverAction.refresh();
-
                     if (GenericUtils.isExist(CommonLocators.chartContainer)
                             && GenericUtils.isExist(CommonLocators.searchField)) {
                         System.out.println("Hello world");
@@ -226,12 +188,10 @@ public class GeminiView {
             throw new RuntimeException(e);
         }
     }
-
     private static List<String> readNamesFromFile(String filePath) throws IOException {
         Path path = Paths.get(filePath);
         return Files.readAllLines(path);
     }
-
     @And("Go to Dashboard")
     public void goToDashboard() {
         try {
@@ -241,8 +201,6 @@ public class GeminiView {
             throw new RuntimeException(e);
         }
     }
-
-
     @When("^Search for any extra employee$")
     public void searchForAnyExtraEmployee() {
         try {
@@ -254,20 +212,14 @@ public class GeminiView {
             for (WebElement element : hiddenElements) {
                 extractedEmpNames.add((String) js.executeScript("return arguments[0].textContent;", element));
             }
-
             String filePath = "src/test/java/com/qa/orgchart/jsonData/updatedJsonPayload.json";
-
             List<String> jsonEmpNames = new ArrayList<>();
             ObjectMapper objectMapper = new ObjectMapper();
-
             JsonNode rootNode = objectMapper.readTree(new File(filePath));
-
             for (JsonNode employeeNode : rootNode) {
                 String employeeName = employeeNode.get("EmployeeName").asText();
                 jsonEmpNames.add(employeeName);
             }
-
-
             for (int i = 0; i < extractedEmpNames.size(); i++) {
                 if (!jsonEmpNames.contains(extractedEmpNames.get(i))) {
                     GemTestReporter.addTestStep("Extra employee list", "Employee Name: " + extractedEmpNames.get(i), STATUS.FAIL);

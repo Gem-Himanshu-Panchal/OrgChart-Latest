@@ -17,7 +17,7 @@ import java.util.List;
 
 
 public class ECTechView {
-
+    public int actualEmps = 0;
 
     public synchronized List<Object> openECTeamBox(String teamBox) {
         GenericUtils.waitUntilLoaderDisappear();
@@ -25,17 +25,20 @@ public class ECTechView {
         DriverAction.scrollIntoView(CommonLocators.ecTeamBox(teamBox));
         DriverAction.hoverOver(CommonLocators.ecTeamBox(teamBox));
         String chair = null;
+        List<String> coChairsNames = DriverAction.getElementsText(CommonLocators.coChairsNames(teamBox));
+
         if (GenericUtils.isExist(CommonLocators.chairBox(teamBox))) {
             chair = DriverAction.getElementText(CommonLocators.chairName(teamBox));
         }
-        GenericUtils.waitUntilElementAppear(By.xpath("//div[contains(text(),'"+teamBox+"')]//ancestor::div[@class='teambox']//preceding-sibling::i[@class='edge verticalEdge bottomEdge fa fa-chevron-circle-down']"));
-        DriverAction.getElement(By.xpath("//div[contains(text(),'"+teamBox+"')]//ancestor::div[@class='teambox']//preceding-sibling::i[@class='edge verticalEdge bottomEdge fa fa-chevron-circle-down']")).click();
+        GenericUtils.waitUntilElementAppear(By.xpath("//div[contains(text(),'" + teamBox + "')]//ancestor::div[@class='teambox']//preceding-sibling::i[@class='edge verticalEdge bottomEdge fa fa-chevron-circle-down']"));
+        DriverAction.getElement(By.xpath("//div[contains(text(),'" + teamBox + "')]//ancestor::div[@class='teambox']//preceding-sibling::i[@class='edge verticalEdge bottomEdge fa fa-chevron-circle-down']")).click();
         DriverAction.waitSec(3);
         GenericUtils.waitUntilLoaderDisappear();
         GenericUtils.waitUntilElementAppear(CommonLocators.firstRowEmployees(teamBox));
         List<WebElement> firstRowEmployees = DriverAction.getElements(CommonLocators.firstRowEmployees(teamBox));
         List<Object> result = new ArrayList<>();
         result.add(chair);
+        result.add(coChairsNames);
         result.add(firstRowEmployees);
 
         DriverAction.waitSec(1);
@@ -46,6 +49,7 @@ public class ECTechView {
         while (!members.isEmpty()) {
             for (WebElement member : members) {
                 DriverAction.scrollIntoView(member);
+                actualEmps++;
                 DriverAction.hoverOver(member);
                 if (GenericUtils.isExist(CommonLocators.downArrow)) {
                     DriverAction.getElement(CommonLocators.downArrow).click();
@@ -61,18 +65,28 @@ public class ECTechView {
 
     }
 
-
     @Then("^Check employee in EC view for \"(.*)\" of OrgChart$")
     public void checkEmployeeInECViewForOfOrgChart(String ecName) {
+        int jsonEmp = 0;
+        int missingEmployees = 0;
+
         GenericUtils.waitUntilLoaderDisappear();
         GenericUtils.waitUntilElementAppear(CommonLocators.chartContainer);
         List<HashMap<String, String>> hashMapList = jsonToHash.getHashList2();
-        List<Object> response;
-        response = openECTeamBox(ecName);
+        List<Object> response = openECTeamBox(ecName);
         int flag = 1;
         String chair = (String) response.get(0);
-        List<WebElement> firstRowEmployees = (List<WebElement>) response.get(1);
+        List<WebElement> firstRowEmployees = (List<WebElement>) response.get(2);
         assert hashMapList != null;
+
+        String chairECTech = "";
+        for (HashMap<String, String> hashMap : hashMapList) {
+            String name = hashMap.get("EmployeeName");
+            if (name != null && name.equals(chair)) {
+                chairECTech = hashMap.get("ECTech");
+            }
+        }
+        List<String> coChairs = (List<String>) response.get(1);
         for (HashMap<String, String> hashMap : hashMapList) {
             String ecTechValue = hashMap.get("ECTech");
 
@@ -81,7 +95,7 @@ public class ECTechView {
                 String empCode = hashMap.get("EmployeeCode");
                 String mentorName = hashMap.get("ECMentorName");
                 String mentorCode = hashMap.get("ECMentorId");
-
+                jsonEmp++;
                 if (empName.contains("Vishal Malik") || empName.contains("Aman Bansal") || empName.contains("Anil Pahal")
                         || empName.contains("Anil Singh") || empName.contains("Neeraj Yadav") || empName.contains("Prashank Chaudhary") || empName.contains("Lovish Sanghvi")) {
                     GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
@@ -93,6 +107,7 @@ public class ECTechView {
                     GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
                             empName + " is missing from hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
                     flag++;
+                    missingEmployees++;
                     continue;
                 }
                 GenericUtils.scrollToElement(empName, empCode);
@@ -121,9 +136,22 @@ public class ECTechView {
                                 empName + " is at wrong hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
                     }
                 }
-                flag++;
+
+
+
             }
 
+            flag++;
+        }
+        //                Extra employee in application logic
+
+        assert chairECTech != null;
+        if (!chairECTech.equalsIgnoreCase(ecName)) {
+            coChairs.add(chair);
+        }
+        if ((actualEmps) > (jsonEmp + missingEmployees + coChairs.size())) {
+            GemTestReporter.addTestStep("Check if there are any extra nodes under " + ecName + " tech",
+                    "There are extra nodes under " + ecName + " tech", STATUS.FAIL, DriverAction.takeSnapShot());
         }
 
     }

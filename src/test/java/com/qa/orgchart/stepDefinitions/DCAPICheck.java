@@ -202,10 +202,10 @@ public class DCAPICheck {
             for (JsonNode employeeNode : rootNode) {
                 JsonNode dcTechNode = employeeNode.get("DCTech");
                 JsonNode secondaryDCsNode = employeeNode.get("SecondaryDCs");
-                if (dcTechNode != null && dcTechNode.asText().contains(techName)) {
+                if (dcTechNode != null && dcTechNode.asText().equalsIgnoreCase(techName)) {
                     names.add(employeeNode.get("EmployeeName").asText());
                     dcChairName = employeeNode.get("DCChairName").asText();
-                } else if (secondaryDCsNode != null && secondaryDCsNode.asText().contains(techName)) {
+                } else if (secondaryDCsNode != null && secondaryDCsNode.asText().equalsIgnoreCase(techName)) {
                     names.add(employeeNode.get("EmployeeName").asText());
                 }
             }

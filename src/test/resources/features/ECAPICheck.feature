@@ -1,10 +1,10 @@
 @ECapi
 Feature: Api test EC
 
-  Scenario Outline: API test for EC: "<dcName>"
-    When Hit endpoint for EC "<dcName>"
+  Scenario Outline: API test for EC: "<ecName>"
+    When Hit endpoint for EC "<ecName>"
     Examples:
-      | dcName                            |
+      | ecName                            |
       | .Net                              |
       | Accounts                          |
       | Admin                             |

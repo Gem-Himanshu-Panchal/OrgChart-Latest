@@ -25,12 +25,21 @@ public class DCTechView {
             int missingEmployees = 0;
             List<Object> response = openDCTeamBox(dcTechName, dcType);
             List<String> coChairs = (List<String>) response.get(1);
-            GemTestReporter.addTestStep("Check chair","Chair: "+response.get(0),STATUS.PASS);
+
+            GemTestReporter.addTestStep("Check chair", "Chair: " + response.get(0), STATUS.PASS);
             String chair = (String) response.get(0);
-            List<WebElement>firstRowEmployees = (List<WebElement>) response.get(2);
+            List<WebElement> firstRowEmployees = (List<WebElement>) response.get(2);
             GenericUtils.waitUntilLoaderDisappear();
             GenericUtils.waitUntilElementAppear(CommonLocators.chartContainer);
             List<HashMap<String, String>> hashMapList = jsonToHash.getHashList2();
+            String chairDCTech = "";
+
+            for (HashMap<String, String> hashMap : hashMapList) {
+                String name = hashMap.get("EmployeeName");
+                if (name != null && name.equals(chair)) {
+                    chairDCTech = hashMap.get("DCTech");
+                }
+            }
             int flag = 1;
             assert hashMapList != null;
             for (HashMap<String, String> hashMap : hashMapList) {
@@ -91,13 +100,16 @@ public class DCTechView {
                     flag++;
                 }
             }
-            System.out.println("Json head count: "+jsonEmp);
-            System.out.println("Missing head count: "+missingEmployees);
-            System.out.println("Actual head count: "+actualEmps);
-
-            if((actualEmps)> (jsonEmp + missingEmployees + coChairs.size())){
-                GemTestReporter.addTestStep("Check if there are any extra nodes under "+dcTechName +" tech",
-                        "There are extra nodes under "+dcTechName+" tech", STATUS.FAIL, DriverAction.takeSnapShot());
+//            System.out.println("Json head count: "+jsonEmp);
+//            System.out.println("Missing head count: "+missingEmployees);
+//            System.out.println("Actual head count: "+actualEmps);
+            assert chairDCTech != null;
+            if (!chairDCTech.equalsIgnoreCase(dcTechName)) {
+                coChairs.add(chair);
+            }
+            if ((actualEmps) > (jsonEmp + missingEmployees + coChairs.size())) {
+                GemTestReporter.addTestStep("Check if there are any extra nodes under " + dcTechName + " tech",
+                        "There are extra nodes under " + dcTechName + " tech", STATUS.FAIL, DriverAction.takeSnapShot());
             }
         } catch (Exception e) {
             GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
@@ -229,6 +241,7 @@ public class DCTechView {
             members.addAll(DriverAction.getElements(By.xpath(path1)));
 
         }
+
         return result;
     }
 
