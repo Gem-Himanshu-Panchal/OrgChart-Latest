@@ -1,17 +1,18 @@
-@runGeminiView @regression @runDCGEM
+@runGeminiView1 @regression12345 @runDCGEM
 Feature: Gemini view data validations
 
   Background: Verify if user successfully log into Orgchart
-    When Navigate to OrgChart and login
-    Then Verify if user is on OrgChart dashboard
+    Given a user is logged into OrgChart
+    When the user navigates to the OrgChart dashboard
 
-    @wasd
+
+
   Scenario: OrgChart, Verify set 1 of Gemini employees
     When Open hierarchy in Gemini view for "0" to "20" managers
-  @wasd
+
   Scenario: OrgChart, Verify set 2 of Gemini employees
     When Open hierarchy in Gemini view for "20" to "50" managers
-  @wasd
+
   Scenario: OrgChart, Verify set 3 of Gemini employees
     When Open hierarchy in Gemini view for "50" to "80" managers
 
@@ -25,7 +26,7 @@ Feature: Gemini view data validations
     When Open hierarchy in Gemini view for "150" to "180" managers
 
   Scenario: OrgChart, Verify set 7 of Gemini employees
-    When Open hierarchy in Gemini view for "180" to "222" managers
+    When Open hierarchy in Gemini view for "180" to "227" managers
 
   Scenario: Verify any duplicate data in OrgChart employee view
     When Search for any duplicate employee in OrgChart Gemini view

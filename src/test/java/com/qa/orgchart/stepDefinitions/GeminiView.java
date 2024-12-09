@@ -2,10 +2,12 @@ package com.qa.orgchart.stepDefinitions;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gemini.generic.reporting.GemTestReporter;
-import com.gemini.generic.reporting.STATUS;
-import com.gemini.generic.ui.utils.DriverAction;
-import com.gemini.generic.ui.utils.DriverManager;
+
+
+import com.gemini.gemjar.enums.Status;
+import com.gemini.gemjar.reporting.GemTestReporter;
+import com.gemini.gemjar.utils.ui.DriverAction;
+import com.gemini.gemjar.utils.ui.DriverManager;
 import com.qa.orgchart.locators.CommonLocators;
 import com.qa.orgchart.utils.GenericUtils;
 import io.cucumber.java.en.And;
@@ -33,11 +35,11 @@ public class GeminiView {
                 if (li.size() > 1) {
                     System.out.println(name + " " + code);
                     GemTestReporter.addTestStep("Duplicate"
-                            , name + "   " + code, STATUS.FAIL);
+                            , name + "   " + code, Status.FAIL);
                 }
             }
         } catch (Exception e) {
-            GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL, DriverAction.takeSnapShot());
+            GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, Status.FAIL, DriverAction.takeSnapShot());
             throw new RuntimeException(e);
         }
     }
@@ -67,8 +69,9 @@ public class GeminiView {
                     String manager = mentorNames.get(i);
                     assert mentorCodes != null;
                     String managerCode = mentorCodes.get(i);
-                    if (manager.equalsIgnoreCase("Vishal Malik") || manager.equalsIgnoreCase("Anil Singh") || manager.equalsIgnoreCase("Anil Pahal"))
-                        continue;
+//                    if (manager.equalsIgnoreCase("Vishal Malik") || manager.equalsIgnoreCase("Anil Singh") || manager.equalsIgnoreCase("Anil Pahal"))
+                    if (manager.equalsIgnoreCase("Anil Singh"))
+                    continue;
                     List<String> userHierarchy = GenericUtils.getManagerHierarchy(manager, managerCode);
                     mentees = GenericUtils.getMenteesList(manager);
                     System.out.println("Mentor: " + manager);
@@ -79,9 +82,9 @@ public class GeminiView {
                         DriverAction.waitSec(1);
                         if (!GenericUtils.isExist(CommonLocators.employeeDiv(userHierarchy.get(lastIndex - 1), userHierarchy.get(lastIndex)))) {
                             GemTestReporter.addTestStep(i + ". Verify if " + userHierarchy.get(lastIndex - 1) + " is at right hierarchy or not",
-                                    userHierarchy.get(lastIndex - 1) + " is missing from hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
+                                    userHierarchy.get(lastIndex - 1) + " is missing from hierarchy", Status.FAIL, DriverAction.takeSnapShot());
                             GemTestReporter.addTestStep("Check " + manager + " hierarchy",
-                                    manager + " is having incomplete hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
+                                    manager + " is having incomplete hierarchy", Status.FAIL, DriverAction.takeSnapShot());
                             DriverAction.refresh();
                             GenericUtils.waitUntilLoaderDisappear();
                             continue Lastloop;
@@ -105,10 +108,10 @@ public class GeminiView {
                     if (GenericUtils.isExist(CommonLocators.employeeDiv(manager, managerCode))) {
                         GenericUtils.scrollToElement(manager, managerCode);
                         GemTestReporter.addTestStep(i + ". " + "Verify if manager: " + manager + " is present or not",
-                                manager + " is present", STATUS.PASS);
+                                manager + " is present", Status.PASS);
                     } else {
                         GemTestReporter.addTestStep(i + ". Verify if manager: " + manager + " is present or not",
-                                manager + " is not present", STATUS.FAIL, DriverAction.takeSnapShot());
+                                manager + " is not present", Status.FAIL, DriverAction.takeSnapShot());
                         DriverAction.refresh();
                         continue;
                     }
@@ -118,7 +121,7 @@ public class GeminiView {
                         DriverAction.getElement(CommonLocators.downArrowDataSource("name", manager, "EmployeeCode", managerCode)).click();
                     else {
                         GemTestReporter.addTestStep(i + ". Verify if manager: " + userHierarchy.get(0) + " is at right hierarchy or not",
-                                manager + " is missing from hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
+                                manager + " is missing from hierarchy", Status.FAIL, DriverAction.takeSnapShot());
                         DriverAction.refresh();
                         continue;
                     }
@@ -127,7 +130,7 @@ public class GeminiView {
 
                     if (menteeCountOnApplication.size() > menteeCount) {
                         GemTestReporter.addTestStep("Verify number of mentee",
-                                "Application have more mentees under: " + manager, STATUS.FAIL, DriverAction.takeSnapShot());
+                                "Application have more mentees under: " + manager, Status.FAIL, DriverAction.takeSnapShot());
                     }
                     for (int j = 0; j < menteeCount; j = j + 2) {
                         DriverAction.waitSec(1);
@@ -135,23 +138,23 @@ public class GeminiView {
                         DriverAction.scrollIntoView(CommonLocators.hierarchyCheck(manager, managerCode, mentees.get(0), mentees.get(1)));
                         if (GenericUtils.isExist(CommonLocators.hierarchyCheck(manager, managerCode, mentees.get(0), mentees.get(1)))) {
                             GemTestReporter.addTestStep("Verify if mentee: " + mentees.get(0) + " is present or not",
-                                    mentees.get(0) + " is present", STATUS.PASS);
+                                    mentees.get(0) + " is present", Status.PASS);
                         } else {
                             GemTestReporter.addTestStep("Verify if mentee: " + mentees.get(0) + " is present or not",
-                                    mentees.get(0) + " is not present", STATUS.FAIL, DriverAction.takeSnapShot());
+                                    mentees.get(0) + " is not present", Status.FAIL, DriverAction.takeSnapShot());
                             mentees.remove(0);
                             mentees.remove(0);
                             continue;
                         }
                         DriverAction.getElement(CommonLocators.employeeDiv(mentees.get(0), mentees.get(1))).click();
-                        GenericUtils.waitUntilElementAppear(CommonLocators.infoCard);
                         GenericUtils.waitUntilLoaderDisappear();
+                        GenericUtils.waitUntilElementAppear(CommonLocators.infoCard);
                         if (!GenericUtils.isExist(CommonLocators.checkInfoCard)) {
                             DriverAction.getElement(CommonLocators.employeeDiv(mentees.get(0), mentees.get(1))).click();
                             GenericUtils.waitUntilElementAppear(CommonLocators.infoCard);
                             if (!GenericUtils.isExist(CommonLocators.checkInfoCard)) {
                                 GemTestReporter.addTestStep("Verify if users info card is opened or not",
-                                        "Unable to open info card of " + mentees.get(0), STATUS.FAIL, DriverAction.takeSnapShot());
+                                        "Unable to open info card of " + mentees.get(0), Status.FAIL, DriverAction.takeSnapShot());
                                 mentees.remove(0);
                                 mentees.remove(0);
                                 DriverAction.refresh();
@@ -163,10 +166,10 @@ public class GeminiView {
                         List<String> resp = GenericUtils.verifyEmployeeDetails(hashMap);
                         if (resp.get(0).equalsIgnoreCase("True")) {
                             GemTestReporter.addTestStep("Verify if " + mentees.get(0) + " has right values",
-                                    mentees.get(0) + " has right values", STATUS.PASS);
+                                    mentees.get(0) + " has right values", Status.PASS);
                         } else {
                             GemTestReporter.addTestStep("Verify if " + mentees.get(0) + " has right values",
-                                    mentees.get(0) + " has wrong value: " + resp.get(1), STATUS.FAIL, DriverAction.takeSnapShot());
+                                    mentees.get(0) + " has wrong value: " + resp.get(1), Status.FAIL, DriverAction.takeSnapShot());
                         }
                         DriverAction.getElement(CommonLocators.crossIcon).click();
                         mentees.remove(0);
@@ -184,7 +187,7 @@ public class GeminiView {
                 }
             }
         } catch (Exception e) {
-            GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL, DriverAction.takeSnapShot());
+            GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, Status.FAIL, DriverAction.takeSnapShot());
             throw new RuntimeException(e);
         }
     }
@@ -197,7 +200,7 @@ public class GeminiView {
         try {
             DriverAction.click(CommonLocators.companyLogo);
         } catch (Exception e) {
-            GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL, DriverAction.takeSnapShot());
+            GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, Status.FAIL, DriverAction.takeSnapShot());
             throw new RuntimeException(e);
         }
     }
@@ -222,11 +225,11 @@ public class GeminiView {
             }
             for (int i = 0; i < extractedEmpNames.size(); i++) {
                 if (!jsonEmpNames.contains(extractedEmpNames.get(i))) {
-                    GemTestReporter.addTestStep("Extra employee list", "Employee Name: " + extractedEmpNames.get(i), STATUS.FAIL);
+                    GemTestReporter.addTestStep("Extra employee list", "Employee Name: " + extractedEmpNames.get(i), Status.FAIL);
                 }
             }
         } catch (Exception e) {
-            GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL, DriverAction.takeSnapShot());
+            GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, Status.FAIL, DriverAction.takeSnapShot());
             throw new RuntimeException(e);
         }
     }

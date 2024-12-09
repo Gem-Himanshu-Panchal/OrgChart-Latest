@@ -1,8 +1,9 @@
 package com.qa.orgchart.stepDefinitions;
 
-import com.gemini.generic.reporting.GemTestReporter;
-import com.gemini.generic.reporting.STATUS;
-import com.gemini.generic.ui.utils.DriverAction;
+
+import com.gemini.gemjar.enums.Status;
+import com.gemini.gemjar.reporting.GemTestReporter;
+import com.gemini.gemjar.utils.ui.DriverAction;
 import com.qa.orgchart.locators.CommonLocators;
 import com.qa.orgchart.utils.GenericUtils;
 import io.cucumber.java.en.And;
@@ -26,7 +27,7 @@ public class DCTechView {
             List<Object> response = openDCTeamBox(dcTechName, dcType);
             List<String> coChairs = (List<String>) response.get(1);
 
-            GemTestReporter.addTestStep("Check chair", "Chair: " + response.get(0), STATUS.PASS);
+            GemTestReporter.addTestStep("Check chair", "Chair: " + response.get(0), Status.PASS);
             String chair = (String) response.get(0);
             List<WebElement> firstRowEmployees = (List<WebElement>) response.get(2);
             GenericUtils.waitUntilLoaderDisappear();
@@ -43,17 +44,17 @@ public class DCTechView {
             int flag = 1;
             assert hashMapList != null;
             for (HashMap<String, String> hashMap : hashMapList) {
-                if (hashMap.get("DCTech").contains(dcTechName)
+                if (hashMap.get("DCTech").equalsIgnoreCase(dcTechName)
                         || (hashMap.containsKey("SecondaryDCs") &&
                         hashMap.get("SecondaryDCs") != null &&
-                        hashMap.get("SecondaryDCs").contains(dcTechName))) {
+                        hashMap.get("SecondaryDCs").equalsIgnoreCase(dcTechName))) {
                     String empName = hashMap.get("EmployeeName");
                     String empCode = hashMap.get("EmployeeCode");
                     String mentorName = hashMap.get("ReportingManager");
                     String mentorCode = hashMap.get("ManagerCode");
                     if (!GenericUtils.isExist(CommonLocators.employeeDiv(empName, empCode))) {
                         GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
-                                empName + " is missing from hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
+                                empName + " is missing from hierarchy", Status.FAIL, DriverAction.takeSnapShot());
                         flag++;
                         missingEmployees++;
                         continue;
@@ -67,34 +68,34 @@ public class DCTechView {
                     if (!mentorDCTech.contains(dcTechName) && !mentorSecondaryDCTech.contains(dcTechName) && !mentorName.equalsIgnoreCase(chair) && !coChairs.contains(mentorName)) {
                             if (GenericUtils.isEmployeeInFirstRow(firstRowEmployees, empName, empCode)) {
                                 GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
-                                        empName + " is at right hierarchy", STATUS.PASS);
+                                        empName + " is at right hierarchy", Status.PASS);
                             } else {
                                 GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
-                                        empName + " is at wrong hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
+                                        empName + " is at wrong hierarchy", Status.FAIL, DriverAction.takeSnapShot());
                             }
                     } else if (!mentorDCTech.contains(dcTechName) && !mentorSecondaryDCTech.contains(dcTechName) && (mentorName.equalsIgnoreCase(chair) || coChairs.contains(mentorName))) {
                         if (GenericUtils.isExist(CommonLocators.hierarchyCheck(mentorName, mentorCode, empName, empCode))) {
                             GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
-                                    empName + " is at right hierarchy", STATUS.PASS);
+                                    empName + " is at right hierarchy", Status.PASS);
                         } else {
                             GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
-                                    empName + " is at wrong hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
+                                    empName + " is at wrong hierarchy", Status.FAIL, DriverAction.takeSnapShot());
                         }
                     } else if (!mentorDCTech.contains(dcTechName) && !mentorSecondaryDCTech.contains(dcTechName)) {
                         if (GenericUtils.isEmployeeInFirstRow(firstRowEmployees, empName, empCode)) {
                             GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
-                                    empName + " is at right hierarchy", STATUS.PASS);
+                                    empName + " is at right hierarchy", Status.PASS);
                         } else {
                             GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
-                                    empName + " is at wrong hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
+                                    empName + " is at wrong hierarchy", Status.FAIL, DriverAction.takeSnapShot());
                         }
                     } else {
                         if (GenericUtils.isExist(CommonLocators.hierarchyCheck(mentorName, mentorCode, empName, empCode))) {
                             GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
-                                    empName + " is at right hierarchy", STATUS.PASS);
+                                    empName + " is at right hierarchy", Status.PASS);
                         } else {
                             GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
-                                    empName + " is at wrong hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
+                                    empName + " is at wrong hierarchy", Status.FAIL, DriverAction.takeSnapShot());
                         }
                     }
                     flag++;
@@ -109,10 +110,10 @@ public class DCTechView {
             }
             if ((actualEmps) > (jsonEmp + missingEmployees + coChairs.size())) {
                 GemTestReporter.addTestStep("Check if there are any extra nodes under " + dcTechName + " tech",
-                        "There are extra nodes under " + dcTechName + " tech", STATUS.FAIL, DriverAction.takeSnapShot());
+                        "There are extra nodes under " + dcTechName + " tech", Status.FAIL, DriverAction.takeSnapShot());
             }
         } catch (Exception e) {
-            GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
+            GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, Status.FAIL);
             throw new RuntimeException(e);
         }
     }
@@ -173,7 +174,7 @@ public class DCTechView {
 
             }
         } catch (Exception e) {
-            GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, STATUS.FAIL);
+            GemTestReporter.addTestStep("Exception Occurred", "Exception: " + e, Status.FAIL);
             throw new RuntimeException(e);
         }
     }
@@ -229,6 +230,8 @@ public class DCTechView {
         while (!members.isEmpty()) {
             for (WebElement member : members) {
                 DriverAction.scrollIntoView(member);
+                GenericUtils.scrollIntoElement(member);
+
                 actualEmps++;
                 DriverAction.hoverOver(member);
                 if (GenericUtils.isExist(CommonLocators.downArrow)) {
@@ -244,5 +247,6 @@ public class DCTechView {
 
         return result;
     }
+
 
 }

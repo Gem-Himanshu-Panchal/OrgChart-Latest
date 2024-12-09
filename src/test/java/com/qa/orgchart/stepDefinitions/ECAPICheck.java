@@ -2,8 +2,10 @@ package com.qa.orgchart.stepDefinitions;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gemini.generic.reporting.GemTestReporter;
-import com.gemini.generic.reporting.STATUS;
+
+
+import com.gemini.gemjar.enums.Status;
+import com.gemini.gemjar.reporting.GemTestReporter;
 import io.cucumber.java.en.When;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -63,9 +65,9 @@ public class ECAPICheck {
                     }
                     if (!missingEmpList.isEmpty())
                         GemTestReporter.addTestStep("Check data",
-                                "Missing emp from the API: " + missingEmpList, STATUS.FAIL);
+                                "Missing emp from the API: " + missingEmpList, Status.FAIL);
                     else GemTestReporter.addTestStep("Check data",
-                            "Exact number of nodes", STATUS.PASS);
+                            "Exact number of nodes", Status.PASS);
                 } else if (apiEmployeeNames.size() > jsonDataEmpList.size()) {
                     for (String str : apiEmployeeNames) {
                         if (!jsonDataEmpList.contains(str) && !coChairs.contains(str)) {
@@ -74,15 +76,15 @@ public class ECAPICheck {
                     }
                     if (!extraEmpList.isEmpty())
                         GemTestReporter.addTestStep("Check data",
-                                "Extra emp in the API: " + extraEmpList, STATUS.FAIL);
+                                "Extra emp in the API: " + extraEmpList, Status.FAIL);
                     else GemTestReporter.addTestStep("Check data",
-                            "Exact number of nodes", STATUS.PASS);
+                            "Exact number of nodes", Status.PASS);
                 } else if(apiEmployeeNames.equals(jsonDataEmpList)) {
                     GemTestReporter.addTestStep("Check data",
-                            "Exact number of nodes", STATUS.PASS);
+                            "Exact number of nodes", Status.PASS);
                 }
             } else {
-                GemTestReporter.addTestStep("Check API hit", "Status Code is not 200", STATUS.FAIL);
+                GemTestReporter.addTestStep("Check API hit", "Status Code is not 200", Status.FAIL);
             }
         } catch (IOException e) {
             e.printStackTrace();

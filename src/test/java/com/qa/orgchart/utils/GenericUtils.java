@@ -2,10 +2,10 @@ package com.qa.orgchart.utils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gemini.generic.reporting.GemTestReporter;
-import com.gemini.generic.reporting.STATUS;
-import com.gemini.generic.ui.utils.DriverAction;
-import com.gemini.generic.ui.utils.DriverManager;
+import com.gemini.gemjar.enums.Status;
+import com.gemini.gemjar.reporting.GemTestReporter;
+import com.gemini.gemjar.utils.ui.DriverAction;
+import com.gemini.gemjar.utils.ui.DriverManager;
 import com.qa.orgchart.locators.CommonLocators;
 import com.qa.orgchart.locators.sanityLocators;
 import org.apache.commons.collections.CollectionUtils;
@@ -20,7 +20,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import static com.gemini.generic.ui.utils.DriverAction.getElements;
+import static com.gemini.gemjar.utils.ui.DriverAction.getElements;
 
 
 public class GenericUtils{
@@ -65,7 +65,7 @@ public class GenericUtils{
         hierarchy.add(employee.get("EmployeeCode"));
         name = employee.get("ReportingManager");
         code = employee.get("ManagerCode");
-        while (!name.equalsIgnoreCase("Vishal Malik")) {
+        while (!name.equalsIgnoreCase("Anil Singh")) {
             for (HashMap<String, String> hashMap : hashMapList) {
                 if (hashMap.containsKey("EmployeeName") && hashMap.containsKey("EmployeeCode")
                         && hashMap.get("EmployeeName").equals(name) && hashMap.get("EmployeeCode").equals(code)) {
@@ -271,12 +271,12 @@ public class GenericUtils{
         } else if (btnName.equalsIgnoreCase("Clone View")) {
             GenericUtils.waitUntilLoaderDisappear();
             GenericUtils.waitUntilElementAppear(sanityLocators.cloneViewButton);
-            List<WebElement> cloneButtons = DriverAction.getElements(sanityLocators.cloneViewButton);
+            List<WebElement> cloneButtons = getElements(sanityLocators.cloneViewButton);
             cloneButtons.get(cloneButtons.size() - 1).click();
         } else if (btnName.equalsIgnoreCase("Delete View")) {
             GenericUtils.waitUntilLoaderDisappear();
             GenericUtils.waitUntilElementAppear(sanityLocators.btnLocator("img",  btnName,"title"));
-            List<WebElement> deleteButtons = DriverAction.getElements(sanityLocators.btnLocator("img",  btnName,"title"));
+            List<WebElement> deleteButtons = getElements(sanityLocators.btnLocator("img",  btnName,"title"));
             deleteButtons.get(deleteButtons.size() - 1).click();
         }else if(btnName.equalsIgnoreCase("Yes, delete it!")){
             GenericUtils.waitUntilElementAppear(sanityLocators.deleteButton);
@@ -403,7 +403,7 @@ public static void scrollIntoElement(WebElement element){
         try {
             DriverManager.getWebDriver().switchTo().window(nameOfHandle);
         } catch (Exception e) {
-            GemTestReporter.addTestStep("Error switching to window with handle '{}': Window not found.", "Exception: " + e, STATUS.FAIL);
+            GemTestReporter.addTestStep("Error switching to window with handle '{}': Window not found.", "Exception: " + e, Status.FAIL);
             throw new RuntimeException(e);
         }
     }

@@ -18,6 +18,9 @@ public class CommonLocators {
     public static By checkInfoCard = By.xpath("//div[@class='col-md id-row']");
     public static By invalidHTTPRequestToastMessage = By.xpath("//div[contains(text(),'Http failure')]");
     public static By allEmployeesName = By.xpath("//div[@class='ptitle']");
+    public static By manageViewIcon = By.xpath("//li[contains(text(),' Manage View ')]");
+    public static By exportIcon = By.xpath("//button[contains(text(),' Export Employees ')]");
+
     public static By coChairsNames(String dcName){
         return By.xpath("//div[contains(text(),'"+dcName+"')]//..//..//div[@class='hierarchy-box-tooltip']//ul[2]//li");
     }
@@ -76,7 +79,8 @@ public class CommonLocators {
 
 
     public static By ecTeamBox(String teamName) {
-        return By.xpath("//div[contains(text(),'"+teamName+"')]//ancestor::div[@class='teambox']");
+//        return By.xpath("//div[contains(text(),'"+teamName+"')]//ancestor::div[@class='teambox']");
+        return By.xpath("//div[normalize-space(text())='"+teamName+"']//ancestor::div[@class='teambox']");
 
     }
 
@@ -112,4 +116,11 @@ public class CommonLocators {
     public static By scrollElement(String value){
         return By.xpath("//*[contains(text(),'"+value+"')]");
     }
+
+    public static By nodesRow = By.xpath("(//tr[@class='nodes'])[3]/td/table");
+
+    public static By firstRowEmployeesXpath = By.xpath("(//tr[@class='nodes'])[2]/td/table//div[@class='node cursorPointer']");
+    public static By teamMembers = By.xpath("(//tr[@class='nodes'])[2]/td/table");
+    public static By AdminIcon = By.xpath("//div[@title='Admin']");
+
 }

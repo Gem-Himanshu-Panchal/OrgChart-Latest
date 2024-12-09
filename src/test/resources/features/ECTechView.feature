@@ -1,10 +1,10 @@
-@runECView @regression @DCEC
+@runECView @regression1 @DCEC @regression12345
 Feature: EC view data validations
 
   Background: Verify if user successfully log into Orgchart
-    When Navigate to OrgChart and login
-    Then Verify if user is on OrgChart dashboard
-    And Switch to "EC" view
+    Given a user is logged into OrgChart
+    When the user navigates to the OrgChart dashboard
+    And switches to the "EC" mode
 
 
   Scenario: Verify EC view for .Net
@@ -31,12 +31,14 @@ Feature: EC view data validations
   Scenario: Verify EC view for DesignBranding
     Given Check employee in EC view for "DesignBranding" of OrgChart
 
+  @pimcoDC
   Scenario: Verify EC view for Devops
     Given Check employee in EC view for "Devops" of OrgChart
 
   Scenario: Verify EC view for Executive Office
     Given Check employee in EC view for "Executive Office" of OrgChart
 
+  @pimcoDC
   Scenario: Verify EC view for Full stack (Angular/ Node/ React)
     Given Check employee in EC view for "Full stack (Angular/ Node/ React)" of OrgChart
 
@@ -55,6 +57,7 @@ Feature: EC view data validations
   Scenario: Verify EC view for Management
     Given Check employee in EC view for "Management" of OrgChart
 
+  @pimcoDC
   Scenario: Verify EC view for Python/C++
     Given Check employee in EC view for "Python/C++" of OrgChart
 

@@ -1,8 +1,9 @@
 package com.qa.orgchart.stepDefinitions;
 
-import com.gemini.generic.reporting.GemTestReporter;
-import com.gemini.generic.reporting.STATUS;
-import com.gemini.generic.ui.utils.DriverAction;
+
+import com.gemini.gemjar.enums.Status;
+import com.gemini.gemjar.reporting.GemTestReporter;
+import com.gemini.gemjar.utils.ui.DriverAction;
 import com.qa.orgchart.locators.CommonLocators;
 import com.qa.orgchart.utils.GenericUtils;
 
@@ -99,13 +100,13 @@ public class ECTechView {
                 if (empName.contains("Vishal Malik") || empName.contains("Aman Bansal") || empName.contains("Anil Pahal")
                         || empName.contains("Anil Singh") || empName.contains("Neeraj Yadav") || empName.contains("Prashank Chaudhary") || empName.contains("Lovish Sanghvi")) {
                     GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
-                            empName + " is at right hierarchy", STATUS.PASS);
+                            empName + " is at right hierarchy", Status.PASS);
                     continue;
                 }
 
                 if (!GenericUtils.isExist(CommonLocators.employeeDiv(empName, empCode))) {
                     GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
-                            empName + " is missing from hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
+                            empName + " is missing from hierarchy", Status.FAIL, DriverAction.takeSnapShot());
                     flag++;
                     missingEmployees++;
                     continue;
@@ -114,7 +115,7 @@ public class ECTechView {
                 String mentorECTech = getEcTech(mentorName, mentorCode);
                 if (mentorECTech == null) {
                     GemTestReporter.addTestStep("Check employee EC mentor",
-                            empName + " has wrong EC mentor", STATUS.FAIL, DriverAction.takeSnapShot());
+                            empName + " has wrong EC mentor", Status.FAIL, DriverAction.takeSnapShot());
                     continue;
                 }
                 DriverAction.waitSec(1);
@@ -122,18 +123,18 @@ public class ECTechView {
                     if (GenericUtils.isEmployeeInFirstRow(firstRowEmployees, empName, empCode)) {
 
                         GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
-                                empName + " is at right hierarchy", STATUS.PASS);
+                                empName + " is at right hierarchy", Status.PASS);
                     } else {
                         GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
-                                empName + " is at wrong hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
+                                empName + " is at wrong hierarchy", Status.FAIL, DriverAction.takeSnapShot());
                     }
                 } else {
                     if (GenericUtils.isExist(CommonLocators.hierarchyCheck(mentorName, mentorCode, empName, empCode))) {
                         GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
-                                empName + " is at right hierarchy", STATUS.PASS);
+                                empName + " is at right hierarchy", Status.PASS);
                     } else {
                         GemTestReporter.addTestStep(flag + ". Verify if " + empName + " is at right hierarchy or not",
-                                empName + " is at wrong hierarchy", STATUS.FAIL, DriverAction.takeSnapShot());
+                                empName + " is at wrong hierarchy", Status.FAIL, DriverAction.takeSnapShot());
                     }
                 }
 
@@ -151,7 +152,7 @@ public class ECTechView {
         }
         if ((actualEmps) > (jsonEmp + missingEmployees + coChairs.size())) {
             GemTestReporter.addTestStep("Check if there are any extra nodes under " + ecName + " tech",
-                    "There are extra nodes under " + ecName + " tech", STATUS.FAIL, DriverAction.takeSnapShot());
+                    "There are extra nodes under " + ecName + " tech", Status.FAIL, DriverAction.takeSnapShot());
         }
 
     }
