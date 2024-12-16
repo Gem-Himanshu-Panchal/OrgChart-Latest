@@ -1,8 +1,7 @@
 package com.qa.orgchart.stepDefinitions;
 
-import com.gemini.generic.exception.GemException;
-import com.gemini.generic.ui.utils.DriverAction;
-import com.gemini.generic.ui.utils.DriverManager;
+import com.gemini.gemjar.exception.GemException;
+import com.gemini.gemjar.utils.ui.DriverManager;
 import io.cucumber.java.Before;
 
 public class Hook {

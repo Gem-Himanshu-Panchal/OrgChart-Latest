@@ -1,3 +1,5 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+/gemjar-config.yml
+/src/test/resources/gemjar-config.yml

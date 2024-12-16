@@ -1,19 +1,10 @@
-@runECView @regression
+@runECView @regression1 @DCEC @regression12345
 Feature: EC view data validations
 
   Background: Verify if user successfully log into Orgchart
-    When Navigate to OrgChart and login
-    Then Verify if user is on OrgChart dashboard
-#    And Click on "Admin" button
-#    And Click on "Manage View" button
-#    Then Click on " Export Employees " button
-#    And Open downloaded excel file
-#    Then Update the JSON data file
-#    And Update the mentor name list
-#    And Update the mentor code list
-#    And Go to Dashboard
-#    Then Verify if user is on OrgChart dashboard
-    And Switch to "EC" view
+    Given a user is logged into OrgChart
+    When the user navigates to the OrgChart dashboard
+    And switches to the "EC" mode
 
 
   Scenario: Verify EC view for .Net
@@ -40,12 +31,14 @@ Feature: EC view data validations
   Scenario: Verify EC view for DesignBranding
     Given Check employee in EC view for "DesignBranding" of OrgChart
 
+  @pimcoDC
   Scenario: Verify EC view for Devops
     Given Check employee in EC view for "Devops" of OrgChart
 
   Scenario: Verify EC view for Executive Office
     Given Check employee in EC view for "Executive Office" of OrgChart
 
+  @pimcoDC
   Scenario: Verify EC view for Full stack (Angular/ Node/ React)
     Given Check employee in EC view for "Full stack (Angular/ Node/ React)" of OrgChart
 
@@ -61,6 +54,10 @@ Feature: EC view data validations
   Scenario: Verify EC view for Java
     Given Check employee in EC view for "Java" of OrgChart
 
+  Scenario: Verify EC view for Management
+    Given Check employee in EC view for "Management" of OrgChart
+
+  @pimcoDC
   Scenario: Verify EC view for Python/C++
     Given Check employee in EC view for "Python/C++" of OrgChart
 
@@ -69,7 +66,3 @@ Feature: EC view data validations
 
   Scenario: Verify EC view for Training
     Given Check employee in EC view for "Training" of OrgChart
-
-
-#  Scenario: Verify any duplicate data in OrgChart employee view
-#    When Search for any duplicate employee in OrgChart Gemini view
