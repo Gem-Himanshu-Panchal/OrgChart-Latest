@@ -13,6 +13,7 @@ Feature: DC view data validations
     When Open path for "Support" Dc tech and "Accounts" DC
     Then Check employee in DC view for "Accounts" in "Support" of OrgChart
 
+
   Scenario: Verify DC view for Human Resource
     When Open path for "Support" Dc tech and "Human Resource" DC
     Then Check employee in DC view for "Human Resource" in "Support" of OrgChart
