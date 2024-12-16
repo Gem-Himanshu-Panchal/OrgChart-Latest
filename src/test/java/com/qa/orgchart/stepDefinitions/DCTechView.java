@@ -237,6 +237,11 @@ public class DCTechView {
                 if (GenericUtils.isExist(CommonLocators.downArrow)) {
                     DriverAction.getElement(CommonLocators.downArrow).click();
                     DriverAction.waitSec(1);
+                }else {
+                    DriverAction.hoverOver(member);
+                    DriverAction.waitSec(1);
+                    DriverAction.getElement(CommonLocators.downArrow).click();
+                    DriverAction.waitSec(1);
                 }
             }
             members.clear();
